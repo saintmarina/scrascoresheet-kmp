@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -45,6 +44,8 @@ kotlin {
             implementation(libs.essenty.lifecycle)
             implementation(libs.essenty.lifecycle.coroutines)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.lyricist.core)
+            implementation(libs.lyricist.full)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

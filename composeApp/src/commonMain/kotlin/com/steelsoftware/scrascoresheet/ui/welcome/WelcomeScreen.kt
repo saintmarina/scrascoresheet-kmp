@@ -12,15 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 
 @Composable
 fun WelcomeScreen(component: WelcomeComponent) {
+    val strings = LocalLyricist.current.strings
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Welcome to Scra Score Sheet!", style = MaterialTheme.typography.headlineMedium)
+
+        Text(strings.hello, style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(24.dp))
         Button(onClick = { component.startGame() }) {
             Text("Start Game")

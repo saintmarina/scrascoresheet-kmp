@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.defaultComponentContext
+import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
+import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.ui.root.RootComponent
 
 class MainActivity : ComponentActivity() {
@@ -19,8 +22,16 @@ class MainActivity : ComponentActivity() {
             gameStorage = storage,
         )
 
+        val lyricist = Lyricist(
+            defaultLanguageTag = "en",
+            translations = mapOf(
+                "en" to EnglishStrings,
+                "es" to SpanishStrings
+            )
+        )
+
         setContent {
-            App(root)
+            App(root, lyricist)
         }
     }
 }

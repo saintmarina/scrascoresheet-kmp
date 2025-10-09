@@ -1,22 +1,29 @@
 package com.steelsoftware.scrascoresheet.ui.root
 
 
+import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DelicateDecomposeApi
 import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
+import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeComponent
 import com.steelsoftware.scrascoresheet.ui.game.GameComponent
 import com.steelsoftware.scrascoresheet.ui.finished.FinishedComponent
 import com.steelsoftware.scrascoresheet.ui.splash.SplashComponent
 import com.steelsoftware.scrascoresheet.storage.GameStorage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class RootComponent(
     componentContext: ComponentContext,
     private val gameStorage: GameStorage,
 ) : ComponentContext by componentContext {
-    // Initialize coroutine scope with essenty lifecycle coroutine scope
-
+    private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
     private val navigation = StackNavigation<Config>()
 
     val childStack: Value<ChildStack<*, Child>> = childStack(
@@ -26,6 +33,14 @@ class RootComponent(
         childFactory = ::createChild,
         serializer = null,
     )
+
+    init {
+        // Wait 2 seconds and then set the next screen to Welcome
+        scope.launch {
+            delay(2000)
+            navigation.replaceAll(Config.Welcome)
+        }
+    }
 
     @OptIn(DelicateDecomposeApi::class)
     private fun createChild(config: Config, ctx: ComponentContext): Child =
@@ -55,9 +70,7 @@ class RootComponent(
     private sealed class Config {
         data object Splash : Config()
         data object Welcome : Config()
-
         data object Game : Config()
-
         data object Finished : Config()
     }
 
