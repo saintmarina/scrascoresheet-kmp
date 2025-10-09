@@ -1,4 +1,4 @@
-package com.steelsoftware.scrascoresheet.finished
+package com.steelsoftware.scrascoresheet.ui.finished
 
 import com.arkivanov.decompose.ComponentContext
 

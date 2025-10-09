@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
 kotlin {
@@ -42,6 +43,8 @@ kotlin {
             implementation(libs.decompose.core)
             implementation(libs.decompose.compose)
             implementation(libs.essenty.lifecycle)
+            implementation(libs.essenty.lifecycle.coroutines)
+            implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

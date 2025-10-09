@@ -1,4 +1,4 @@
-package com.steelsoftware.scrascoresheet.finished
+package com.steelsoftware.scrascoresheet.ui.welcome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,12 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FinishedScreen(component: FinishedComponent) {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Game Finished!", style = MaterialTheme.typography.headlineMedium)
+fun WelcomeScreen(component: WelcomeComponent) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Welcome to Scra Score Sheet!", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(24.dp))
-        Button(onClick = { component.restart() }) {
-            Text("Restart")
+        Button(onClick = { component.startGame() }) {
+            Text("Start Game")
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.steelsoftware.scrascoresheet.game
+package com.steelsoftware.scrascoresheet.ui.game
 
 import com.arkivanov.decompose.ComponentContext
 
@@ -7,5 +7,9 @@ class GameComponent(
     private val onGameFinished: () -> Unit
 ) : ComponentContext by componentContext {
 
+    fun saveGame() {
+        // Implement game saving logic here
+
+    }
     fun finishGame() = onGameFinished()
 }
