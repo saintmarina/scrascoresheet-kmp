@@ -1,0 +1,12 @@
+Copyright (c) 2025 Anna Steel
+
+All rights reserved.
+
+This source code and associated materials are provided for educational
+and reference purposes only. No part of this repository may be copied,
+modified, distributed, sublicensed, or used in any software or product,
+whether commercial or non-commercial, without explicit written permission
+from the copyright holder.
+
+Viewing and learning from the code is permitted.
+Redistribution or publication under a different name or brand is prohibited.
