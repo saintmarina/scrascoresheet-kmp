@@ -1,8 +1,8 @@
 package com.steelsoftware.scrascoresheet.i18n
 
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
-import cafe.adriel.lyricist.Lyricist
 
-val LocalLyricist = staticCompositionLocalOf<Lyricist<Strings>> {
+val LocalLyricist: ProvidableCompositionLocal<Strings> = staticCompositionLocalOf{
     error("No Lyricist provided")
 }

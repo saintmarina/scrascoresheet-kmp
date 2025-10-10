@@ -1,11 +1,15 @@
 package com.steelsoftware.scrascoresheet
 
 import androidx.compose.ui.window.ComposeUIViewController
-import cafe.adriel.lyricist.Lyricist
+import cafe.adriel.lyricist.ProvideStrings
+import cafe.adriel.lyricist.rememberStrings
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
+import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
+import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
+import com.steelsoftware.scrascoresheet.i18n.RussianStrings
 import com.steelsoftware.scrascoresheet.ui.root.RootComponent
 
 fun MainViewController() = ComposeUIViewController {
@@ -16,12 +20,16 @@ fun MainViewController() = ComposeUIViewController {
         gameStorage = storage,
     )
 
-    val lyricist = Lyricist(
-        defaultLanguageTag = "en",
+    val lyricist = rememberStrings(
         translations = mapOf(
-            "en" to EnglishStrings,
-            "es" to SpanishStrings
-        )
+            Locales.ENGLISH to EnglishStrings,
+            Locales.SPANISH to SpanishStrings,
+            Locales.RUSSIAN to RussianStrings,
+        ),
+        defaultLanguageTag = Locales.ENGLISH,
+        currentLanguageTag = Locales.ENGLISH,
     )
-    App(root, lyricist)
+    ProvideStrings(lyricist, LocalLyricist) {
+        App(root, lyricist)
+    }
 }
