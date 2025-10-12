@@ -6,22 +6,29 @@ import kotlin.math.abs
 
 @Serializable
 data class Game(
+    val playerNames: List<String>,
     val playersTurns: List<List<Turn>>,
     val currentPlayerIndex: Int,
     val leftOversTurnNumber: Int? = null
 ) {
 
     companion object {
-        fun createNewGame(numberOfPlayers: Int): Game {
+        fun createNewGame(playerNames: List<String>): Game {
+            val numberOfPlayers = when {
+                playerNames.size < 2 -> 2
+                else -> playerNames.size.coerceAtMost(4)
+            }
             val firstTurn = Turn.Companion.empty()
             val players = List(numberOfPlayers) { listOf(firstTurn) }
-            return Game(players, 0)
+            val names = playerNames.take(numberOfPlayers)
+            return Game(names,players, 0)
         }
 
         fun fromPlain(obj: Game) = Game(
+            playerNames = obj.playerNames,
             playersTurns = obj.playersTurns,
             currentPlayerIndex = obj.currentPlayerIndex,
-            leftOversTurnNumber = obj.leftOversTurnNumber
+            leftOversTurnNumber = obj.leftOversTurnNumber,
         )
     }
 
@@ -37,7 +44,7 @@ data class Game(
         val newPlayers = filled.playersTurns.mapIndexed { idx, turns ->
             if (idx == nextPlayer) turns + Turn.Companion.empty() else turns
         }
-        return Game(newPlayers, nextPlayer, leftOversTurnNumber)
+        return Game(playerNames, newPlayers, nextPlayer, leftOversTurnNumber)
     }
 
     fun setBingo(value: Boolean): Game {

@@ -4,7 +4,7 @@ import androidx.compose.ui.window.ComposeUIViewController
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.lyricist.rememberStrings
 import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.arkivanov.essenty.lifecycle.ApplicationLifecycle
 import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
@@ -13,7 +13,7 @@ import com.steelsoftware.scrascoresheet.i18n.RussianStrings
 import com.steelsoftware.scrascoresheet.ui.root.RootComponent
 
 fun MainViewController() = ComposeUIViewController {
-    val lifecycle = LifecycleRegistry()
+    val lifecycle = ApplicationLifecycle()
     val storage = IOSGameStorage()
     val root = RootComponent(
         componentContext = DefaultComponentContext(lifecycle),

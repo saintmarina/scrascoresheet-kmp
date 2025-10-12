@@ -1,14 +1,12 @@
 package com.steelsoftware.scrascoresheet.ui.root
 
 
-import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DelicateDecomposeApi
 import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
-import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
+import com.steelsoftware.scrascoresheet.repository.GameRepository
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeComponent
 import com.steelsoftware.scrascoresheet.ui.game.GameComponent
 import com.steelsoftware.scrascoresheet.ui.finished.FinishedComponent
@@ -24,6 +22,7 @@ class RootComponent(
     private val gameStorage: GameStorage,
 ) : ComponentContext by componentContext {
     private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
+    private val gameRepository = GameRepository(gameStorage)
     private val navigation = StackNavigation<Config>()
 
     val childStack: Value<ChildStack<*, Child>> = childStack(
@@ -49,7 +48,7 @@ class RootComponent(
             Config.Welcome -> Child.Welcome(
                 WelcomeComponent(
                     componentContext = ctx,
-                    gameStorage = gameStorage,
+                    gameRepository = gameRepository,
                     onStartGame = { navigation.push(Config.Game) }
                 )
             )
