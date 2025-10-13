@@ -12,6 +12,7 @@ import com.steelsoftware.scrascoresheet.ui.game.GameComponent
 import com.steelsoftware.scrascoresheet.ui.finished.FinishedComponent
 import com.steelsoftware.scrascoresheet.ui.splash.SplashComponent
 import com.steelsoftware.scrascoresheet.storage.GameStorage
+import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -49,12 +50,14 @@ class RootComponent(
                 WelcomeComponent(
                     componentContext = ctx,
                     gameRepository = gameRepository,
-                    onStartGame = { navigation.push(Config.Game) }
+                    onStartGame = { gameObj ->
+                        navigation.push(Config.Game(gameObj)) }
                 )
             )
-            Config.Game -> Child.Game(
+            is Config.Game -> Child.Game(
                 GameComponent(
                     componentContext = ctx,
+                    game = config.game,
                     onGameFinished = { navigation.push(Config.Finished) }
                 )
             )
@@ -69,7 +72,7 @@ class RootComponent(
     private sealed class Config {
         data object Splash : Config()
         data object Welcome : Config()
-        data object Game : Config()
+        data class Game(val game: GameObj) : Config()
         data object Finished : Config()
     }
 

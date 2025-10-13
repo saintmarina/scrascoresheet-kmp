@@ -3,27 +3,27 @@ package com.steelsoftware.scrascoresheet.logic
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Word(
-    val value: String,
-    val modifiers: List<String> = emptyList(),
-    val score: Int = 0
-)
-
-@Serializable
 data class Turn(
     val words: List<Word> = emptyList(),
     val bingo: Boolean = false
 ) {
     companion object {
-        fun empty() = Turn(emptyList(), false)
-        fun fromPlain(obj: Turn) = Turn(obj.words, obj.bingo)
+        fun empty() = Turn()
+        fun fromPlain(words: List<Word>, bingo: Boolean) = Turn(words, bingo)
     }
 
-    val isEmpty: Boolean get() = words.isEmpty()
+    fun isEmpty(): Boolean = words.isEmpty()
 
-    fun score(): Int {
-        var total = words.sumOf { it.score }
-        if (bingo) total += 50
-        return total
-    }
+    fun isPassed(game: Game): Boolean =
+        isEmpty() && this != game.getCurrentTurn()
+
+    fun isComplete(game: Game): Boolean =
+        this != game.getCurrentTurn()
+
+    val score: Int
+        get() {
+            var result = words.sumOf { it.score }
+            if (bingo) result += 50
+            return result
+        }
 }

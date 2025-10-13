@@ -39,7 +39,7 @@ data class Game(
     }
 
     fun endTurn(): Game {
-        val filled = if (getCurrentTurn().isEmpty) this else setTurn(currentPlayerIndex, getCurrentTurnNumber(), getCurrentTurn())
+        val filled = if (getCurrentTurn().isEmpty()) this else setTurn(currentPlayerIndex, getCurrentTurnNumber(), getCurrentTurn())
         val nextPlayer = (currentPlayerIndex + 1) % playersTurns.size
         val newPlayers = filled.playersTurns.mapIndexed { idx, turns ->
             if (idx == nextPlayer) turns + Turn.Companion.empty() else turns
@@ -59,33 +59,46 @@ data class Game(
     fun areLeftOversSubmitted(): Boolean {
         val idx = leftOversTurnNumber ?: return false
         return isGameOver &&
-                playersTurns.lastOrNull()?.getOrNull(idx)?.isEmpty == false &&
+                playersTurns.lastOrNull()?.getOrNull(idx)?.isEmpty() == false &&
                 currentPlayerIndex == 0
     }
 
+
+    fun isMoveInGameOver(move: Int): Boolean =
+        isGameOver && leftOversTurnNumber?.let { move >= it } == true
+
+
     fun getReapers(): List<Int> {
-        val idx = leftOversTurnNumber ?: return emptyList()
-        return playersTurns.indices.filter { playersTurns[it][idx].isEmpty }
+        val leftOverIndex = leftOversTurnNumber ?: return emptyList()
+        return playersTurns.mapIndexedNotNull { index, turns ->
+            if (turns.getOrNull(leftOverIndex)?.isEmpty() == true) index else null
+        }
     }
 
     fun getSumOfLeftovers(): Int {
-        val idx = leftOversTurnNumber ?: return 0
-        return playersTurns.sumOf { abs(it[idx].score()) }
+        val leftOverIndex = leftOversTurnNumber ?: return 0
+        return playersTurns.sumOf { turns ->
+            abs(turns.getOrNull(leftOverIndex)?.score ?: 0)
+        }
     }
 
-    fun distributeLeftOversToReapers(reapers: List<Int>, total: Int): Game {
-        var g = this
-        reapers.forEach { i ->
-            val turn = Turn(listOf(Word("__reaped_leftovers__", emptyList(), total)))
-            g = g.setTurn(i, leftOversTurnNumber!!, turn)
+    fun distributeLeftOversToReapers(reapers: List<Int>, totalLeftOverScore: Int): Game {
+        var game = this
+        val leftOverIndex = leftOversTurnNumber ?: return this
+        for (reaperIndex in reapers) {
+            val turn = Turn(
+                words = listOf(Word("__reaped_leftovers__", emptyList(), totalLeftOverScore)),
+                bingo = false
+            )
+            game = game.setTurn(reaperIndex, leftOverIndex, turn)
         }
-        return g
+        return game
     }
 
     fun getWinners(upToMove: Int? = null): List<Int> {
-        val totals = playersTurns.indices.map { getTotalScore(it, upToMove) }
-        val max = totals.maxOrNull() ?: 0
-        return totals.withIndex().filter { it.value == max }.map { it.index }
+        val totalScores = playersTurns.indices.map { getTotalScore(it, upToMove) }
+        val maxScore = totalScores.maxOrNull() ?: 0
+        return indexesOf(totalScores, maxScore)
     }
 
     private fun setTurn(player: Int, turnNumber: Int, turn: Turn): Game {
@@ -104,13 +117,17 @@ data class Game(
         var total = 0
         val player = playersTurns[playerIndex]
         return player.map {
-            total += it.score()
+            total += it.score
             total
         }
     }
 
     fun getTotalScore(playerIndex: Int, upToMove: Int? = null): Int {
         val totals = getRunningTotals(playerIndex)
-        return upToMove?.let { totals.getOrNull(it) ?: 0 } ?: totals.lastOrNull() ?: 0
+        return when {
+            upToMove != null -> totals.getOrElse(upToMove) { 0 }
+            totals.isEmpty() -> 0
+            else -> totals.last()
+        }
     }
 }
