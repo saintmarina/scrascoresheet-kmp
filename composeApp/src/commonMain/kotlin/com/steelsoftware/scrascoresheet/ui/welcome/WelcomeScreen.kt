@@ -27,9 +27,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.steelsoftware.scrascoresheet.ui.welcome.State.ResumeGame
-import com.steelsoftware.scrascoresheet.ui.welcome.State.Loading
-import com.steelsoftware.scrascoresheet.ui.welcome.State.NewGame
+import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.ResumeGame
+import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.Loading
+import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.NewGame
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.Lyricist

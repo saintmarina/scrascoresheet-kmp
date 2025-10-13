@@ -17,8 +17,8 @@ class WelcomeComponent(
     private val gameRepository: GameRepository,
     private val onStartGame: (Game) -> Unit,
 ) : ComponentContext by componentContext {
-    private val _state = MutableValue<State>(State.Loading)
-    val state: Value<State> = _state
+    private val _state = MutableValue<WelcomeState>(WelcomeState.Loading)
+    val state: Value<WelcomeState> = _state
 
     private var savedGame: Game? = null
 
@@ -28,7 +28,7 @@ class WelcomeComponent(
             scope.launch {
                 savedGame = gameRepository.load()
                 _state.update {
-                    if (savedGame != null) State.ResumeGame else State.NewGame(
+                    if (savedGame != null) WelcomeState.ResumeGame else WelcomeState.NewGame(
                         playerNames = emptyList(),
                     )
                 }
@@ -46,9 +46,9 @@ class WelcomeComponent(
 
     fun restartGame() {
         val currentState = _state.value
-        if (currentState is State.ResumeGame && savedGame != null) {
+        if (currentState is WelcomeState.ResumeGame && savedGame != null) {
             _state.update {
-                State.NewGame(
+                WelcomeState.NewGame(
                     playerNames = savedGame!!.playerNames
                 )
             }
