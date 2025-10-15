@@ -27,6 +27,7 @@ fun LetterTile(
     letter: String,
     score: Int,
     modifierType: ModifierType = ModifierType.BLANK,
+    modifier: Modifier = Modifier,
 ) {
     val color = when (modifierType) {
         ModifierType.DOUBLE_LETTER -> Color(0xFF9FCAE0)
@@ -37,7 +38,7 @@ fun LetterTile(
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(69.dp)
             .padding(2.dp)
     ) {

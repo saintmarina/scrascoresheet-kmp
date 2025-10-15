@@ -26,4 +26,11 @@ val SpanishStrings = Strings(
     wouldYouLikeToResumeTitleWelcomeScreen = "¿Te gustaría reanudarla?",
     noButton = "No",
     yesButton = "Sí",
+    pressOnTheStar = "↑ Pulsa la estrella",
+    doubleLetterScore = "Double tanto de letra",
+    doubleWordScore = "Double tanto de palabra",
+    tripleLetterScore = "Triple tanto de letra",
+    tripleWordScore = "Triple tanto de palabra",
+    blankTile = "Ficha en blanco",
+    tileBackgroundDescription = "Fondo de la ficha",
 )

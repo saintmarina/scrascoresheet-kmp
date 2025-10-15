@@ -3,20 +3,23 @@ package com.steelsoftware.scrascoresheet.ui.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DelicateDecomposeApi
-import com.arkivanov.decompose.router.stack.*
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.steelsoftware.scrascoresheet.repository.GameRepository
-import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeComponent
-import com.steelsoftware.scrascoresheet.ui.game.GameComponent
-import com.steelsoftware.scrascoresheet.ui.finished.FinishedComponent
-import com.steelsoftware.scrascoresheet.ui.splash.SplashComponent
 import com.steelsoftware.scrascoresheet.storage.GameStorage
-import com.steelsoftware.scrascoresheet.logic.Game as GameObj
+import com.steelsoftware.scrascoresheet.ui.finished.FinishedComponent
+import com.steelsoftware.scrascoresheet.ui.game.GameComponent
+import com.steelsoftware.scrascoresheet.ui.splash.SplashComponent
+import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 
 class RootComponent(
     componentContext: ComponentContext,
@@ -37,7 +40,7 @@ class RootComponent(
     init {
         // Wait 2 seconds and then set the next screen to Welcome
         scope.launch {
-            delay(2000)
+            //delay(2000)
             navigation.replaceAll(Config.Welcome)
         }
     }
@@ -51,9 +54,11 @@ class RootComponent(
                     componentContext = ctx,
                     gameRepository = gameRepository,
                     onStartGame = { gameObj ->
-                        navigation.push(Config.Game(gameObj)) }
+                        navigation.push(Config.Game(gameObj))
+                    }
                 )
             )
+
             is Config.Game -> Child.Game(
                 GameComponent(
                     componentContext = ctx,
@@ -61,6 +66,7 @@ class RootComponent(
                     onGameFinished = { navigation.push(Config.Finished) }
                 )
             )
+
             Config.Finished -> Child.Finished(
                 FinishedComponent(
                     componentContext = ctx,

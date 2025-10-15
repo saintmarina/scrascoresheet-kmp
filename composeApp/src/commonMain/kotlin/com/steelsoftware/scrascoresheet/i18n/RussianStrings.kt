@@ -26,4 +26,11 @@ val RussianStrings = Strings(
     wouldYouLikeToResumeTitleWelcomeScreen = "Хотите продолжить её?",
     noButton = "Нет",
     yesButton = "Да",
+    pressOnTheStar = "↑ Нажмите на звезду",
+    doubleLetterScore = "Двойной счёт буквы",
+    doubleWordScore = "Двойной счёт слова",
+    tripleLetterScore = "Тройной счёт буквы",
+    tripleWordScore = "Тройной счёт слова",
+    blankTile = "Пустая фишка",
+    tileBackgroundDescription = "Фон фишки",
 )

@@ -15,4 +15,11 @@ data class Strings(
     val wouldYouLikeToResumeTitleWelcomeScreen: String,
     val noButton: String,
     val yesButton: String,
+    val pressOnTheStar: String,
+    val doubleLetterScore: String,
+    val doubleWordScore: String,
+    val tripleLetterScore: String,
+    val tripleWordScore: String,
+    val blankTile: String,
+    val tileBackgroundDescription: String,
 )

@@ -18,4 +18,11 @@ val EnglishStrings = Strings(
     wouldYouLikeToResumeTitleWelcomeScreen = "Would you like to resume it?",
     noButton = "No",
     yesButton = "Yes",
+    pressOnTheStar = "↑ Press on the star",
+    doubleLetterScore = "Double Letter Score",
+    doubleWordScore = "Double Word Score",
+    tripleLetterScore = "Triple Letter Score",
+    tripleWordScore = "Triple Word Score",
+    blankTile = "Blank Tile",
+    tileBackgroundDescription = "Tile background",
 )
