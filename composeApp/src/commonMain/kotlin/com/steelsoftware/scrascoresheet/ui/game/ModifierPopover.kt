@@ -59,6 +59,14 @@ fun ModifierPopover(
     var popoverWidth by remember { mutableStateOf(0f) }
     var popoverGlobalLeft by remember { mutableStateOf(0f) }
 
+    val minOffset = 140 // for small screens (phones)
+    val maxOffset = 180 // for large screens (tablets)
+    val inputBoxHeight = inputBoxBounds.height
+
+    // Calculate a dynamic offset based on input box height, clamped between min and max
+    val dynamicYOffset = inputBoxHeight.coerceIn(minOffset.toFloat(), maxOffset.toFloat()).toInt()
+
+    val y = (inputBoxBounds.bottom - (tileBounds.top)).toInt() - dynamicYOffset
     Column(
         modifier = Modifier.offset {
             IntOffset(
@@ -77,7 +85,7 @@ fun ModifierPopover(
 
                     (targetX - inputLeft).toInt()
                 },
-                y = (inputBoxBounds.bottom - tileBounds.top).toInt() - 180
+                y = y
             )
         },
         horizontalAlignment = Alignment.CenterHorizontally

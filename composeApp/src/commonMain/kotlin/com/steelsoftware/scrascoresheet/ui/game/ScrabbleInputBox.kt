@@ -10,12 +10,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
@@ -39,6 +44,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.logic.ModifierType
@@ -56,94 +62,125 @@ fun ScrabbleInputBox(
 ) {
     var text by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
+    var hasFocus by remember { mutableStateOf(false) }
     var inputBoxBounds by remember { mutableStateOf<Rect?>(null) }
     val tileBoundsMap = remember { mutableStateMapOf<Int, Rect>() }
 
-    Box(
+    val maxTilesPerRow = 8
+    val maxLetters = 15
+
+    BoxWithConstraints(
         modifier = Modifier
             .onGloballyPositioned { coordinates ->
                 inputBoxBounds = coordinates.boundsInWindow()
             }
             .border(1.dp, Color.White, RoundedCornerShape(5.dp))
             .background(Color(0xFFE66058))
-            .height(81.dp)
-            .width(471.dp)
             .padding(8.dp)
             .clickable { focusRequester.requestFocus() },
     ) {
-        Row(
-            modifier = Modifier.align(Alignment.CenterStart),
-            verticalAlignment = Alignment.CenterVertically
+
+        val fullWidth = maxWidth
+        val boxWidth = if (fullWidth > 550.dp) 550.dp else fullWidth
+        val tileSize = (boxWidth / maxTilesPerRow) - 4.dp
+        val rows = if (text.isEmpty()) listOf("") else text.chunked(maxTilesPerRow)
+
+        Box(
+            modifier = Modifier
+                .width(boxWidth)
+                .wrapContentHeight()
+                .align(Alignment.CenterStart)
         ) {
-            text.forEachIndexed { index, ch ->
-                val letter = ch.toString()
-                val score = scoreListsMap[language]?.get(ch.lowercaseChar()) ?: 0
-                LetterTile(
-                    letter = letter,
-                    score = score,
-                    modifierType = ModifierType.BLANK, // TODO: Make dynamic based on game state
-                    modifier = Modifier
-                        .onGloballyPositioned { coordinates ->
-                            tileBoundsMap[index] = coordinates.boundsInRoot()
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                rows.forEachIndexed { rowIndex, rowText ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        val displayText =
+                            if (rowText.isEmpty()) listOf() else rowText.toList()
+
+                        displayText.forEachIndexed { columnIndex, ch ->
+                            val index = rowIndex * maxTilesPerRow + columnIndex
+                            val letter = ch.toString()
+                            val score = scoreListsMap[language]?.get(ch.lowercaseChar()) ?: 0
+
+                            LetterTile(
+                                letter = letter,
+                                score = score,
+                                modifierType = ModifierType.BLANK, // TODO: Make dynamic based on game state
+                                tileSize = tileSize,
+                                modifier = Modifier
+                                    .onGloballyPositioned { coordinates ->
+                                        tileBoundsMap[index] = coordinates.boundsInRoot()
+                                    }
+                                    .clickable {
+                                        val bounds = tileBoundsMap[index]
+                                        if (bounds != null) {
+                                            // Toggle popover open/close
+                                            setPopoverAnchor(if (popoverAnchor == bounds) null else bounds)
+                                        }
+                                    }
+                            )
                         }
-                        .clickable {
-                            val bounds = tileBoundsMap[index]
-                            if (bounds != null) {
-                                // Toggle popover open/close
-                                setPopoverAnchor(if (popoverAnchor == bounds) null else bounds)
+                        if (rowText.length < maxTilesPerRow && rowIndex == rows.lastIndex) {
+                            Box(
+                                modifier = Modifier.height(tileSize),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (hasFocus) {
+                                    BlinkingCursor(height = tileSize)
+                                }
                             }
                         }
-                )
-            }
-            BlinkingCursor()
-        }
-
-        // Hidden real input field for typing
-        BasicTextField(
-            value = text,
-            onValueChange = { input ->
-                val filtered = buildString {
-                    input.forEach { ch ->
-                        if (isLetterAllowed(ch, language)) append(ch.uppercaseChar())
                     }
                 }
+            }
 
-                if (filtered != text) {
-                    text = filtered
-                    onInputChanged(filtered)
-                }
-            },
-            modifier = Modifier
-                .size(1.dp)
-                .focusRequester(focusRequester)
-                .alpha(0f) // invisible
-                .background(Color.Transparent)
-                .onPreviewKeyEvent { event ->
-                    // TODO: handle forward delete key
-                    when (event.key) {
-                        Key.DirectionLeft,
-                        Key.DirectionRight,
-                        Key.DirectionUp,
-                        Key.DirectionDown,
-                        Key.Enter,
-                        Key.Delete,
-                        Key.Tab -> true
-
-                        Key.Backspace -> {
-                            if (text.isNotEmpty()) {
-                                text = text.dropLast(1)
-                                onInputChanged(text)
-                            }
-                            true
+            // Hidden real input field for typing
+            BasicTextField(
+                value = text,
+                onValueChange = { input ->
+                    setPopoverAnchor(null)
+                    val filtered = buildString {
+                        input.forEach { ch ->
+                            if (isLetterAllowed(ch, language)) append(ch.uppercaseChar())
                         }
+                    }.take(maxLetters)
 
-                        else -> false
+                    if (filtered != text) {
+                        text = filtered
+                        onInputChanged(filtered)
                     }
                 },
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Characters
-            ),
-        )
+                modifier = Modifier
+                    .size(1.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { hasFocus = it.isFocused }
+                    .alpha(0f) // invisible
+                    .background(Color.Transparent)
+                    .onPreviewKeyEvent { event ->
+                        setPopoverAnchor(null)
+                        when (event.key) {
+                            Key.DirectionLeft,
+                            Key.DirectionRight,
+                            Key.DirectionUp,
+                            Key.DirectionDown,
+                            Key.Enter,
+                            Key.Delete,
+                            Key.Tab -> true
+
+                            else -> false
+                        }
+                    },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Characters
+                ),
+            )
+        }
     }
     if (popoverAnchor != null && inputBoxBounds != null) {
         Box(
@@ -156,6 +193,7 @@ fun ScrabbleInputBox(
                     setPopoverAnchor(null)
                 }
         ) {
+
             ModifierPopover(
                 inputBoxBounds,
                 tileBounds = popoverAnchor,
@@ -166,12 +204,13 @@ fun ScrabbleInputBox(
                 },
                 isFirstTurn = true,
             )
+
         }
     }
 }
 
 @Composable
-fun BlinkingCursor() {
+fun BlinkingCursor(height: Dp) {
     val infiniteTransition = rememberInfiniteTransition()
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
@@ -186,7 +225,7 @@ fun BlinkingCursor() {
         modifier = Modifier
             .padding(start = 5.dp)
             .width(3.dp)
-            .height(60.dp)
+            .height(height)
             .alpha(alpha)
             .background(Color.White)
     )
