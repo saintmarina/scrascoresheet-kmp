@@ -18,12 +18,11 @@ class GameComponent(
     private val _state = MutableValue<GameState>(Game(game))
     val state: Value<GameState> = _state
 
-
-
     fun saveGame() {
         // Implement game saving logic here
 
     }
+
     fun finishGame() = onGameFinished()
 
     fun calculateScrabbleScore(
@@ -60,5 +59,25 @@ class GameComponent(
         }
 
         return result
+    }
+
+    fun passTurn() {
+        // TODO: Implement pass turn logic
+    }
+
+    fun endTurn() {
+        // TODO: Implement endTurn turn logic
+    }
+
+    fun addWord() {
+        // TODO: Implement addWord logic
+    }
+
+    fun toggleBingo() {
+        // TODO: Implement toggleBingo logic
+    }
+
+    fun undo() {
+        // TODO: Implement undo logic
     }
 }

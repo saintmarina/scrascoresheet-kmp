@@ -42,7 +42,7 @@ private val ScrabbleColorScheme = darkColorScheme(
 
 private val ScrabbleTypography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Serif, // corresponds to Times, serif
+        fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
         color = Color.White,

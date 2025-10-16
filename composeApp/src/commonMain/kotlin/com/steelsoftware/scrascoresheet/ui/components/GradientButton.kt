@@ -17,7 +17,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
@@ -32,13 +31,12 @@ fun GradientButton(
 ) {
     val gradient = Brush.verticalGradient(
         colors = listOf(
-            Color(0xFFDE322A).copy(alpha = 0.9f),
-            Color(0xFF622528).copy(alpha = 0.9f)
+            Color(0xFFDE322A).copy(alpha = if (enabled) 1f else 0.5f),
+            Color(0xFF622528).copy(alpha = if (enabled) 1f else 0.5f)
         )
     )
-
     val borderColor = if (enabled) Color(0xFF980C10) else Color.Transparent
-    val overallAlpha = if (enabled) 1f else 0.55f
+    val contentAlpha = if (enabled) 1f else 0.45f
 
     Button(
         onClick = onClick,
@@ -46,12 +44,11 @@ fun GradientButton(
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
-            contentColor = Color.White,
+            contentColor = Color.White.copy(alpha = contentAlpha),
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = Color.White.copy(alpha = 0.8f)
+            disabledContentColor = Color.White.copy(alpha = contentAlpha)
         ),
         modifier = modifier
-            .graphicsLayer(alpha = overallAlpha)
             .background(
                 brush = gradient,
                 shape = MaterialTheme.shapes.medium
@@ -66,7 +63,7 @@ fun GradientButton(
             text = text,
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontSize = 18.sp,
-                color = Color.White.copy(alpha = if (enabled) 1f else 0.8f),
+                color = Color.White.copy(alpha = if (enabled) 1f else 0.45f),
                 shadow = Shadow(
                     color = Color.Black.copy(alpha = 0.8f),
                     offset = Offset(1f, 1f),
@@ -89,7 +86,7 @@ fun GradientButtonPreview() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GradientButton(onClick = {}, text = "END TURN")
-            GradientButton(onClick = {}, text = "ADD WORD", enabled = true)
+            GradientButton(onClick = {}, text = "+ ADD WORD", enabled = true)
             GradientButton(onClick = {}, text = "BINGO", enabled = false)
         }
     }

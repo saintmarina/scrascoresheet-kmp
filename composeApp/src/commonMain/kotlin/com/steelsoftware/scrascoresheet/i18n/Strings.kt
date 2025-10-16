@@ -22,4 +22,10 @@ data class Strings(
     val tripleWordScore: String,
     val blankTile: String,
     val tileBackgroundDescription: String,
+    val pass: String,
+    val endTurn: String,
+    val addWord: String,
+    val bingo: String,
+    val undo: String,
+    val endGame: String,
 )

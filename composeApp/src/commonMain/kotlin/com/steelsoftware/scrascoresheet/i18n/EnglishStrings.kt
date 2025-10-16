@@ -25,4 +25,10 @@ val EnglishStrings = Strings(
     tripleWordScore = "Triple Word Score",
     blankTile = "Blank Tile",
     tileBackgroundDescription = "Tile background",
+    pass = "Pass",
+    endTurn = "End Turn",
+    addWord = "+ Add Word",
+    bingo = "Bingo",
+    undo = "Undo",
+    endGame = "End Game",
 )

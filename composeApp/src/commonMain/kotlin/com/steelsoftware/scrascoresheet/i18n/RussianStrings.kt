@@ -33,4 +33,10 @@ val RussianStrings = Strings(
     tripleWordScore = "Тройной счёт слова",
     blankTile = "Пустая фишка",
     tileBackgroundDescription = "Фон фишки",
+    pass = "Пропустить",
+    endTurn = "Закончить ход",
+    addWord = "+ Добавить слово",
+    bingo = "Бинго",
+    undo = "Отменить" ,
+    endGame = "Закончить игру",
 )

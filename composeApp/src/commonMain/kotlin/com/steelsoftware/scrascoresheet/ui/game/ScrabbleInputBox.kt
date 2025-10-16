@@ -58,9 +58,11 @@ fun ScrabbleInputBox(
     onInputChanged: (String) -> Unit,
     onModifierApplied: (Int, ModifierType) -> Unit,
     popoverAnchor: Rect? = null,
-    setPopoverAnchor: (Rect?) -> Unit
+    setPopoverAnchor: (Rect?) -> Unit,
+    text: String,
+    setText: (String) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
+
     val focusRequester = remember { FocusRequester() }
     var hasFocus by remember { mutableStateOf(false) }
     var inputBoxBounds by remember { mutableStateOf<Rect?>(null) }
@@ -152,7 +154,7 @@ fun ScrabbleInputBox(
                     }.take(maxLetters)
 
                     if (filtered != text) {
-                        text = filtered
+                        setText(filtered)
                         onInputChanged(filtered)
                     }
                 },
@@ -240,5 +242,7 @@ fun ScrabbleInputBoxPreview() {
         onModifierApplied = { _, _ -> },
         popoverAnchor = null,
         setPopoverAnchor = { },
+        text = "HELLO",
+        setText = { },
     )
 }

@@ -31,6 +31,7 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
     val state by component.state.subscribeAsState()
 
     var popoverAnchor by remember { mutableStateOf<Rect?>(null) }
+    var text by remember { mutableStateOf("") }
 
     Column(
         Modifier
@@ -56,7 +57,20 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                     onInputChanged = {},
                     onModifierApplied = { _, _ -> },
                     popoverAnchor = popoverAnchor,
-                    setPopoverAnchor = { popoverAnchor = it }
+                    setPopoverAnchor = { popoverAnchor = it },
+                    text = text,
+                    setText = { newText -> text = newText }
+
+                )
+                ButtonControls(
+                    textInInputBox = text,
+                    isFirstTurn = true,
+                    onPass = { component.passTurn() },
+                    onEndTurn = { component.endTurn() },
+                    onAddWord = { component.addWord() },
+                    onBingo = { component.toggleBingo() },
+                    onUndo = { component.undo() },
+                    onEndGame = { component.finishGame() },
                 )
             }
         }
