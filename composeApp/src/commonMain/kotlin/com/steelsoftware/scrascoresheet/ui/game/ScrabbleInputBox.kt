@@ -9,7 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -40,9 +39,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -59,13 +58,14 @@ fun ScrabbleInputBox(
     onModifierApplied: (Int, ModifierType) -> Unit,
     popoverAnchor: Rect? = null,
     setPopoverAnchor: (Rect?) -> Unit,
+    inputBoxBounds: Rect? = null,
+    setInputBoxBounds: (Rect?) -> Unit,
     text: String,
     setText: (String) -> Unit,
 ) {
-
+    val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     var hasFocus by remember { mutableStateOf(false) }
-    var inputBoxBounds by remember { mutableStateOf<Rect?>(null) }
     val tileBoundsMap = remember { mutableStateMapOf<Int, Rect>() }
 
     val maxTilesPerRow = 8
@@ -74,12 +74,15 @@ fun ScrabbleInputBox(
     BoxWithConstraints(
         modifier = Modifier
             .onGloballyPositioned { coordinates ->
-                inputBoxBounds = coordinates.boundsInWindow()
+                setInputBoxBounds(coordinates.boundsInWindow())
             }
             .border(1.dp, Color.White, RoundedCornerShape(5.dp))
             .background(Color(0xFFE66058))
             .padding(8.dp)
-            .clickable { focusRequester.requestFocus() },
+            .clickable {
+                focusRequester.requestFocus()
+                keyboardController?.show()
+            },
     ) {
 
         val fullWidth = maxWidth
@@ -117,7 +120,7 @@ fun ScrabbleInputBox(
                                 tileSize = tileSize,
                                 modifier = Modifier
                                     .onGloballyPositioned { coordinates ->
-                                        tileBoundsMap[index] = coordinates.boundsInRoot()
+                                        tileBoundsMap[index] = coordinates.boundsInWindow()
                                     }
                                     .clickable {
                                         val bounds = tileBoundsMap[index]
@@ -184,31 +187,6 @@ fun ScrabbleInputBox(
             )
         }
     }
-    if (popoverAnchor != null && inputBoxBounds != null) {
-        Box(
-            Modifier
-                .clickable(
-                    // Click anywhere outside = dismiss
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
-                    setPopoverAnchor(null)
-                }
-        ) {
-
-            ModifierPopover(
-                inputBoxBounds,
-                tileBounds = popoverAnchor,
-                onSelect = { type -> // TODO: pass actual method
-                    val index = text.indexOfFirst { true }
-                    if (index >= 0) onModifierApplied(index, type)
-                    setPopoverAnchor(null)
-                },
-                isFirstTurn = true,
-            )
-
-        }
-    }
 }
 
 @Composable
@@ -244,5 +222,7 @@ fun ScrabbleInputBoxPreview() {
         setPopoverAnchor = { },
         text = "HELLO",
         setText = { },
+        inputBoxBounds = null,
+        setInputBoxBounds = { },
     )
 }

@@ -22,7 +22,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
@@ -35,6 +35,7 @@ import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.RussianStrings
 import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
+import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_TOP_PADDING
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
@@ -52,6 +53,7 @@ fun ModifierPopover(
     val cornerRadius = 12.dp
 
     val density = LocalDensity.current
+
     val arrowW = with(density) { arrowWidth.toPx() }
     val arrowH = with(density) { arrowHeight.toPx() }
     val radius = with(density) { cornerRadius.toPx() }
@@ -59,14 +61,7 @@ fun ModifierPopover(
     var popoverWidth by remember { mutableStateOf(0f) }
     var popoverGlobalLeft by remember { mutableStateOf(0f) }
 
-    val minOffset = 140 // for small screens (phones)
-    val maxOffset = 180 // for large screens (tablets)
-    val inputBoxHeight = inputBoxBounds.height
-
-    // Calculate a dynamic offset based on input box height, clamped between min and max
-    val dynamicYOffset = inputBoxHeight.coerceIn(minOffset.toFloat(), maxOffset.toFloat()).toInt()
-
-    val y = (inputBoxBounds.bottom - (tileBounds.top)).toInt() - dynamicYOffset
+    val y = with(density) { (tileBounds.bottom - GLOBAL_TOP_PADDING.dp.toPx()).toInt() }
     Column(
         modifier = Modifier.offset {
             IntOffset(
@@ -81,11 +76,16 @@ fun ModifierPopover(
                     val minX = inputLeft
                     val maxX = inputRight - popoverWidth
 
-                    targetX = targetX.coerceIn(minX, maxX)
+                    targetX = if (maxX < minX) {
+                        // Popover is wider than input box → center it
+                        inputLeft + (inputRight - inputLeft - popoverWidth) / 2f
+                    } else {
+                        targetX.coerceIn(minX, maxX)
+                    }
 
                     (targetX - inputLeft).toInt()
                 },
-                y = y
+                y = y,
             )
         },
         horizontalAlignment = Alignment.CenterHorizontally
@@ -95,7 +95,7 @@ fun ModifierPopover(
                 .wrapContentWidth()
                 .wrapContentHeight()
                 .onGloballyPositioned { coordinates ->
-                    val bounds = coordinates.boundsInRoot()
+                    val bounds = coordinates.boundsInWindow()
                     popoverWidth = coordinates.size.width.toFloat()
                     popoverGlobalLeft = bounds.left
                 }
@@ -155,14 +155,27 @@ fun PopoverContent(
             modifier = Modifier.padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            PopoverIcon(modifierType = ModifierType.DOUBLE_LETTER)
+            PopoverIcon(
+                modifierType = ModifierType.DOUBLE_LETTER,
+                onSelect = onSelect
+            )
             PopoverIcon(
                 modifierType = ModifierType.DOUBLE_WORD,
-                isFirstTurn = isFirstTurn
+                isFirstTurn = isFirstTurn,
+                onSelect = onSelect
             )
-            PopoverIcon(modifierType = ModifierType.TRIPLE_LETTER)
-            PopoverIcon(modifierType = ModifierType.TRIPLE_WORD)
-            PopoverIcon(modifierType = ModifierType.BLANK)
+            PopoverIcon(
+                modifierType = ModifierType.TRIPLE_LETTER,
+                onSelect = onSelect
+            )
+            PopoverIcon(
+                modifierType = ModifierType.TRIPLE_WORD,
+                onSelect = onSelect
+            )
+            PopoverIcon(
+                modifierType = ModifierType.BLANK,
+                onSelect = onSelect
+            )
         }
         if (isFirstTurn) {
             Text(

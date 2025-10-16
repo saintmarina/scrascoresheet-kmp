@@ -9,17 +9,20 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.steelsoftware.scrascoresheet.i18n.Strings
-import com.steelsoftware.scrascoresheet.ui.game.GameScreen
 import com.steelsoftware.scrascoresheet.ui.finished.FinishedScreen
+import com.steelsoftware.scrascoresheet.ui.game.GameScreen
 import com.steelsoftware.scrascoresheet.ui.splash.SplashScreen
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeScreen
+
+const val GLOBAL_TOP_PADDING = 64
 
 @Composable
 fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>) {
     Children(
         stack = root.childStack,
         animation = stackAnimation(fade()),
-        modifier = Modifier.padding(horizontal = 16.dp).padding(top = 64.dp, bottom = 16.dp)
+        modifier = Modifier.padding(horizontal = 16.dp)
+            .padding(top = GLOBAL_TOP_PADDING.dp, bottom = 16.dp)
     ) {
         when (val child = it.instance) {
             is RootComponent.Child.Splash -> SplashScreen(child.component)

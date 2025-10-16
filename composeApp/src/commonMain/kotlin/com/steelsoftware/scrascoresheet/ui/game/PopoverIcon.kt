@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
@@ -32,7 +33,9 @@ import scrascoresheet.composeapp.generated.resources.wooden_tile_background
 @Composable
 fun PopoverIcon(
     modifierType: ModifierType,
+    iconSize: Dp = 64.dp,
     isFirstTurn: Boolean = false,
+    onSelect: (ModifierType) -> Unit = { },
 ) {
     val strings = LocalLyricist.current
     val (res, color, text) = when (modifierType) {
@@ -68,7 +71,7 @@ fun PopoverIcon(
     }
     Box(
         modifier = Modifier
-            .size(64.dp)
+            .size(iconSize)
             .background(color),
     ) {
         // Background image (tile)
@@ -111,19 +114,24 @@ fun PopoverIconPreview() {
     Row {
         PopoverIcon(
             modifierType = ModifierType.DOUBLE_LETTER,
+            iconSize = 64.dp,
         )
         PopoverIcon(
             modifierType = ModifierType.DOUBLE_WORD,
+            iconSize = 64.dp,
             isFirstTurn = true,
         )
         PopoverIcon(
             modifierType = ModifierType.TRIPLE_LETTER,
+            iconSize = 64.dp,
         )
         PopoverIcon(
             modifierType = ModifierType.TRIPLE_WORD,
+            iconSize = 64.dp,
         )
         PopoverIcon(
             modifierType = ModifierType.BLANK,
+            iconSize = 64.dp,
         )
     }
 }

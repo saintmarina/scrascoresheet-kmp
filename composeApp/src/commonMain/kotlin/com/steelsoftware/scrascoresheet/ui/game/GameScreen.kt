@@ -2,6 +2,7 @@ package com.steelsoftware.scrascoresheet.ui.game
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,48 +32,79 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
     val state by component.state.subscribeAsState()
 
     var popoverAnchor by remember { mutableStateOf<Rect?>(null) }
+    var inputBoxBounds by remember { mutableStateOf<Rect?>(null) }
     var text by remember { mutableStateOf("") }
-
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                popoverAnchor = null
+    Box(Modifier.fillMaxSize()) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    popoverAnchor = null
+                }
+        ) {
+            Text("Game in progress")
+            Spacer(Modifier.height(16.dp))
+            Button(onClick = { component.finishGame() }) {
+                Text("Finish Game")
             }
-    ) {
-        Text("Game in progress")
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = { component.finishGame() }) {
-            Text("Finish Game")
-        }
-        when (val currentState = state) {
-            is GameState.Game -> {
-                ScrabbleInputBox(
-                    language = lyricist.languageTag,
-                    onInputChanged = {},
-                    onModifierApplied = { _, _ -> },
-                    popoverAnchor = popoverAnchor,
-                    setPopoverAnchor = { popoverAnchor = it },
-                    text = text,
-                    setText = { newText -> text = newText }
+            when (val currentState = state) {
+                is GameState.Game -> {
+                    ScrabbleInputBox(
+                        language = lyricist.languageTag,
+                        onInputChanged = {},
+                        onModifierApplied = { _, _ -> },
+                        popoverAnchor = popoverAnchor,
+                        setPopoverAnchor = { popoverAnchor = it },
+                        inputBoxBounds = inputBoxBounds,
+                        setInputBoxBounds = { inputBoxBounds = it },
+                        text = text,
+                        setText = { newText -> text = newText }
 
-                )
-                ButtonControls(
-                    textInInputBox = text,
+                    )
+                    ButtonControls(
+                        textInInputBox = text,
+                        isFirstTurn = true,
+                        onPass = { component.passTurn() },
+                        onEndTurn = { component.endTurn() },
+                        onAddWord = { component.addWord() },
+                        onBingo = { component.toggleBingo() },
+                        onUndo = { component.undo() },
+                        onEndGame = { component.finishGame() },
+                    )
+
+                }
+            }
+        }
+        if (popoverAnchor != null && inputBoxBounds != null) {
+            Box(
+                Modifier
+                    .clickable(
+                        // Click anywhere outside = dismiss
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        popoverAnchor = null
+                    }
+            ) {
+
+                ModifierPopover(
+                    inputBoxBounds,
+                    tileBounds = popoverAnchor,
+                    onSelect = { type -> // TODO: pass actual method
+                        val index = text.indexOfFirst { true }
+                        if (index >= 0) component.onModifierApplied(index, type)
+                        popoverAnchor = null
+                    },
                     isFirstTurn = true,
-                    onPass = { component.passTurn() },
-                    onEndTurn = { component.endTurn() },
-                    onAddWord = { component.addWord() },
-                    onBingo = { component.toggleBingo() },
-                    onUndo = { component.undo() },
-                    onEndGame = { component.finishGame() },
                 )
+
             }
         }
     }
+
 }
