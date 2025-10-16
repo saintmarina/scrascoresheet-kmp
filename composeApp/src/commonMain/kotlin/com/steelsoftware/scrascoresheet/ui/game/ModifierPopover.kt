@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.ProvideStrings
@@ -35,6 +36,7 @@ import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.RussianStrings
 import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
+import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_TOP_PADDING
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -74,15 +76,9 @@ fun ModifierPopover(
                     val anchorCenterX = (tileBounds.left + tileBounds.right) / 2f
                     var targetX = anchorCenterX - popoverHalf
                     val minX = inputLeft
-                    val maxX = inputRight - popoverWidth
+                    val maxX = inputRight - popoverWidth + (GLOBAL_SIDE_PADDING * 2).dp.toPx()
 
-                    targetX = if (maxX < minX) {
-                        // Popover is wider than input box → center it
-                        inputLeft + (inputRight - inputLeft - popoverWidth) / 2f
-                    } else {
-                        targetX.coerceIn(minX, maxX)
-                    }
-
+                    targetX = targetX.coerceIn(minX, maxX)
                     (targetX - inputLeft).toInt()
                 },
                 y = y,
@@ -181,8 +177,8 @@ fun PopoverContent(
             Text(
                 text = strings.pressOnTheStar,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 4.dp)
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
             )
         }
     }

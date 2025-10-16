@@ -15,6 +15,7 @@ import com.steelsoftware.scrascoresheet.ui.splash.SplashScreen
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeScreen
 
 const val GLOBAL_TOP_PADDING = 64
+const val GLOBAL_SIDE_PADDING = 16
 
 @Composable
 fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>) {
