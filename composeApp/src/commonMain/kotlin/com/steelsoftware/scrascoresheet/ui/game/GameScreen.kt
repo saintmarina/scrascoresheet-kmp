@@ -1,5 +1,6 @@
 package com.steelsoftware.scrascoresheet.ui.game
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -17,8 +18,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -26,6 +29,10 @@ import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Strings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
+import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
+import org.jetbrains.compose.resources.painterResource
+import scrascoresheet.composeapp.generated.resources.Res
+import scrascoresheet.composeapp.generated.resources.logo
 
 
 @Composable
@@ -44,7 +51,6 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(16.dp)
                 .verticalScroll(rememberScrollState())
                 .clickable(
                     indication = null,
@@ -53,11 +59,15 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                     popoverAnchor = null
                 }
         ) {
-            Text("Game in progress")
-            Spacer(Modifier.height(16.dp))
-            Button(onClick = { component.finishGame() }) {
-                Text("Finish Game")
-            }
+            Image(
+                painter = painterResource(Res.drawable.logo),
+                contentDescription = "",
+                modifier = Modifier.padding(horizontal = 80.dp)
+                    .padding(bottom = GLOBAL_SIDE_PADDING.dp),
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillWidth,
+            )
+
             when (val currentState = state) {
                 is GameState.Game -> {
                     ScrabbleInputBox(
@@ -132,6 +142,11 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                     },
                     isFirstTurn = true,
                 )
+            }
+            Text("Game in progress")
+            Spacer(Modifier.height(16.dp))
+            Button(onClick = { component.finishGame() }) {
+                Text("Finish Game")
             }
         }
     }
