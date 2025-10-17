@@ -24,6 +24,8 @@ import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Strings
+import com.steelsoftware.scrascoresheet.logic.ModifierType
+import com.steelsoftware.scrascoresheet.logic.Word
 
 
 @Composable
@@ -33,7 +35,11 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
 
     var popoverAnchor by remember { mutableStateOf<Rect?>(null) }
     var inputBoxBounds by remember { mutableStateOf<Rect?>(null) }
-    var text by remember { mutableStateOf("") }
+    var currentWord by remember {
+        mutableStateOf(Word("", emptyList(), 0))
+    }
+    var selectedLetterTileIndex by remember { mutableStateOf<Int?>(null) }
+
     Box(Modifier.fillMaxSize()) {
         Column(
             Modifier
@@ -57,23 +63,30 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                     ScrabbleInputBox(
                         language = lyricist.languageTag,
                         onInputChanged = {},
-                        onModifierApplied = { _, _ -> },
                         popoverAnchor = popoverAnchor,
                         setPopoverAnchor = { popoverAnchor = it },
-                        inputBoxBounds = inputBoxBounds,
                         setInputBoxBounds = { inputBoxBounds = it },
-                        text = text,
-                        setText = { newText -> text = newText }
-
+                        currentWord = currentWord,
+                        setCurrentWord = { newWord -> currentWord = newWord },
+                        setSelectedLetterTileIndex = { selectedLetterTileIndex = it },
+                        calculateScrabbleScore = component::calculateScrabbleScore,
                     )
-                    ButtonControls(
-                        textInInputBox = text,
-                        isFirstTurn = true,
-                        onPass = { component.passTurn() },
-                        onEndTurn = { component.endTurn() },
-                        onAddWord = { component.addWord() },
+                    InGameButtonControls(
+                        currentGameState = currentState,
+                        currentWord = currentWord,
+                        onEndTurn = {
+                            component.endTurn(currentWord)
+                            currentWord = Word("", emptyList(), 0)
+                        },
+                        onAddWord = {
+                            component.addWord(currentWord)
+                            currentWord = Word("", emptyList(), 0)
+                        },
                         onBingo = { component.toggleBingo() },
-                        onUndo = { component.undo() },
+                        onUndo = {
+                            component.undo()
+                            currentWord = Word("", emptyList(), 0)
+                        },
                         onEndGame = { component.finishGame() },
                     )
 
@@ -95,14 +108,30 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                 ModifierPopover(
                     inputBoxBounds,
                     tileBounds = popoverAnchor,
-                    onSelect = { type -> // TODO: pass actual method
-                        val index = text.indexOfFirst { true }
-                        if (index >= 0) component.onModifierApplied(index, type)
+                    onSelect = { type ->
+                        selectedLetterTileIndex?.let { index ->
+                            val modifiers = currentWord.modifiers.toMutableList()
+
+                            if (index in modifiers.indices) {
+                                modifiers[index] =
+                                    if (modifiers[index] == type) ModifierType.BLANK else type
+                            }
+
+                            val newWord = currentWord.copy(
+                                modifiers = modifiers,
+                                score = component.calculateScrabbleScore(
+                                    word = currentWord.value,
+                                    modifiers = modifiers,
+                                    language = lyricist.languageTag,
+                                )
+                            )
+
+                            currentWord = newWord
+                        }
                         popoverAnchor = null
                     },
                     isFirstTurn = true,
                 )
-
             }
         }
     }

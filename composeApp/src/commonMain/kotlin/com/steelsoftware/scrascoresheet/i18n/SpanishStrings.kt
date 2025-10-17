@@ -39,4 +39,5 @@ val SpanishStrings = Strings(
     bingo = "Bingo",
     undo = "Deshacer",
     endGame = "Terminar partida",
+    pressOnALetterInstruction = "↑ Pulsa una letra",
 )

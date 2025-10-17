@@ -28,7 +28,7 @@ import scrascoresheet.composeapp.generated.resources.wooden_tile_background
 fun LetterTile(
     letter: String,
     score: Int,
-    modifierType: ModifierType = ModifierType.BLANK,
+    modifierType: ModifierType,
     tileSize: Dp,
     modifier: Modifier = Modifier,
 ) {

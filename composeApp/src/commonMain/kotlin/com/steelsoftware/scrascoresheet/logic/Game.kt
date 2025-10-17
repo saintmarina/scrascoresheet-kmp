@@ -155,7 +155,13 @@ data class Game(
 
             turns.forEachIndexed { tIdx, turn ->
                 if (turn.words.isEmpty()) {
-                    println("XXX   ➤ Turn ${tIdx + 1}: – (empty turn)")
+                    println(
+                        "XXX   ➤ Turn ${tIdx + 1}: – (empty turn, isPassed - ${
+                            turn.isPassed(
+                                this
+                            )
+                        })"
+                    )
                 } else {
                     val wordsText = turn.words.joinToString { w ->
                         val mods = w.modifiers.joinToString(", ") { it.name }

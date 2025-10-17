@@ -2,6 +2,7 @@ package com.steelsoftware.scrascoresheet.ui.game
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +36,7 @@ fun PopoverIcon(
     modifierType: ModifierType,
     iconSize: Dp = 64.dp,
     isFirstTurn: Boolean = false,
-    onSelect: (ModifierType) -> Unit = { },
+    onSelect: (ModifierType) -> Unit,
 ) {
     val strings = LocalLyricist.current
     val (res, color, text) = when (modifierType) {
@@ -72,7 +73,10 @@ fun PopoverIcon(
     Box(
         modifier = Modifier
             .size(iconSize)
-            .background(color),
+            .background(color)
+            .clickable {
+                onSelect(modifierType)
+            },
     ) {
         // Background image (tile)
         Image(
@@ -115,23 +119,28 @@ fun PopoverIconPreview() {
         PopoverIcon(
             modifierType = ModifierType.DOUBLE_LETTER,
             iconSize = 64.dp,
+            onSelect = {},
         )
         PopoverIcon(
             modifierType = ModifierType.DOUBLE_WORD,
             iconSize = 64.dp,
             isFirstTurn = true,
+            onSelect = {},
         )
         PopoverIcon(
             modifierType = ModifierType.TRIPLE_LETTER,
             iconSize = 64.dp,
+            onSelect = {},
         )
         PopoverIcon(
             modifierType = ModifierType.TRIPLE_WORD,
             iconSize = 64.dp,
+            onSelect = {},
         )
         PopoverIcon(
             modifierType = ModifierType.BLANK,
             iconSize = 64.dp,
+            onSelect = {},
         )
     }
 }

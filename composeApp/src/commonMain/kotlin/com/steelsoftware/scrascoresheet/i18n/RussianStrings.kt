@@ -37,6 +37,7 @@ val RussianStrings = Strings(
     endTurn = "Закончить ход",
     addWord = "+ Добавить слово",
     bingo = "Бинго",
-    undo = "Отменить" ,
+    undo = "Отменить",
     endGame = "Закончить игру",
+    pressOnALetterInstruction = "↑ Нажмите на букву",
 )

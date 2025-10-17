@@ -31,4 +31,5 @@ val EnglishStrings = Strings(
     bingo = "Bingo",
     undo = "Undo",
     endGame = "End Game",
+    pressOnALetterInstruction = "↑ Press on a letter",
 )

@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.logic.ModifierType
+import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.logic.isLetterAllowed
 import com.steelsoftware.scrascoresheet.logic.scoreListsMap
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -55,13 +56,13 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ScrabbleInputBox(
     language: String,
     onInputChanged: (String) -> Unit,
-    onModifierApplied: (Int, ModifierType) -> Unit,
     popoverAnchor: Rect? = null,
     setPopoverAnchor: (Rect?) -> Unit,
-    inputBoxBounds: Rect? = null,
     setInputBoxBounds: (Rect?) -> Unit,
-    text: String,
-    setText: (String) -> Unit,
+    currentWord: Word,
+    setCurrentWord: (Word) -> Unit,
+    setSelectedLetterTileIndex: (Int?) -> Unit,
+    calculateScrabbleScore: (String, List<ModifierType>, String) -> Int,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
@@ -88,7 +89,9 @@ fun ScrabbleInputBox(
         val fullWidth = maxWidth
         val boxWidth = if (fullWidth > 550.dp) 550.dp else fullWidth
         val tileSize = (boxWidth / maxTilesPerRow) - 4.dp
-        val rows = if (text.isEmpty()) listOf("") else text.chunked(maxTilesPerRow)
+        val rows = if (currentWord.value.isEmpty()) listOf("") else currentWord.value.chunked(
+            maxTilesPerRow
+        )
 
         Box(
             modifier = Modifier
@@ -113,16 +116,19 @@ fun ScrabbleInputBox(
                             val letter = ch.toString()
                             val score = scoreListsMap[language]?.get(ch.lowercaseChar()) ?: 0
 
+                            val primaryModifier =
+                                currentWord.modifiers.getOrNull(index) ?: ModifierType.BLANK
                             LetterTile(
                                 letter = letter,
                                 score = score,
-                                modifierType = ModifierType.BLANK, // TODO: Make dynamic based on game state
+                                modifierType = primaryModifier,
                                 tileSize = tileSize,
                                 modifier = Modifier
                                     .onGloballyPositioned { coordinates ->
                                         tileBoundsMap[index] = coordinates.boundsInWindow()
                                     }
                                     .clickable {
+                                        setSelectedLetterTileIndex(index)
                                         val bounds = tileBoundsMap[index]
                                         if (bounds != null) {
                                             // Toggle popover open/close
@@ -147,7 +153,7 @@ fun ScrabbleInputBox(
 
             // Hidden real input field for typing
             BasicTextField(
-                value = text,
+                value = currentWord.value,
                 onValueChange = { input ->
                     setPopoverAnchor(null)
                     val filtered = buildString {
@@ -156,8 +162,31 @@ fun ScrabbleInputBox(
                         }
                     }.take(maxLetters)
 
-                    if (filtered != text) {
-                        setText(filtered)
+                    if (filtered != currentWord.value) {
+                        val oldModifiers = currentWord.modifiers.toMutableList()
+                        val newModifiers = mutableListOf<ModifierType>()
+
+                        // For every character in the new text, either reuse an existing modifier or create NONE
+                        for (i in filtered.indices) {
+                            newModifiers += oldModifiers.getOrNull(i) ?: ModifierType.BLANK
+                        }
+
+                        // If the new text is shorter, drop trailing modifiers
+                        val trimmedModifiers = newModifiers.take(filtered.length)
+
+                        // Recalculate the word’s score
+                        val newScore = calculateScrabbleScore(filtered, trimmedModifiers, language)
+                        println("XXX new score = $newScore")
+
+                        // Update the current word state
+                        setCurrentWord(
+                            currentWord.copy(
+                                value = filtered,
+                                modifiers = trimmedModifiers,
+                                score = newScore
+                            )
+                        )
+
                         onInputChanged(filtered)
                     }
                 },
@@ -217,12 +246,12 @@ fun ScrabbleInputBoxPreview() {
     ScrabbleInputBox(
         language = Locales.ENGLISH,
         onInputChanged = {},
-        onModifierApplied = { _, _ -> },
         popoverAnchor = null,
         setPopoverAnchor = { },
-        text = "HELLO",
-        setText = { },
-        inputBoxBounds = null,
+        currentWord = Word("HELLO", emptyList(), 0),
+        setCurrentWord = { },
         setInputBoxBounds = { },
+        calculateScrabbleScore = { _, _, _ -> 8 },
+        setSelectedLetterTileIndex = {},
     )
 }

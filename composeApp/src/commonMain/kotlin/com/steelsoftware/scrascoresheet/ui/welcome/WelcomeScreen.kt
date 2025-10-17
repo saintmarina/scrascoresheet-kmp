@@ -27,9 +27,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.ResumeGame
-import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.Loading
-import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.NewGame
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.Lyricist
@@ -37,6 +34,9 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.Strings
+import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.Loading
+import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.NewGame
+import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.ResumeGame
 
 @Composable
 fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
@@ -53,11 +53,14 @@ fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
         Spacer(Modifier.height(16.dp))
 
         when (val currentState = state) {
-            is Loading -> { /*Left intentionally blank*/ }
+            is Loading -> { /*Left intentionally blank*/
+            }
+
             is ResumeGame -> ResumeGameWidget(
                 restartGame = component::restartGame,
                 resumeGame = component::resumeGame,
             )
+
             is NewGame -> StartNewGameWidget(
                 initialNames = currentState.playerNames,
                 onStartGame = component::startGame,
@@ -81,18 +84,24 @@ private fun ResumeGameWidget(
 ) {
     val strings = LocalLyricist.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(strings.gameInProgressTitleWelcomeScreen, style = MaterialTheme.typography.headlineMedium)
+        Text(
+            strings.gameInProgressTitleWelcomeScreen,
+            style = MaterialTheme.typography.headlineMedium
+        )
         Spacer(Modifier.height(24.dp))
-        Text(strings.wouldYouLikeToResumeTitleWelcomeScreen, style = MaterialTheme.typography.headlineMedium)
+        Text(
+            strings.wouldYouLikeToResumeTitleWelcomeScreen,
+            style = MaterialTheme.typography.headlineMedium
+        )
         Spacer(Modifier.height(24.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            OutlinedButton(onClick = { restartGame() }) {
+            OutlinedButton(onClick = { restartGame() }, shape = MaterialTheme.shapes.medium) {
                 Text(strings.noButton)
             }
-            Button(onClick = { resumeGame() }) {
+            Button(onClick = { resumeGame() }, shape = MaterialTheme.shapes.medium) {
                 Text(strings.yesButton)
             }
         }
@@ -115,7 +124,10 @@ private fun StartNewGameWidget(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(strings.appInstructionsForWelcomeScreen, style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(24.dp))
-        Text(strings.appSelectScoringLanguageWelcomeScreen, style = MaterialTheme.typography.bodyLarge)
+        Text(
+            strings.appSelectScoringLanguageWelcomeScreen,
+            style = MaterialTheme.typography.bodyLarge
+        )
         Spacer(Modifier.height(8.dp))
         LanguageDropdown(lyricist)
     }
@@ -128,7 +140,7 @@ private fun StartNewGameWidget(
                 value = playerNames[i],
                 onValueChange = { newName ->
                     playerNames = playerNames.toMutableList().also { it[i] = newName }
-                                },
+                },
                 placeholder = { Text(strings.player + "${i + 1}") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -143,7 +155,8 @@ private fun StartNewGameWidget(
         .filter { it.isNotEmpty() }
     Button(
         onClick = { onStartGame(typedNames) },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
     ) {
         Text(strings.startButton)
     }

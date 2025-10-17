@@ -28,4 +28,5 @@ data class Strings(
     val bingo: String,
     val undo: String,
     val endGame: String,
+    val pressOnALetterInstruction: String,
 )

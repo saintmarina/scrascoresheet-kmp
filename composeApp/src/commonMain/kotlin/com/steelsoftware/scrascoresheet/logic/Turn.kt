@@ -15,10 +15,10 @@ data class Turn(
     fun isEmpty(): Boolean = words.isEmpty()
 
     fun isPassed(game: Game): Boolean =
-        isEmpty() && this != game.getCurrentTurn()
+        isEmpty() && this !== game.getCurrentTurn()
 
     fun isComplete(game: Game): Boolean =
-        this != game.getCurrentTurn()
+        this !== game.getCurrentTurn()
 
     val score: Int
         get() {
