@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
+import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.logic.Game
 import com.steelsoftware.scrascoresheet.logic.Turn
 import com.steelsoftware.scrascoresheet.logic.Word
@@ -39,6 +40,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ScoreGrid(
     game: Game,
 ) {
+    val strings = LocalLyricist.current
     val playerNames = game.playerNames
     val numRows = if (game.isGameOver)
         (game.leftOversTurnNumber ?: 0) + 1
@@ -72,7 +74,7 @@ fun ScoreGrid(
         ) {
             Box(Modifier.padding(horizontal = 8.dp)) {
                 Text(
-                    text = "Names\n(Total)",
+                    text = strings.gridHeaderNames,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
@@ -83,16 +85,16 @@ fun ScoreGrid(
                 )
             }
             TableDivider()
-            TableCell("Player Turn", Modifier.weight(1f), bold = true)
+            TableCell(strings.gridHeaderPlayerTurn, Modifier.weight(1f), bold = true)
         }
 
 
         // Moves and player turns
         repeat(numRows) { moveIndex ->
             val text = if (game.isMoveInGameOver(moveIndex))
-                "Leftovers Accounting"
+                strings.gridLeftoverAccounting
             else
-                "Move ${moveIndex + 1}"
+                "${strings.gridMove} ${moveIndex + 1}"
             // Move header
             MoveNumberCell(text = text, isFirstTurn = moveIndex == 0)
 
@@ -101,8 +103,8 @@ fun ScoreGrid(
                 val turn = turns.getOrNull(moveIndex)
                 if (turn != null) {
                     val totalScore = totals[playerIndex].getOrNull(moveIndex) ?: 0
-                    val turnWords = if (turn.words.isEmpty()) "PASS"
-                    else turn.words.joinToString("+") { it.value }
+                    val turnWords = if (turn.words.isEmpty()) strings.gridSubmitAWordOrPass
+                    else turn.words.joinToString("+") { it.value } // TODO: add scrabble tiles
 
                     Row(
                         modifier = Modifier

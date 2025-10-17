@@ -32,4 +32,9 @@ val EnglishStrings = Strings(
     undo = "Undo",
     endGame = "End Game",
     pressOnALetterInstruction = "↑ Press on a letter",
+    gridHeaderNames = "Names\n(Total)",
+    gridHeaderPlayerTurn = "Player Turn",
+    gridLeftoverAccounting = "Leftovers Accounting",
+    gridMove = "Move",
+    gridSubmitAWordOrPass = "Submit a word or pass",
 )

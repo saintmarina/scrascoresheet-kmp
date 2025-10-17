@@ -29,4 +29,9 @@ data class Strings(
     val undo: String,
     val endGame: String,
     val pressOnALetterInstruction: String,
+    val gridHeaderNames: String,
+    val gridHeaderPlayerTurn: String,
+    val gridLeftoverAccounting: String,
+    val gridMove: String,
+    val gridSubmitAWordOrPass: String,
 )

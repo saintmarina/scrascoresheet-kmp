@@ -40,4 +40,9 @@ val RussianStrings = Strings(
     undo = "Отменить",
     endGame = "Закончить игру",
     pressOnALetterInstruction = "↑ Нажмите на букву",
+    gridHeaderNames = "Имена\n(Всего)",
+    gridHeaderPlayerTurn = "Ход игрока",
+    gridLeftoverAccounting = "Подсчёт оставшихся фишек",
+    gridMove = "Ход",
+    gridSubmitAWordOrPass = "Введите слово или пропустите ход",
 )

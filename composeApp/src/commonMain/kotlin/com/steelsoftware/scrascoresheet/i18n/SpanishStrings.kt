@@ -40,4 +40,9 @@ val SpanishStrings = Strings(
     undo = "Deshacer",
     endGame = "Terminar partida",
     pressOnALetterInstruction = "↑ Pulsa una letra",
+    gridHeaderNames = "Nombres\n(Total)",
+    gridHeaderPlayerTurn = "Turno del jugador",
+    gridLeftoverAccounting = "Cálculo de fichas restantes",
+    gridMove = "Movimiento",
+    gridSubmitAWordOrPass = "Introduce una palabra o pasa el turno",
 )
