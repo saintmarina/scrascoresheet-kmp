@@ -15,7 +15,7 @@ class GameComponent(
     private val game: GameObj,
     private val onGameFinished: () -> Unit
 ) : ComponentContext by componentContext {
-    private val _state = MutableValue<GameState>(Game(game, listOf(game)))
+    private val _state = MutableValue<GameState>(Game(game, emptyList()))
     val state: Value<GameState> = _state
 
     fun saveGame() {
@@ -96,7 +96,21 @@ class GameComponent(
         // TODO: Implement toggleBingo logic
     }
 
+    /**
+     * Reverts the game state to the previous turn.
+     *
+     * If a previous state exists in [gameHistory], it restores the most recent
+     * game snapshot and removes it from history. Has no effect if there is no
+     * previous game recorded.
+     */
     fun undo() {
-        // TODO: Implement undo logic
+        val currentState = _state.value
+        if (currentState !is Game) return
+
+        if (currentState.gameHistory.isNotEmpty()) {
+            val previousHistory = currentState.gameHistory.dropLast(1)
+            val previousGame = currentState.gameHistory.last()
+            _state.value = Game(previousGame, previousHistory)
+        }
     }
 }
