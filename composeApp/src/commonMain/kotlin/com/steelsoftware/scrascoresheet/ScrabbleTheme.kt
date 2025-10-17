@@ -11,6 +11,8 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -93,33 +95,68 @@ private val ScrabbleShapes = Shapes(
     large = RoundedCornerShape(8.dp)
 )
 
+data class ExtendedColors(
+    val deepRed: Color,
+    val deepRed30: Color,
+    val deepRed40: Color,
+    val offWhite: Color,
+    val textShadow: Color
+)
+
+// default/fallback values
+val LocalExtendedColors = staticCompositionLocalOf {
+    ExtendedColors(
+        deepRed = Color(0xFF622528),
+        deepRed30 = Color(0x4D622528), // rgba(98,37,40,0.3)
+        deepRed40 = Color(0x66622528), // rgba(98,37,40,0.4)
+        offWhite = Color(0xFFEEEEEE),
+        textShadow = Color.Black.copy(alpha = 0.8f)
+    )
+}
+
+object ScrabbleTheme {
+    val colors: ExtendedColors
+        @Composable
+        get() = LocalExtendedColors.current
+}
+
 @Composable
 fun ScrabbleTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val extendedColors = ExtendedColors(
+        deepRed = Color(0xFF622528),
+        deepRed30 = Color(0x4D622528), // 30% alpha
+        deepRed40 = Color(0x66622528), // 40% alpha
+        offWhite = Color(0xFFEEEEEE).copy(alpha = 0.85f),
+        textShadow = Color.Black.copy(alpha = 0.8f)
+    )
+
     MaterialTheme(
         colorScheme = ScrabbleColorScheme,
         typography = ScrabbleTypography,
         shapes = ScrabbleShapes
     ) {
-        // Box with the radial gradient for the app background color
-        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-            val centerX = constraints.maxWidth / 2f
-            val centerY = constraints.maxHeight / 2f
+        CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
+            // Box with the radial gradient for the app background color
+            BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                val centerX = constraints.maxWidth / 2f
+                val centerY = constraints.maxHeight / 2f
 
-            val gradient = Brush.radialGradient(
-                colors = listOf(RedCenter, RedEdge),
-                center = Offset(centerX, centerY),
-                radius = maxOf(centerX, centerY) * 1.3f
-            )
+                val gradient = Brush.radialGradient(
+                    colors = listOf(RedCenter, RedEdge),
+                    center = Offset(centerX, centerY),
+                    radius = maxOf(centerX, centerY) * 1.3f
+                )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(brush = gradient)
-            ) {
-                content()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(brush = gradient)
+                ) {
+                    content()
+                }
             }
         }
     }
