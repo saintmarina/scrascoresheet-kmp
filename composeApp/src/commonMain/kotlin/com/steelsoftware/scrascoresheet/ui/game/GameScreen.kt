@@ -70,6 +70,7 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
 
             when (val currentState = state) {
                 is GameState.Game -> {
+                    ScoreGrid(game = currentState.game)
                     ScrabbleInputBox(
                         language = lyricist.languageTag,
                         onInputChanged = {},
