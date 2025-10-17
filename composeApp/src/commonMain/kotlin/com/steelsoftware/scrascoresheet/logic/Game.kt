@@ -39,12 +39,24 @@ data class Game(
     }
 
     fun endTurn(): Game {
-        val filled = if (getCurrentTurn().isEmpty()) this else setTurn(currentPlayerIndex, getCurrentTurnNumber(), getCurrentTurn())
-        val nextPlayer = (currentPlayerIndex + 1) % playersTurns.size
-        val newPlayers = filled.playersTurns.mapIndexed { idx, turns ->
-            if (idx == nextPlayer) turns + Turn.Companion.empty() else turns
+        val filledGame = if (getCurrentTurn().isEmpty()) {
+            setTurn(currentPlayerIndex, getCurrentTurnNumber(), Turn.empty())
+        } else {
+            this
         }
-        return Game(playerNames, newPlayers, nextPlayer, leftOversTurnNumber)
+
+        val nextPlayerIndex = (currentPlayerIndex + 1) % playersTurns.size
+
+        val updatedPlayersTurns = filledGame.playersTurns.mapIndexed { index, turns ->
+            if (index == nextPlayerIndex) turns + Turn.empty() else turns
+        }
+
+        return Game(
+            playerNames = playerNames,
+            playersTurns = updatedPlayersTurns,
+            currentPlayerIndex = nextPlayerIndex,
+            leftOversTurnNumber = leftOversTurnNumber
+        )
     }
 
     fun setBingo(value: Boolean): Game {
