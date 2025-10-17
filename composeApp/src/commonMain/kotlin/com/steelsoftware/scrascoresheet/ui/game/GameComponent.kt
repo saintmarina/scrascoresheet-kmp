@@ -88,8 +88,17 @@ class GameComponent(
         )
     }
 
-    fun addWord() {
-        // TODO: Implement addWord logic
+    /**
+     * Calls [Game.addWord] and saves the new GameState
+     */
+    fun addWord(currentWord: Word) {
+        val currentState = _state.value
+        if (currentState !is Game) return
+        val game = currentState.game
+
+        // Add a new word to current turn
+        val newGame = game.addWord(currentWord)
+        _state.value = Game(newGame, currentState.gameHistory + game)
     }
 
     fun toggleBingo() {
