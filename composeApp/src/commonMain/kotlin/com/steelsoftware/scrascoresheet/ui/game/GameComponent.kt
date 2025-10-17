@@ -54,12 +54,9 @@ class GameComponent(
         return result
     }
 
-    fun passTurn() {
-        // TODO: Implement pass turn logic
-    }
-
     /**
      * Ends the current player's turn and advances the game to the next player.
+     * Also used to PASS turn.
      *
      * If the provided [currentWord] is not empty, it is first added to the
      * current turn using [Game.addWord]. The game state is then advanced
