@@ -1,7 +1,6 @@
 package com.steelsoftware.scrascoresheet.logic
 
 import kotlinx.serialization.Serializable
-import kotlin.collections.plus
 import kotlin.math.abs
 
 @Serializable
@@ -18,10 +17,13 @@ data class Game(
                 playerNames.size < 2 -> 2
                 else -> playerNames.size.coerceAtMost(4)
             }
-            val firstTurn = Turn.Companion.empty()
-            val players = List(numberOfPlayers) { listOf(firstTurn) }
+
+            val players = List(numberOfPlayers) { index ->
+                if (index == 0) listOf(Turn.empty()) else emptyList()
+            }
+
             val names = playerNames.take(numberOfPlayers)
-            return Game(names,players, 0)
+            return Game(names, players, 0)
         }
 
         fun fromPlain(obj: Game) = Game(
@@ -140,6 +142,33 @@ data class Game(
             upToMove != null -> totals.getOrElse(upToMove) { 0 }
             totals.isEmpty() -> 0
             else -> totals.last()
+        }
+    }
+
+    fun prettyPrint() {
+        println("XXX 🎯 Current player index: $currentPlayerIndex")
+        println("XXX 🏁 Leftovers turn number: ${leftOversTurnNumber ?: "N/A"}")
+
+        playerNames.forEachIndexed { idx, name ->
+            println("XXX👤 Player ${idx + 1}: ${name.ifBlank { "(Unnamed)" }}")
+            val turns = playersTurns.getOrNull(idx).orEmpty()
+
+            turns.forEachIndexed { tIdx, turn ->
+                if (turn.words.isEmpty()) {
+                    println("XXX   ➤ Turn ${tIdx + 1}: – (empty turn)")
+                } else {
+                    val wordsText = turn.words.joinToString { w ->
+                        val mods = w.modifiers.joinToString(", ") { it.name }
+                        "${w.value} (score=${w.score}, mods=[$mods])"
+                    }
+                    val bingoText = if (turn.bingo) " 🎉 BINGO!" else ""
+                    println("XXX   ➤ Turn ${tIdx + 1}: $wordsText | total=${turn.score}$bingoText")
+                }
+            }
+
+            val totalScore = turns.sumOf { it.score }
+            println("XXX   🧮 Total Score: $totalScore")
+            println("XXX------------------------------------")
         }
     }
 }

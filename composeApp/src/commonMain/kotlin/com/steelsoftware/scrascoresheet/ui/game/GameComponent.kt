@@ -19,8 +19,7 @@ class GameComponent(
     val state: Value<GameState> = _state
 
     fun saveGame() {
-        // Implement game saving logic here
-
+        // TODO: Implement game saving logic here
     }
 
     fun finishGame() = onGameFinished()
@@ -98,8 +97,21 @@ class GameComponent(
         _state.value = Game(newGame, currentState.gameHistory + game)
     }
 
+    /**
+     * Toggles the bingo flag for the current player's turn.
+     *
+     * If bingo is enabled, a 50-point bonus will later apply
+     * to this turn’s total score. The updated game state is
+     * stored along with the previous snapshot for undo support.
+     */
     fun toggleBingo() {
-        // TODO: Implement toggleBingo logic
+        val currentState = _state.value
+        if (currentState !is Game) return
+        val game = currentState.game
+
+        val isBingo = !game.getCurrentTurn().bingo
+        val newGame = game.setBingo(isBingo)
+        _state.value = Game(newGame, currentState.gameHistory + game)
     }
 
     /**
