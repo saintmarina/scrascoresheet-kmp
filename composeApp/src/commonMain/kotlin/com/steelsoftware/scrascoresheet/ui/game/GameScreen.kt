@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
+import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
@@ -102,6 +104,11 @@ fun GameScreen(component: GameComponent) {
 
                 }
             }
+            Instructions()
+            Spacer(Modifier.height(16.dp))
+            Button(onClick = { component.finishGame() }) {
+                Text("Finish Game")
+            }
         }
         if (popoverAnchor != null && inputBoxBounds != null) {
             Box(
@@ -143,12 +150,13 @@ fun GameScreen(component: GameComponent) {
                     isFirstTurn = true,
                 )
             }
-            Text("Game in progress")
-            Spacer(Modifier.height(16.dp))
-            Button(onClick = { component.finishGame() }) {
-                Text("Finish Game")
-            }
+
         }
     }
+}
 
+@Composable
+fun Instructions() {
+    Text(text = strings.instructionTitleGameScreen, style = MaterialTheme.typography.headlineLarge)
+    Text(text = strings.instructionsTextGameScreen)
 }

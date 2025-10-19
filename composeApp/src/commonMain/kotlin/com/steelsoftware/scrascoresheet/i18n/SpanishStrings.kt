@@ -45,4 +45,14 @@ val SpanishStrings = Strings(
     gridLeftoverAccounting = "Cálculo de fichas restantes",
     gridMove = "Movimiento",
     gridSubmitAWordOrPass = "Introduce una palabra o pasa el turno",
+    instructionTitleGameScreen = "Instrucciones:",
+    instructionsTextGameScreen =
+        "• Para enviar una palabra, escríbela en el cuadro de entrada (el rectángulo blanco sobre los botones) y pulsa FIN DE TURNO.\n" +
+                "• Si la palabra usa una ficha en una casilla de premio (por ejemplo, palabra doble), toca esa ficha en la ventana de entrada y selecciona la opción correspondiente.\n" +
+                "• Si cometes un error, puedes usar DESHACER.\n" +
+                "• Para puntuar varias palabras en un mismo turno, usa AÑADIR PALABRA.\n" +
+                "• Si un jugador usa las 7 fichas en un turno, pulsa BINGO para añadir un bono de 50 puntos.\n" +
+                "• Si usas una ficha BLANCA (comodín), tócala y márcala como tal.\n" +
+                "• Cuando todos los jugadores hayan completado su último turno, pulsa FIN DE PARTIDA. Los jugadores introducirán sus fichas restantes. Los jugadores con fichas restantes perderán esos puntos; los que no tengan fichas ganarán los puntos sobrantes de los demás.\n" +
+                "• Para empezar una nueva partida, toca el logo en la parte superior de la pantalla."
 )

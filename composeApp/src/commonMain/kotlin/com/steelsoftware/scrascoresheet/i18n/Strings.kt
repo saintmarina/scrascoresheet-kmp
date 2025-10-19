@@ -34,4 +34,6 @@ data class Strings(
     val gridLeftoverAccounting: String,
     val gridMove: String,
     val gridSubmitAWordOrPass: String,
+    val instructionTitleGameScreen: String,
+    val instructionsTextGameScreen: String,
 )
