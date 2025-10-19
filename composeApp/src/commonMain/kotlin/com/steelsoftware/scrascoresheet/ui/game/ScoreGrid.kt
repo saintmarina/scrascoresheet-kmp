@@ -92,7 +92,11 @@ fun ScoreGrid(
                 )
             }
             TableDivider()
-            TableCell(strings.gridHeaderPlayerTurn, Modifier.weight(1f), bold = true)
+            TableCell(
+                topText = strings.gridHeaderPlayerTurn,
+                modifier = Modifier.weight(1f),
+                bold = true
+            )
         }
 
 
@@ -127,14 +131,18 @@ fun ScoreGrid(
                             .height(IntrinsicSize.Min)
                     ) {
                         TableCell(
-                            "${playerNames[playerIndex]}\n($totalScore)",
+                            topText = playerNames[playerIndex],
+                            bottomText = "($totalScore)",
                             modifier = Modifier.width(headerWidth + 16.dp)
                         )
                         TableDivider()
                         if (turn.words.isEmpty()) {
                             var emptyCellText = strings.gridSubmitAWordOrPass
                             if (turn.isPassed(game)) emptyCellText = strings.pass
-                            TableCell(emptyCellText, modifier = Modifier.weight(1f))
+                            TableCell(
+                                topText = emptyCellText,
+                                modifier = Modifier.weight(1f)
+                            )
                         } else {
                             TurnRow(
                                 turn = turn,
@@ -255,23 +263,40 @@ fun MoveNumberCell(
 
 @Composable
 fun TableCell(
-    text: String,
+    topText: String,
+    bottomText: String? = null,
     modifier: Modifier = Modifier,
     bold: Boolean = false
 ) {
+
+    val fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(8.dp),
-        contentAlignment = Alignment.Center,
+            .padding(6.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = text,
-            fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = topText,
+                fontWeight = fontWeight,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Clip,
+            )
+            bottomText?.let {
+                Text(
+                    text = it,
+                    fontWeight = fontWeight,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
     }
 }
 

@@ -167,8 +167,17 @@ private fun StartNewGameWidget(
     val typedNames = playerNames
         .map { it.trim() }
         .filter { it.isNotEmpty() }
+    val placeHolderNames = listOf(
+        strings.player + " 1",
+        strings.player + " 2"
+    )
     Button(
-        onClick = { onStartGame(typedNames) },
+        onClick = {
+            val finalNames = typedNames.ifEmpty {
+                placeHolderNames
+            }
+            onStartGame(finalNames)
+        },
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
     ) {
