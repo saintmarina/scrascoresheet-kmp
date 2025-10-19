@@ -87,7 +87,7 @@ fun ScrabbleInputBox(
 
         val fullWidth = maxWidth
         val boxWidth = if (fullWidth > 550.dp) 550.dp else fullWidth
-        val tileSize = (boxWidth / maxTilesPerRow) - 4.dp
+        val tileSize = (boxWidth / maxTilesPerRow)
         val rows = if (currentWord.value.isEmpty()) listOf("") else currentWord.value.chunked(
             maxTilesPerRow
         )
@@ -105,7 +105,6 @@ fun ScrabbleInputBox(
                 rows.forEachIndexed { rowIndex, rowText ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         val displayText =
                             if (rowText.isEmpty()) listOf() else rowText.toList()

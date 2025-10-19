@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -149,6 +150,8 @@ fun ScoreGrid(
 
 @Composable
 fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
+    val tileShape = RoundedCornerShape(4.dp)
+
     Row(
         modifier = modifier
             .fillMaxSize()
@@ -170,18 +173,20 @@ fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
         // Total score box, centered vertically
         Box(
             modifier = Modifier
-                .width(40.dp)
                 .padding(horizontal = 8.dp)
-                .border(1.dp, ScrabbleTheme.colors.offWhite)
-                .background(ScrabbleTheme.colors.deepRed40, shape = RoundedCornerShape(4.dp)),
+                .clip(tileShape)
+                .border(1.dp, ScrabbleTheme.colors.offWhite, shape = tileShape),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = turn.score.toString(),
+                modifier = Modifier
+                    .padding(4.dp),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
+                    textAlign = TextAlign.Center,
+
+                    )
             )
         }
     }
@@ -191,7 +196,6 @@ fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
 fun WordTileRow(word: Word) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         word.value.forEachIndexed { index, letter ->
