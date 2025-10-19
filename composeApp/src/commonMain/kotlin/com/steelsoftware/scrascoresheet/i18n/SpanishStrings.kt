@@ -61,4 +61,5 @@ val SpanishStrings = Strings(
     rateUsOnPlayStore = "Califícanos en Play Store",
     rateUsOnAppStore = "Califícanos en App Store",
     submitYourLeftovers = "Entrega tus fichas restantes",
+    noLeftovers = "Sin fichas restantes",
 )

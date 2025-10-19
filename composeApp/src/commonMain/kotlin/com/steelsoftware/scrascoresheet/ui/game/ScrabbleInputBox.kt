@@ -61,6 +61,7 @@ fun ScrabbleInputBox(
     currentWord: Word,
     setCurrentWord: (Word) -> Unit,
     setSelectedLetterTileIndex: (Int?) -> Unit,
+    inLeftoversMode: Boolean,
     calculateScrabbleScore: (String, List<ModifierType>, String) -> Int,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -169,9 +170,9 @@ fun ScrabbleInputBox(
                         // If the new text is shorter, drop trailing modifiers
                         val trimmedModifiers = newModifiers.take(filtered.length)
 
+                        val tempScore = calculateScrabbleScore(filtered, trimmedModifiers, language)
                         // Recalculate the word’s score
-                        val newScore = calculateScrabbleScore(filtered, trimmedModifiers, language)
-                        println("XXX new score = $newScore")
+                        val newScore = if (inLeftoversMode) -tempScore else tempScore
 
                         // Update the current word state
                         setCurrentWord(
@@ -248,5 +249,6 @@ fun ScrabbleInputBoxPreview() {
         setInputBoxBounds = { },
         calculateScrabbleScore = { _, _, _ -> 8 },
         setSelectedLetterTileIndex = {},
+        inLeftoversMode = false,
     )
 }

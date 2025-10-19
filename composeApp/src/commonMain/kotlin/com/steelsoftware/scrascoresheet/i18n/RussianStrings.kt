@@ -61,4 +61,5 @@ val RussianStrings = Strings(
     rateUsOnPlayStore = "Оцените нас в Play Store",
     rateUsOnAppStore = "Оцените нас в App Store",
     submitYourLeftovers = "Введите ваши остатки",
+    noLeftovers = "Нет остатков",
 )

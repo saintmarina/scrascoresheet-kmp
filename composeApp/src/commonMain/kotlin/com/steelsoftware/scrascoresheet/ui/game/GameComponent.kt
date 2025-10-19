@@ -152,4 +152,28 @@ class GameComponent(
             _state.value = Game(previousGame, previousHistory)
         }
     }
+
+    fun submitLeftovers(currentWord: Word) {
+        val currentState = _state.value
+        if (currentState !is Game) return
+        var game = currentState.game
+
+        if (currentWord.value.isNotBlank()) {
+            game = game.addWord(currentWord)
+        }
+
+        game = game.endTurn()
+
+        if (game.currentPlayerIndex == 0) {
+            game = game.distributeLeftOversToReapers(
+                game.getReapers(),
+                game.getSumOfLeftovers()
+            )
+        }
+
+        _state.value = Game(
+            game = game,
+            gameHistory = currentState.gameHistory + currentState.game
+        )
+    }
 }

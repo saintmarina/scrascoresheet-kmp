@@ -68,7 +68,7 @@ fun GameScreen(component: GameComponent) {
         ) {
             Image(
                 painter = painterResource(Res.drawable.logo),
-                contentDescription = "",
+                contentDescription = "", // TODO: Add content description
                 modifier = Modifier.padding(horizontal = 80.dp) // TODO: make dynamic
                     .padding(bottom = GLOBAL_SIDE_PADDING.dp),
                 alignment = Alignment.Center,
@@ -80,18 +80,22 @@ fun GameScreen(component: GameComponent) {
                     shouldShowPopoverInstruction =
                         currentState.game.getCurrentTurnNumber() == 0 && currentState.game.currentPlayerIndex == 0
                     ScoreGrid(game = currentState.game)
-                    ScrabbleInputBox(
-                        language = ScrabbleStrings.language,
-                        onInputChanged = {},
-                        popoverAnchor = popoverAnchor,
-                        setPopoverAnchor = { popoverAnchor = it },
-                        setInputBoxBounds = { inputBoxBounds = it },
-                        currentWord = currentWord,
-                        setCurrentWord = { newWord -> currentWord = newWord },
-                        setSelectedLetterTileIndex = { selectedLetterTileIndex = it },
-                        calculateScrabbleScore = component::calculateScrabbleScore,
-                    )
-                    currentState.game.prettyPrint()
+                    if (!currentState.game.areLeftOversSubmitted()) {
+                        ScrabbleInputBox(
+                            language = ScrabbleStrings.language,
+                            onInputChanged = {},
+                            popoverAnchor = popoverAnchor,
+                            setPopoverAnchor = { popoverAnchor = it },
+                            setInputBoxBounds = { inputBoxBounds = it },
+                            currentWord = currentWord,
+                            setCurrentWord = { newWord -> currentWord = newWord },
+                            setSelectedLetterTileIndex = { selectedLetterTileIndex = it },
+                            calculateScrabbleScore = component::calculateScrabbleScore,
+                            inLeftoversMode = currentState.game.leftOversTurnNumber != null
+                        )
+                    } else {
+                        Text(text = "Winners are ${currentState.game.getWinners()}")
+                    }
                     if (!currentState.game.isGameOver) {
                         InGameButtonControls(
                             currentGameState = currentState,
@@ -116,7 +120,7 @@ fun GameScreen(component: GameComponent) {
                             currentGameState = currentState,
                             currentWord = currentWord,
                             onSubmitLeftovers = { word ->
-                                //  component.submitLeftovers(word)
+                                component.submitLeftovers(word)
                                 resetCurrentWord()
                             },
                             onUndo = {
@@ -132,7 +136,7 @@ fun GameScreen(component: GameComponent) {
             Instructions()
             Spacer(Modifier.height(16.dp))
         }
-        if (popoverAnchor != null && inputBoxBounds != null) {
+        if (popoverAnchor != null && inputBoxBounds != null) { // TODO: And not in the leftover mode
             Box(
                 Modifier
                     .clickable(

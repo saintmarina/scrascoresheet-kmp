@@ -53,4 +53,5 @@ val EnglishStrings = Strings(
     rateUsOnPlayStore = "Rate us on Play Store",
     rateUsOnAppStore = "Rate us on App Store",
     submitYourLeftovers = "Submit your leftovers",
+    noLeftovers = "No leftovers",
 )

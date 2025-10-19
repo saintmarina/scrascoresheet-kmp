@@ -3,6 +3,8 @@ package com.steelsoftware.scrascoresheet.logic
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
 
+const val REAPED_LEFTOVERS_WORD = "__reaped_leftovers__"
+
 @Serializable
 data class Game(
     val playerNames: List<String>,
@@ -101,7 +103,7 @@ data class Game(
         val leftOverIndex = leftOversTurnNumber ?: return this
         for (reaperIndex in reapers) {
             val turn = Turn(
-                words = listOf(Word("__reaped_leftovers__", emptyList(), totalLeftOverScore)),
+                words = listOf(Word(REAPED_LEFTOVERS_WORD, emptyList(), totalLeftOverScore)),
                 bingo = false
             )
             game = game.setTurn(reaperIndex, leftOverIndex, turn)

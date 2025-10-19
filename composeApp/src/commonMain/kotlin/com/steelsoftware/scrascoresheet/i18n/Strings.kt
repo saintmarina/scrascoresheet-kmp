@@ -42,4 +42,5 @@ data class Strings(
     val rateUsOnPlayStore: String,
     val rateUsOnAppStore: String,
     val submitYourLeftovers: String,
+    val noLeftovers: String,
 )
