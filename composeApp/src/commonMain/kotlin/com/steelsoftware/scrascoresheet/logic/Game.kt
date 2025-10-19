@@ -112,7 +112,7 @@ data class Game(
     fun getWinners(upToMove: Int? = null): List<Int> {
         val totalScores = playersTurns.indices.map { getTotalScore(it, upToMove) }
         val maxScore = totalScores.maxOrNull() ?: 0
-        return indexesOf(totalScores, maxScore)
+        return totalScores.mapIndexedNotNull { i, v -> if (v == maxScore) i else null }
     }
 
     private fun setTurn(player: Int, turnNumber: Int, turn: Turn): Game {

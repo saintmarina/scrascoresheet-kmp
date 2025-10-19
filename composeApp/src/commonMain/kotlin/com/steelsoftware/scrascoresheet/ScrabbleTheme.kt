@@ -23,6 +23,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
+import com.steelsoftware.scrascoresheet.i18n.Locales
+import com.steelsoftware.scrascoresheet.i18n.Strings
+import com.steelsoftware.scrascoresheet.logic.scoreListsMap
 
 private val RedCenter = Color(0xFFDE322A)
 private val RedEdge = Color(0xFF622528)
@@ -118,6 +122,24 @@ object ScrabbleTheme {
     val colors: ExtendedColors
         @Composable
         get() = LocalExtendedColors.current
+}
+
+object ScrabbleStrings {
+    val strings: Strings
+        @Composable
+        get() = LocalLyricist.current
+
+    var language: String = Locales.ENGLISH
+        private set
+
+    val scoreMap: Map<Char, Int>
+        get() = scoreListsMap[language] ?: emptyMap()
+
+    fun setLanguage(newLang: String) {
+        if (newLang != language && scoreListsMap.containsKey(newLang)) {
+            language = newLang
+        }
+    }
 }
 
 @Composable

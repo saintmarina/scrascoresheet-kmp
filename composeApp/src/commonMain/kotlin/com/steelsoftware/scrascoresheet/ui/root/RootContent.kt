@@ -28,7 +28,7 @@ fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>) {
         when (val child = it.instance) {
             is RootComponent.Child.Splash -> SplashScreen(child.component)
             is RootComponent.Child.Welcome -> WelcomeScreen(child.component, lyricist)
-            is RootComponent.Child.Game -> GameScreen(child.component, lyricist)
+            is RootComponent.Child.Game -> GameScreen(child.component)
             is RootComponent.Child.Finished -> FinishedScreen(child.component)
         }
     }

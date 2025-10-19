@@ -1,17 +1,21 @@
 package com.steelsoftware.scrascoresheet.ui.game
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -32,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.logic.Game
+import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Turn
 import com.steelsoftware.scrascoresheet.logic.Word
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -103,8 +109,6 @@ fun ScoreGrid(
                 val turn = turns.getOrNull(moveIndex)
                 if (turn != null) {
                     val totalScore = totals[playerIndex].getOrNull(moveIndex) ?: 0
-                    val turnWords = if (turn.words.isEmpty()) strings.gridSubmitAWordOrPass
-                    else turn.words.joinToString("+") { it.value } // TODO: add scrabble tiles
 
                     Row(
                         modifier = Modifier
@@ -126,10 +130,78 @@ fun ScoreGrid(
                             modifier = Modifier.width(headerWidth + 16.dp)
                         )
                         TableDivider()
-                        TableCell(turnWords, modifier = Modifier.weight(1f))
+                        if (turn.words.isEmpty()) {
+                            var emptyCellText = strings.gridSubmitAWordOrPass
+                            if (turn.isPassed(game)) emptyCellText = strings.pass
+                            TableCell(emptyCellText, modifier = Modifier.weight(1f))
+                        } else {
+                            TurnRow(
+                                turn = turn,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxSize()
+            .background(ScrabbleTheme.colors.deepRed30)
+            .padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Column for the words
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 8.dp)
+        ) {
+            turn.words.forEach { word ->
+                WordTileRow(word = word)
+            }
+        }
+
+        // Total score box, centered vertically
+        Box(
+            modifier = Modifier
+                .width(40.dp)
+                .padding(horizontal = 8.dp)
+                .border(1.dp, ScrabbleTheme.colors.offWhite)
+                .background(ScrabbleTheme.colors.deepRed40, shape = RoundedCornerShape(4.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = turn.score.toString(),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun WordTileRow(word: Word) {
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        word.value.forEachIndexed { index, letter ->
+            val modifierType = word.modifiers.getOrNull(index)
+            LetterTile(
+                letter = letter,
+                tileSize = 32.dp,
+                modifierType = modifierType ?: ModifierType.BLANK,
+                modifier = Modifier.size(32.dp)
+            )
         }
     }
 }
@@ -146,7 +218,6 @@ fun MoveNumberCell(
         modifier = Modifier
             .fillMaxWidth()
             .background(ScrabbleTheme.colors.deepRed30)
-            //.border(0.5.dp, ScrabbleTheme.colors.whiteBorder)
             .drawBehind {
                 if (isFirstTurn) {
                     // Top line (only for first turn)
@@ -179,19 +250,25 @@ fun MoveNumberCell(
 }
 
 @Composable
-fun RowScope.TableCell(
+fun TableCell(
     text: String,
     modifier: Modifier = Modifier,
     bold: Boolean = false
 ) {
-    Text(
-        text = text,
-        modifier = modifier.padding(8.dp),
-        fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
-        textAlign = TextAlign.Center,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis
-    )
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(8.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = text,
+            fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
 }
 
 @Composable

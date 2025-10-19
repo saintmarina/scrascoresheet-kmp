@@ -49,7 +49,6 @@ import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.logic.isLetterAllowed
-import com.steelsoftware.scrascoresheet.logic.scoreListsMap
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -113,14 +112,11 @@ fun ScrabbleInputBox(
 
                         displayText.forEachIndexed { columnIndex, ch ->
                             val index = rowIndex * maxTilesPerRow + columnIndex
-                            val letter = ch.toString()
-                            val score = scoreListsMap[language]?.get(ch.lowercaseChar()) ?: 0
 
                             val primaryModifier =
                                 currentWord.modifiers.getOrNull(index) ?: ModifierType.BLANK
                             LetterTile(
-                                letter = letter,
-                                score = score,
+                                letter = ch,
                                 modifierType = primaryModifier,
                                 tileSize = tileSize,
                                 modifier = Modifier

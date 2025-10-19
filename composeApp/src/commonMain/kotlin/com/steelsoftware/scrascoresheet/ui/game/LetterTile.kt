@@ -17,7 +17,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
+import com.steelsoftware.scrascoresheet.ScrabbleStrings
+import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -26,24 +27,26 @@ import scrascoresheet.composeapp.generated.resources.wooden_tile_background
 
 @Composable
 fun LetterTile(
-    letter: String,
-    score: Int,
+    letter: Char,
     modifierType: ModifierType,
     tileSize: Dp,
     modifier: Modifier = Modifier,
 ) {
-    val strings = LocalLyricist.current
     val color = when (modifierType) {
         ModifierType.DOUBLE_LETTER -> Color(0xFF9FCAE0)
         ModifierType.DOUBLE_WORD -> Color(0xFFEDA498)
         ModifierType.TRIPLE_LETTER -> Color(0xFF18A3E1)
         ModifierType.TRIPLE_WORD -> Color(0xFFF74D13)
-        ModifierType.BLANK -> Color.LightGray
+        ModifierType.BLANK -> Color.Transparent
     }
+    val colorFilter = if (modifierType == ModifierType.BLANK) null
+    else ColorFilter.tint(color, blendMode = BlendMode.Modulate)
 
     val letterFontSize = with(LocalDensity.current) { (tileSize * 0.55f).toSp() }
     val scoreFontSize = with(LocalDensity.current) { (tileSize * 0.22f).toSp() }
     val scorePaddingEnd = tileSize * 0.10f
+
+    val score = ScrabbleStrings.scoreMap[letter.lowercaseChar()]
 
     Box(modifier = modifier.size(tileSize)) {
         Image(
@@ -51,7 +54,7 @@ fun LetterTile(
             contentDescription = strings.tileBackgroundDescription,
             contentScale = ContentScale.Crop,
             modifier = Modifier.matchParentSize(),
-            colorFilter = ColorFilter.tint(color, blendMode = BlendMode.Modulate),
+            colorFilter = colorFilter,
         )
 
         // Overlay letter
@@ -81,32 +84,27 @@ fun LetterTilePreview(
 ) {
     Row {
         LetterTile(
-            letter = "A",
-            score = 1,
+            letter = 'A',
             tileSize = 48.dp,
             modifierType = ModifierType.TRIPLE_LETTER,
         )
         LetterTile(
-            letter = "B",
-            score = 1,
+            letter = 'B',
             tileSize = 48.dp,
             modifierType = ModifierType.TRIPLE_WORD,
         )
         LetterTile(
-            letter = "C",
-            score = 1,
+            letter = 'C',
             tileSize = 48.dp,
             modifierType = ModifierType.DOUBLE_LETTER,
         )
         LetterTile(
-            letter = "D",
-            score = 1,
+            letter = 'D',
             tileSize = 48.dp,
             modifierType = ModifierType.DOUBLE_WORD,
         )
         LetterTile(
-            letter = "E",
-            score = 1,
+            letter = 'E',
             tileSize = 48.dp,
             modifierType = ModifierType.BLANK,
         )

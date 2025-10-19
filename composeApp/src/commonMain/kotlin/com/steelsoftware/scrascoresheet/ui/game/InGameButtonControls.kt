@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -57,8 +56,7 @@ fun InGameButtonControls(
     val strings = LocalLyricist.current
     BoxWithConstraints(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         val maxBoxWidth = if (maxWidth > 550.dp) 550.dp else maxWidth

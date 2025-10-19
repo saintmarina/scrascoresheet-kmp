@@ -33,6 +33,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steelsoftware.scrascoresheet.ScrabbleStrings
+import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.Strings
@@ -46,7 +48,6 @@ import scrascoresheet.composeapp.generated.resources.logo
 
 @Composable
 fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
-    val strings = LocalLyricist.current
     val state by component.state.subscribeAsState()
 
     Column(
@@ -128,7 +129,6 @@ private fun StartNewGameWidget(
     onStartGame: (List<String>) -> Unit,
     lyricist: Lyricist<Strings>
 ) {
-    val strings = LocalLyricist.current
     var playerNames by rememberSaveable {
         mutableStateOf(
             (initialNames + List(4 - initialNames.size) { "" }).take(4)
@@ -185,7 +185,7 @@ private fun LanguageDropdown(
 
     Box {
         OutlinedButton(onClick = { expanded = true }) {
-            languages[lyricist.languageTag]?.let { Text(it) }
+            languages[ScrabbleStrings.language]?.let { Text(it) }
         }
         DropdownMenu(
             expanded = expanded,
@@ -196,6 +196,7 @@ private fun LanguageDropdown(
                     text = { Text(label) },
                     onClick = {
                         lyricist.languageTag = code
+                        ScrabbleStrings.setLanguage(code)
                         expanded = false
                     }
                 )

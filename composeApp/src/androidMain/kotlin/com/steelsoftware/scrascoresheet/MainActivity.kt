@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 defaultLanguageTag = Locales.ENGLISH,
                 currentLanguageTag = Locales.ENGLISH,
             )
+            ScrabbleStrings.setLanguage(lyricist.languageTag)
             ProvideStrings(lyricist, LocalLyricist) {
                 App(root, lyricist)
             }

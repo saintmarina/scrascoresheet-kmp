@@ -3,6 +3,7 @@ package com.steelsoftware.scrascoresheet.ui.game
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,10 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
-import com.steelsoftware.scrascoresheet.i18n.Strings
+import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
@@ -34,10 +33,8 @@ import org.jetbrains.compose.resources.painterResource
 import scrascoresheet.composeapp.generated.resources.Res
 import scrascoresheet.composeapp.generated.resources.logo
 
-
 @Composable
-fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
-    val strings = LocalLyricist.current
+fun GameScreen(component: GameComponent) {
     val state by component.state.subscribeAsState()
 
     var popoverAnchor by remember { mutableStateOf<Rect?>(null) }
@@ -57,12 +54,14 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
                     popoverAnchor = null
-                }
+                },
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(GLOBAL_SIDE_PADDING.dp)
         ) {
             Image(
                 painter = painterResource(Res.drawable.logo),
                 contentDescription = "",
-                modifier = Modifier.padding(horizontal = 80.dp)
+                modifier = Modifier.padding(horizontal = 80.dp) // TODO: make dynamic
                     .padding(bottom = GLOBAL_SIDE_PADDING.dp),
                 alignment = Alignment.Center,
                 contentScale = ContentScale.FillWidth,
@@ -72,7 +71,7 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                 is GameState.Game -> {
                     ScoreGrid(game = currentState.game)
                     ScrabbleInputBox(
-                        language = lyricist.languageTag,
+                        language = ScrabbleStrings.language,
                         onInputChanged = {},
                         popoverAnchor = popoverAnchor,
                         setPopoverAnchor = { popoverAnchor = it },
@@ -133,7 +132,7 @@ fun GameScreen(component: GameComponent, lyricist: Lyricist<Strings>) {
                                 score = component.calculateScrabbleScore(
                                     word = currentWord.value,
                                     modifiers = modifiers,
-                                    language = lyricist.languageTag,
+                                    language = ScrabbleStrings.language,
                                 )
                             )
 
