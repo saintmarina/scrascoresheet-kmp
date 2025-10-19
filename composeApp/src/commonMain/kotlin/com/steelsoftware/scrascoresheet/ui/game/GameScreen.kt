@@ -131,7 +131,7 @@ fun GameScreen(component: GameComponent) {
 
                             if (index in modifiers.indices) {
                                 modifiers[index] =
-                                    if (modifiers[index] == type) ModifierType.BLANK else type
+                                    if (modifiers[index] == type) ModifierType.NONE else type
                             }
 
                             val newWord = currentWord.copy(

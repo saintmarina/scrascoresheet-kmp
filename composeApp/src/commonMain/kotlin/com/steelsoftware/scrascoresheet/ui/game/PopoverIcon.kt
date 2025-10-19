@@ -69,6 +69,9 @@ fun PopoverIcon(
             Color.LightGray,
             strings.blankTile,
         )
+
+        ModifierType.NONE ->
+            error("PopoverIcon should not be used with ModifierType.NONE")
     }
     Box(
         modifier = Modifier

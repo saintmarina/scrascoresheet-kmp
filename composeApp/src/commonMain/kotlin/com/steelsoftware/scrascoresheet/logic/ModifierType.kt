@@ -8,5 +8,6 @@ enum class ModifierType {
     TRIPLE_LETTER,
     DOUBLE_WORD,
     TRIPLE_WORD,
-    BLANK
+    BLANK,
+    NONE,
 }

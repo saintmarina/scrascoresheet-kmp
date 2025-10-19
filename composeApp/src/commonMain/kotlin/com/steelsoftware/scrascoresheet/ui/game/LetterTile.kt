@@ -40,10 +40,11 @@ fun LetterTile(
         ModifierType.DOUBLE_WORD -> Color(0xFFEDA498)
         ModifierType.TRIPLE_LETTER -> Color(0xFF18A3E1)
         ModifierType.TRIPLE_WORD -> Color(0xFFF74D13)
-        ModifierType.BLANK -> Color.Transparent
+        ModifierType.BLANK -> Color.White.copy(alpha = 0.85f)
+        ModifierType.NONE -> Color.Transparent
     }
 
-    val isModifierApplied = modifierType != ModifierType.BLANK
+    val isModifierApplied = modifierType != ModifierType.NONE
 
     val colorFilter =
         if (isModifierApplied) ColorFilter.tint(color, blendMode = BlendMode.Multiply) else null
@@ -52,13 +53,14 @@ fun LetterTile(
     val scorePaddingEnd = tileSize * 0.10f
     val score = ScrabbleStrings.scoreMap[letter.lowercaseChar()]
     val tileShape = RoundedCornerShape(4.dp)
+    val isBlankTile = modifierType == ModifierType.BLANK
 
     Box(
         modifier = modifier
             .size(tileSize)
             .clip(tileShape)
             .then(
-                if (isModifierApplied)
+                if (isModifierApplied && !isBlankTile)
                     Modifier.border(
                         width = 1.dp,
                         color = Color.White,
@@ -76,24 +78,27 @@ fun LetterTile(
             alpha = if (isModifierApplied) 0.30f else 1.0f,
         )
 
+        val letterColor = if (isBlankTile) Color.Gray else Color.Black
         // Letter
         Text(
             text = letter.uppercase(),
             fontSize = letterFontSize,
             fontWeight = FontWeight.Bold,
-            color = Color.Black,
+            color = letterColor,
             modifier = Modifier.align(Alignment.Center)
         )
 
         // Score
-        Text(
-            text = score.toString(),
-            fontSize = scoreFontSize,
-            color = Color.Black,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = scorePaddingEnd)
-        )
+        if (!isBlankTile) {
+            Text(
+                text = score.toString(),
+                fontSize = scoreFontSize,
+                color = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = scorePaddingEnd)
+            )
+        }
     }
 }
 

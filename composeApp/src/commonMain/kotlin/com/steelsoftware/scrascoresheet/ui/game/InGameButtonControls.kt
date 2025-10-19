@@ -156,7 +156,7 @@ fun ButtonControlsPreview_NewGameState() {
         Word(
             value = "HELLO",
             modifiers = listOf(
-                ModifierType.BLANK,
+                ModifierType.NONE,
                 ModifierType.DOUBLE_LETTER,
                 ModifierType.BLANK,
                 ModifierType.BLANK,
@@ -172,7 +172,7 @@ fun ButtonControlsPreview_NewGameState() {
 
     val currentWord = Word(
         value = "WORLD",
-        modifiers = List(5) { ModifierType.BLANK },
+        modifiers = List(5) { ModifierType.NONE },
         score = 8
     )
 

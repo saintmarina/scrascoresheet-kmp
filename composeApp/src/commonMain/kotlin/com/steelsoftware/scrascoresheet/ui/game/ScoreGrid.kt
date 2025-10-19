@@ -211,7 +211,7 @@ fun WordTileRow(word: Word) {
             LetterTile(
                 letter = letter,
                 tileSize = 32.dp,
-                modifierType = modifierType ?: ModifierType.BLANK,
+                modifierType = modifierType ?: ModifierType.NONE,
                 modifier = Modifier.size(32.dp)
             )
         }

@@ -112,11 +112,11 @@ fun ScrabbleInputBox(
                         displayText.forEachIndexed { columnIndex, ch ->
                             val index = rowIndex * maxTilesPerRow + columnIndex
 
-                            val primaryModifier =
-                                currentWord.modifiers.getOrNull(index) ?: ModifierType.BLANK
+                            val tileModifier =
+                                currentWord.modifiers.getOrNull(index) ?: ModifierType.NONE
                             LetterTile(
                                 letter = ch,
-                                modifierType = primaryModifier,
+                                modifierType = tileModifier,
                                 tileSize = tileSize,
                                 modifier = Modifier
                                     .onGloballyPositioned { coordinates ->
@@ -163,7 +163,7 @@ fun ScrabbleInputBox(
 
                         // For every character in the new text, either reuse an existing modifier or create NONE
                         for (i in filtered.indices) {
-                            newModifiers += oldModifiers.getOrNull(i) ?: ModifierType.BLANK
+                            newModifiers += oldModifiers.getOrNull(i) ?: ModifierType.NONE
                         }
 
                         // If the new text is shorter, drop trailing modifiers
