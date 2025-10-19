@@ -36,4 +36,10 @@ data class Strings(
     val gridSubmitAWordOrPass: String,
     val instructionTitleGameScreen: String,
     val instructionsTextGameScreen: String,
+    val submitLeftovers: String,
+    val submitNoLeftovers: String,
+    val newGame: String,
+    val rateUsOnPlayStore: String,
+    val rateUsOnAppStore: String,
+    val submitYourLeftovers: String,
 )

@@ -66,7 +66,7 @@ data class Game(
         return setTurn(currentPlayerIndex, getCurrentTurnNumber(), t)
     }
 
-    fun endGame(): Game = copy(leftOversTurnNumber = getCurrentTurnNumber())
+    fun startLeftOvers(): Game = copy(leftOversTurnNumber = getCurrentTurnNumber())
 
     val isGameOver: Boolean get() = leftOversTurnNumber != null
 

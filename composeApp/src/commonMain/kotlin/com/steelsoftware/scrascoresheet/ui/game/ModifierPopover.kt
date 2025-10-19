@@ -46,7 +46,7 @@ fun ModifierPopover(
     inputBoxBounds: Rect?,
     tileBounds: Rect?,
     onSelect: (ModifierType) -> Unit,
-    isFirstTurn: Boolean,
+    shouldShowPopoverInstructions: Boolean,
 ) {
     if (inputBoxBounds == null || tileBounds == null) return
 
@@ -134,7 +134,7 @@ fun ModifierPopover(
                     .wrapContentWidth()
                     .padding(top = arrowHeight + 8.dp, bottom = 12.dp, start = 8.dp, end = 8.dp)
             ) {
-                PopoverContent(isFirstTurn, onSelect)
+                PopoverContent(shouldShowPopoverInstructions, onSelect)
             }
         }
     }
@@ -142,7 +142,7 @@ fun ModifierPopover(
 
 @Composable
 fun PopoverContent(
-    isFirstTurn: Boolean,
+    shouldShowPopoverInstructions: Boolean,
     onSelect: (ModifierType) -> Unit
 ) {
     val strings = LocalLyricist.current
@@ -157,7 +157,7 @@ fun PopoverContent(
             )
             PopoverIcon(
                 modifierType = ModifierType.DOUBLE_WORD,
-                isFirstTurn = isFirstTurn,
+                isFirstTurn = shouldShowPopoverInstructions,
                 onSelect = onSelect
             )
             PopoverIcon(
@@ -173,7 +173,7 @@ fun PopoverContent(
                 onSelect = onSelect
             )
         }
-        if (isFirstTurn) {
+        if (shouldShowPopoverInstructions) {
             Text(
                 text = strings.pressOnTheStar,
                 style = MaterialTheme.typography.titleMedium,
@@ -221,7 +221,7 @@ fun ModifierPopoverFirstTurnTruePreview() {
             inputBoxBounds = fakeInputBoxAnchor,
             tileBounds = fakeAnchor,
             onSelect = {},
-            isFirstTurn = true,
+            shouldShowPopoverInstructions = true,
         )
     }
 }
@@ -262,7 +262,7 @@ fun ModifierPopoverFirstTurnFalsePreview() {
             inputBoxBounds = fakeInputBoxAnchor,
             tileBounds = fakeAnchor,
             onSelect = {},
-            isFirstTurn = false,
+            shouldShowPopoverInstructions = false,
         )
     }
 }

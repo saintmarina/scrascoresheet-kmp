@@ -13,7 +13,7 @@ import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 class GameComponent(
     componentContext: ComponentContext,
     private val game: GameObj,
-    private val onGameFinished: () -> Unit
+    private val onStartNewGame: () -> Unit
 ) : ComponentContext by componentContext {
     private val _state = MutableValue<GameState>(Game(game, emptyList()))
     val state: Value<GameState> = _state
@@ -22,7 +22,21 @@ class GameComponent(
         // TODO: Implement game saving logic here
     }
 
-    fun finishGame() = onGameFinished()
+    fun endGame() {
+        val currentState = _state.value
+        if (currentState !is Game) return
+
+        val newGame = currentState.game.startLeftOvers()
+
+        _state.value = Game(
+            game = newGame,
+            gameHistory = currentState.gameHistory + currentState.game
+        )
+    }
+
+    fun startNewGame() {
+        onStartNewGame()
+    }
 
     fun calculateScrabbleScore(
         word: String,

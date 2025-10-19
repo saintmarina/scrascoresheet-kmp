@@ -46,5 +46,11 @@ val EnglishStrings = Strings(
                 "• When a player uses all 7 tiles in one turn, press BINGO to add a 50-point bonus.\n" +
                 "• When using a BLANK tile, tap the tile and mark it as blank.\n" +
                 "• When all players have completed their final turn, press END GAME. Players will then enter their leftover tiles. Players with leftover tiles lose those points; players with no leftover tiles collect the leftover points from others.\n" +
-                "• To start a new game, tap the logo at the top of the page."
+                "• To start a new game, tap the logo at the top of the page.",
+    submitLeftovers = "Submit Leftovers",
+    submitNoLeftovers = "Submit No Leftovers",
+    newGame = "New Game",
+    rateUsOnPlayStore = "Rate us on Play Store",
+    rateUsOnAppStore = "Rate us on App Store",
+    submitYourLeftovers = "Submit your leftovers",
 )

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,7 +43,14 @@ fun GameScreen(component: GameComponent) {
     var currentWord by remember {
         mutableStateOf(Word("", emptyList(), 0))
     }
+
+    fun resetCurrentWord() {
+        currentWord = Word("", emptyList(), 0)
+    }
+
     var selectedLetterTileIndex by remember { mutableStateOf<Int?>(null) }
+
+    var shouldShowPopoverInstruction by remember { mutableStateOf(false) }
 
     Box(Modifier.fillMaxSize()) {
         Column(
@@ -71,6 +77,8 @@ fun GameScreen(component: GameComponent) {
 
             when (val currentState = state) {
                 is GameState.Game -> {
+                    shouldShowPopoverInstruction =
+                        currentState.game.getCurrentTurnNumber() == 0 && currentState.game.currentPlayerIndex == 0
                     ScoreGrid(game = currentState.game)
                     ScrabbleInputBox(
                         language = ScrabbleStrings.language,
@@ -83,32 +91,46 @@ fun GameScreen(component: GameComponent) {
                         setSelectedLetterTileIndex = { selectedLetterTileIndex = it },
                         calculateScrabbleScore = component::calculateScrabbleScore,
                     )
-                    InGameButtonControls(
-                        currentGameState = currentState,
-                        currentWord = currentWord,
-                        onEndTurn = {
-                            component.endTurn(currentWord)
-                            currentWord = Word("", emptyList(), 0)
-                        },
-                        onAddWord = {
-                            component.addWord(currentWord)
-                            currentWord = Word("", emptyList(), 0)
-                        },
-                        onBingo = { component.toggleBingo() },
-                        onUndo = {
-                            component.undo()
-                            currentWord = Word("", emptyList(), 0)
-                        },
-                        onEndGame = { component.finishGame() },
-                    )
+                    currentState.game.prettyPrint()
+                    if (!currentState.game.isGameOver) {
+                        InGameButtonControls(
+                            currentGameState = currentState,
+                            currentWord = currentWord,
+                            onEndTurn = {
+                                component.endTurn(currentWord)
+                                resetCurrentWord()
+                            },
+                            onAddWord = {
+                                component.addWord(currentWord)
+                                resetCurrentWord()
+                            },
+                            onBingo = { component.toggleBingo() },
+                            onUndo = {
+                                component.undo()
+                                resetCurrentWord()
+                            },
+                            onEndGame = component::endGame,
+                        )
+                    } else {
+                        InGameOverButtonControls(
+                            currentGameState = currentState,
+                            currentWord = currentWord,
+                            onSubmitLeftovers = { word ->
+                                //  component.submitLeftovers(word)
+                                resetCurrentWord()
+                            },
+                            onUndo = {
+                                component.undo()
+                                resetCurrentWord()
+                            },
+                            onNewGame = { component.startNewGame() },
+                        )
+                    }
 
                 }
             }
             Instructions()
             Spacer(Modifier.height(16.dp))
-            Button(onClick = { component.finishGame() }) {
-                Text("Finish Game")
-            }
         }
         if (popoverAnchor != null && inputBoxBounds != null) {
             Box(
@@ -147,7 +169,7 @@ fun GameScreen(component: GameComponent) {
                         }
                         popoverAnchor = null
                     },
-                    isFirstTurn = true,
+                    shouldShowPopoverInstructions = shouldShowPopoverInstruction,
                 )
             }
 

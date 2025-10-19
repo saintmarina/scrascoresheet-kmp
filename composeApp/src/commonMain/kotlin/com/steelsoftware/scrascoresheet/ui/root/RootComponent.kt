@@ -63,7 +63,7 @@ class RootComponent(
                 GameComponent(
                     componentContext = ctx,
                     game = config.game,
-                    onGameFinished = { navigation.push(Config.Finished) }
+                    onStartNewGame = { navigation.push(Config.Finished) }
                 )
             )
 

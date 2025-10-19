@@ -36,7 +36,7 @@ fun InGameButtonControls(
     onUndo: () -> Unit,
     onEndGame: () -> Unit,
 ) {
-    val isModifierChosen = currentWord.modifiers.any { it != ModifierType.BLANK }
+    val isModifierChosen = currentWord.modifiers.any { it != ModifierType.NONE }
     val isCurrentWordEmpty =
         currentGameState.game.getCurrentTurn().isEmpty() && currentWord.value.isEmpty()
     val isFirstTurn =

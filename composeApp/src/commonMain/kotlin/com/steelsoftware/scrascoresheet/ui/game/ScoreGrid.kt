@@ -35,8 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
-import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.logic.Game
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Turn
@@ -47,7 +47,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ScoreGrid(
     game: Game,
 ) {
-    val strings = LocalLyricist.current
     val playerNames = game.playerNames
     val numRows = if (game.isGameOver)
         (game.leftOversTurnNumber ?: 0) + 1
@@ -114,6 +113,15 @@ fun ScoreGrid(
                 val turn = turns.getOrNull(moveIndex)
                 if (turn != null) {
                     val totalScore = totals[playerIndex].getOrNull(moveIndex) ?: 0
+                    val shouldDisplayPlayerTotal =
+                        if (game.leftOversTurnNumber != null && !game.areLeftOversSubmitted()) {
+                            turn.isComplete(game)
+                        } else {
+                            true
+                        }
+
+                    val playerTotal =
+                        if (shouldDisplayPlayerTotal) "($totalScore)" else null
 
                     Row(
                         modifier = Modifier
@@ -132,13 +140,16 @@ fun ScoreGrid(
                     ) {
                         TableCell(
                             topText = playerNames[playerIndex],
-                            bottomText = "($totalScore)",
+                            bottomText = playerTotal,
                             modifier = Modifier.width(headerWidth + 16.dp)
                         )
                         TableDivider()
                         if (turn.words.isEmpty()) {
                             var emptyCellText = strings.gridSubmitAWordOrPass
                             if (turn.isPassed(game)) emptyCellText = strings.pass
+
+                            if (game.leftOversTurnNumber != null) emptyCellText =
+                                strings.submitYourLeftovers
                             TableCell(
                                 topText = emptyCellText,
                                 modifier = Modifier.weight(1f)
@@ -289,7 +300,7 @@ fun TableCell(
             )
             bottomText?.let {
                 Text(
-                    text = it,
+                    text = bottomText,
                     fontWeight = fontWeight,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
