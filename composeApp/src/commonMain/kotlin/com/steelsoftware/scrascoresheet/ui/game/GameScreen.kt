@@ -1,5 +1,6 @@
 package com.steelsoftware.scrascoresheet.ui.game
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -28,6 +31,9 @@ import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
+import org.jetbrains.compose.resources.painterResource
+import scrascoresheet.composeapp.generated.resources.Res
+import scrascoresheet.composeapp.generated.resources.logo
 
 @Composable
 fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
@@ -60,6 +66,13 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(GLOBAL_SIDE_PADDING.dp)
         ) {
+            Image(
+                painter = painterResource(Res.drawable.logo),
+                contentDescription = strings.logoDescription,
+                modifier = Modifier.fillMaxWidth(0.75f).padding(bottom = GLOBAL_SIDE_PADDING.dp),
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillWidth,
+            )
             when (val currentState = state) {
                 is GameState.Game -> {
                     shouldShowPopoverInstruction =

@@ -1,5 +1,6 @@
 package com.steelsoftware.scrascoresheet.ui.welcome
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
@@ -48,6 +51,9 @@ import com.steelsoftware.scrascoresheet.ui.components.GradientButton
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.Loading
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.NewGame
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.ResumeGame
+import org.jetbrains.compose.resources.painterResource
+import scrascoresheet.composeapp.generated.resources.Res
+import scrascoresheet.composeapp.generated.resources.logo
 
 @Composable
 fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
@@ -57,6 +63,13 @@ fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Image(
+            painter = painterResource(Res.drawable.logo),
+            contentDescription = strings.logoDescription,
+            modifier = Modifier.fillMaxWidth(0.75f).padding(bottom = GLOBAL_SIDE_PADDING.dp),
+            alignment = Alignment.Center,
+            contentScale = ContentScale.FillWidth,
+        )
         Text(
             text = strings.appDescriptionForWelcomeScreen,
             style = MaterialTheme.typography.bodyLarge,
