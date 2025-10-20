@@ -24,6 +24,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
@@ -98,8 +99,9 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                         if (winners.size > 1) {
                             Text(
                                 text = strings.thisIsATieBetween,
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 32.sp),
                                 modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
                             )
                             winners.forEach {
                                 val score = currentState.game.getTotalScore(
@@ -109,8 +111,9 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                                 val points = strings.points
                                 Text(
                                     text = "${currentState.game.playerNames[it]} - $score $points",
-                                    style = MaterialTheme.typography.bodyLarge,
+                                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 32.sp),
                                     modifier = Modifier.fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
                                 )
                             }
                         } else {
@@ -118,8 +121,9 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                             val wonWith = strings.wonWith
                             Text(
                                 text = "${currentState.game.playerNames[winners[0]]} $wonWith $finalScore $points!",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.fillMaxWidth(),
+                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 32.sp),
+                                modifier = Modifier.fillMaxWidth(0.65f),
+                                textAlign = TextAlign.Center,
                             )
                         }
                     }
