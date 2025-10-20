@@ -94,7 +94,23 @@ fun GameScreen(component: GameComponent) {
                             inLeftoversMode = currentState.game.leftOversTurnNumber != null
                         )
                     } else {
-                        Text(text = "Winners are ${currentState.game.getWinners()}")
+                        // Calculate the turn before leftovers to show pre-penalty scores in tie case
+                        val turnBeforeLeftOvers = (currentState.game.leftOversTurnNumber ?: 0)
+                        val winners = currentState.game.getWinners()
+                        println("XXX winners: $winners")
+                        if (winners.size > 1) {
+                            Text(text = "This is a tie between:")
+                            winners.forEach {
+                                val score = currentState.game.getTotalScore(
+                                    it,
+                                    turnBeforeLeftOvers
+                                )
+                                Text(text = "${currentState.game.playerNames[it]} - ${score} points")
+                            }
+                        } else {
+                            val finalScore = currentState.game.getTotalScore(winners[0])
+                            Text(text = "${currentState.game.playerNames[winners[0]]} won with $finalScore points!")
+                        }
                     }
                     if (!currentState.game.isGameOver) {
                         InGameButtonControls(

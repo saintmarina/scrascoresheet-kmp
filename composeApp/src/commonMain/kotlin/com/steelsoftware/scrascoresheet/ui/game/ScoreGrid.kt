@@ -39,6 +39,7 @@ import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
 import com.steelsoftware.scrascoresheet.logic.Game
 import com.steelsoftware.scrascoresheet.logic.ModifierType
+import com.steelsoftware.scrascoresheet.logic.REAPED_LEFTOVERS_WORD
 import com.steelsoftware.scrascoresheet.logic.Turn
 import com.steelsoftware.scrascoresheet.logic.Word
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -184,8 +185,15 @@ fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
                 .weight(1f)
                 .padding(start = 8.dp)
         ) {
-            turn.words.forEach { word ->
-                WordTileRow(word = word)
+            if (turn.words[0].value == REAPED_LEFTOVERS_WORD) {
+                TableCell(
+                    topText = strings.noLeftovers.uppercase(),
+                    modifier = Modifier.weight(1f)
+                )
+            } else {
+                turn.words.forEach { word ->
+                    WordTileRow(word = word)
+                }
             }
         }
 
