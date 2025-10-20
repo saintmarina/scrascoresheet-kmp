@@ -33,6 +33,7 @@ val SpanishStrings = Strings(
     tripleWordScore = "Triple tanto de palabra",
     blankTile = "Ficha en blanco",
     tileBackgroundDescription = "Fondo de la ficha",
+    logoDescription = "Logotipo de Scrabble Score Sheet",
     pass = "Pasar",
     endTurn = "Terminar turno",
     addWord = "+ Añadir palabra",

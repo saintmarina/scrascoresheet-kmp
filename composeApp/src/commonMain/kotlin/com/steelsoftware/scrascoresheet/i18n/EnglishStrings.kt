@@ -25,6 +25,7 @@ val EnglishStrings = Strings(
     tripleWordScore = "Triple Word Score",
     blankTile = "Blank Tile",
     tileBackgroundDescription = "Tile background",
+    logoDescription = "Scrabble Score Sheet Logo",
     pass = "Pass",
     endTurn = "End Turn",
     addWord = "+ Add Word",

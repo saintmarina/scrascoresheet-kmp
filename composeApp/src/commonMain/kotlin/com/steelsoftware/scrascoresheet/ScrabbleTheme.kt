@@ -51,6 +51,7 @@ private val ScrabbleTypography = Typography(
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
+        lineHeight = 22.sp,
         color = Color.White,
         shadow = Shadow(
             color = Color.Black.copy(alpha = 0.5f),
@@ -62,6 +63,7 @@ private val ScrabbleTypography = Typography(
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
+        lineHeight = 20.sp,
         color = Color.White,
         shadow = Shadow(
             color = Color.Black.copy(alpha = 0.5f),
@@ -73,6 +75,7 @@ private val ScrabbleTypography = Typography(
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
+        lineHeight = 18.sp,
         color = Color.White,
         shadow = Shadow(
             color = Color.Black.copy(alpha = 0.5f),
@@ -84,6 +87,29 @@ private val ScrabbleTypography = Typography(
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
+        lineHeight = 26.sp,
+        color = Color.White,
+        shadow = Shadow(
+            color = Color.Black.copy(alpha = 0.5f),
+            offset = Offset(1f, 1f),
+            blurRadius = 0f
+        )
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = FontFamily.Serif,
+        fontSize = 26.sp,
+        lineHeight = 30.sp,
+        color = Color.White,
+        shadow = Shadow(
+            color = Color.Black.copy(alpha = 0.5f),
+            offset = Offset(1f, 1f),
+            blurRadius = 0f
+        )
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = FontFamily.Serif,
+        fontSize = 28.sp,
+        lineHeight = 32.sp,
         color = Color.White,
         shadow = Shadow(
             color = Color.Black.copy(alpha = 0.5f),

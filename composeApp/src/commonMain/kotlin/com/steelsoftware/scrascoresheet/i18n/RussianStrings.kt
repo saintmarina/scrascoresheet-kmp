@@ -33,6 +33,7 @@ val RussianStrings = Strings(
     tripleWordScore = "Тройной счёт слова",
     blankTile = "Пустая фишка",
     tileBackgroundDescription = "Фон фишки",
+    logoDescription = "Логотип Scrabble Score Sheet",
     pass = "Пропустить",
     endTurn = "Закончить ход",
     addWord = "+ Добавить слово",

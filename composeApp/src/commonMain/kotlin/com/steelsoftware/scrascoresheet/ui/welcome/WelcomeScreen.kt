@@ -1,6 +1,8 @@
 package com.steelsoftware.scrascoresheet.ui.welcome
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -28,16 +31,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
-import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.Strings
+import com.steelsoftware.scrascoresheet.ui.components.GradientButton
 import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.Loading
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.NewGame
@@ -52,20 +58,24 @@ fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
 
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(Res.drawable.logo),
-            contentDescription = "",
+            contentDescription = strings.logoDescription,
             modifier = Modifier.padding(horizontal = 20.dp) // TODO: figure out the correct size
                 .padding(bottom = GLOBAL_SIDE_PADDING.dp),
             alignment = Alignment.Center,
             contentScale = ContentScale.FillWidth,
         )
 
-        Text(strings.appDescriptionForWelcomeScreen, style = MaterialTheme.typography.bodyMedium)
-        Spacer(Modifier.height(16.dp))
+        Text(
+            text = strings.appDescriptionForWelcomeScreen,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Justify,
+        )
 
         when (val currentState = state) {
             is Loading -> { /*Left intentionally blank*/
@@ -82,13 +92,33 @@ fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
                 lyricist = lyricist,
             )
         }
-        Text(strings.featuresTitleWelcomeScreen, style = MaterialTheme.typography.headlineLarge)
-        Spacer(Modifier.height(16.dp))
-        Text(strings.featuresListWelcomeScreen, style = MaterialTheme.typography.bodyMedium)
-        Spacer(Modifier.height(32.dp))
-        Text(strings.limitationTitleWelcomeScreen, style = MaterialTheme.typography.headlineLarge)
-        Spacer(Modifier.height(16.dp))
-        Text(strings.limitationsListWelcomeScreen, style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = strings.featuresTitleWelcomeScreen,
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start,
+        )
+
+        Text(
+            text = strings.featuresListWelcomeScreen,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            textAlign = TextAlign.Justify,
+        )
+
+        Text(
+            text = strings.limitationTitleWelcomeScreen,
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start,
+        )
+
+        Text(
+            text = strings.limitationsListWelcomeScreen,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            textAlign = TextAlign.Justify,
+        )
     }
 }
 
@@ -97,27 +127,48 @@ private fun ResumeGameWidget(
     restartGame: () -> Unit,
     resumeGame: () -> Unit,
 ) {
-    val strings = LocalLyricist.current
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            strings.gameInProgressTitleWelcomeScreen,
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Spacer(Modifier.height(24.dp))
-        Text(
-            strings.wouldYouLikeToResumeTitleWelcomeScreen,
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Spacer(Modifier.height(24.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .border(
+                width = 2.dp,
+                color = Color.White,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .background(
+                color = Color.White.copy(alpha = 0.15f),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(32.dp),
+        contentAlignment = Alignment.Center,
+
         ) {
-            OutlinedButton(onClick = { restartGame() }, shape = MaterialTheme.shapes.medium) {
-                Text(strings.noButton)
-            }
-            Button(onClick = { resumeGame() }, shape = MaterialTheme.shapes.medium) {
-                Text(strings.yesButton)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                strings.gameInProgressTitleWelcomeScreen,
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.height(16.dp))
+            Text(
+                strings.wouldYouLikeToResumeTitleWelcomeScreen,
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(24.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                GradientButton(
+                    onClick = { restartGame() },
+                    text = strings.noButton,
+                    modifier = Modifier.alpha(0.70f)
+                )
+                GradientButton(
+                    onClick = { resumeGame() },
+                    text = strings.yesButton
+                )
             }
         }
     }
@@ -140,7 +191,7 @@ private fun StartNewGameWidget(
         Spacer(Modifier.height(24.dp))
         Text(
             strings.appSelectScoringLanguageWelcomeScreen,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.titleLarge
         )
         Spacer(Modifier.height(8.dp))
         LanguageDropdown(lyricist)
