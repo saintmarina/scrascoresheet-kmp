@@ -30,14 +30,14 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.lyricist.rememberStrings
+import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
+import com.steelsoftware.scrascoresheet.GLOBAL_TOP_PADDING
 import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.RussianStrings
 import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
-import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
-import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_TOP_PADDING
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 

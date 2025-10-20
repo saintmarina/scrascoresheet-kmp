@@ -1,9 +1,6 @@
 package com.steelsoftware.scrascoresheet.ui.root
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
@@ -15,16 +12,11 @@ import com.steelsoftware.scrascoresheet.ui.game.GameScreen
 import com.steelsoftware.scrascoresheet.ui.splash.SplashScreen
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeScreen
 
-const val GLOBAL_TOP_PADDING = 64
-const val GLOBAL_SIDE_PADDING = 16
-
 @Composable
 fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) {
     Children(
         stack = root.childStack,
         animation = stackAnimation(fade()),
-        modifier = Modifier.padding(horizontal = 16.dp)
-            .padding(top = GLOBAL_TOP_PADDING.dp, bottom = 16.dp)
     ) {
         when (val child = it.instance) {
             is RootComponent.Child.Splash -> SplashScreen(child.component)

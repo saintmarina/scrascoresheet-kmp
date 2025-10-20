@@ -1,6 +1,5 @@
 package com.steelsoftware.scrascoresheet.ui.welcome
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -9,22 +8,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,10 +32,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,32 +45,18 @@ import com.steelsoftware.scrascoresheet.ScrabbleTheme
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.Strings
 import com.steelsoftware.scrascoresheet.ui.components.GradientButton
-import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.Loading
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.NewGame
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.ResumeGame
-import org.jetbrains.compose.resources.painterResource
-import scrascoresheet.composeapp.generated.resources.Res
-import scrascoresheet.composeapp.generated.resources.logo
 
 @Composable
 fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
     val state by component.state.subscribeAsState()
 
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            painter = painterResource(Res.drawable.logo),
-            contentDescription = strings.logoDescription,
-            modifier = Modifier.padding(horizontal = 20.dp) // TODO: figure out the correct size
-                .padding(bottom = GLOBAL_SIDE_PADDING.dp),
-            alignment = Alignment.Center,
-            contentScale = ContentScale.FillWidth,
-        )
-
         Text(
             text = strings.appDescriptionForWelcomeScreen,
             style = MaterialTheme.typography.bodyLarge,
@@ -111,7 +89,7 @@ fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
         Text(
             text = strings.featuresListWelcomeScreen,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Justify,
         )
 
@@ -125,7 +103,7 @@ fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
         Text(
             text = strings.limitationsListWelcomeScreen,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Justify,
         )
     }
@@ -206,24 +184,12 @@ private fun StartNewGameWidget(
         )
         LanguageDropdown(lyricist)
     }
-
-    // Player name fields
-    Column {
-        Spacer(Modifier.height(8.dp))
-        for (i in playerNames.indices) {
-            OutlinedTextField(
-                value = playerNames[i],
-                onValueChange = { newName ->
-                    playerNames = playerNames.toMutableList().also { it[i] = newName }
-                },
-                placeholder = { Text(strings.player + "${i + 1}") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-            )
-        }
-    }
-    Spacer(Modifier.height(16.dp))
+    PlayerNameInputs(
+        playerNames = playerNames,
+        onNameChange = { index, newName ->
+            playerNames = playerNames.toMutableList().also { it[index] = newName }
+        },
+    )
 
     val typedNames = playerNames
         .map { it.trim() }
@@ -232,17 +198,62 @@ private fun StartNewGameWidget(
         strings.player + " 1",
         strings.player + " 2"
     )
-    Button(
+
+    GradientButton(
         onClick = {
             val finalNames = typedNames.ifEmpty {
                 placeHolderNames
             }
             onStartGame(finalNames)
         },
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-    ) {
-        Text(strings.startButton)
+        text = strings.startButton,
+        modifier = Modifier.fillMaxWidth(0.65f),
+    )
+}
+
+@Composable
+fun PlayerNameInputs(
+    playerNames: List<String>,
+    onNameChange: (Int, String) -> Unit,
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        for (i in playerNames.indices) {
+            BasicTextField(
+                value = playerNames[i],
+                onValueChange = { newName -> onNameChange(i, newName) },
+                singleLine = true,
+                textStyle = LocalTextStyle.current.copy(
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Serif
+                ),
+                decorationBox = { innerTextField ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.65f)
+                            .height(56.dp)
+                            .padding(4.dp)
+                            .border(1.dp, Color.White, RoundedCornerShape(4.dp))
+                            .background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
+                            .padding(horizontal = 8.dp, vertical = 10.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        if (playerNames[i].isEmpty()) {
+                            Text(
+                                text = strings.player + " ${i + 1}",
+                                color = Color(0xFF980C10),
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.Serif
+                            )
+                        }
+                        innerTextField()
+                    }
+                },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(4.dp))
+            )
+        }
     }
 }
 
@@ -263,8 +274,7 @@ private fun LanguageDropdown(
 
     Box(
         modifier = Modifier
-            .padding(19.dp)
-            .width(160.dp)
+            .fillMaxWidth(0.55f)
             .height(47.dp)
             .border(1.dp, Color.White, RoundedCornerShape(4.dp))
             .background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(4.dp))

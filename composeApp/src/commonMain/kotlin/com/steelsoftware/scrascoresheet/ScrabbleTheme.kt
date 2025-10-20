@@ -51,7 +51,7 @@ private val ScrabbleTypography = Typography(
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
-        lineHeight = 22.sp,
+        lineHeight = 26.sp,
         color = Color.White,
         shadow = Shadow(
             color = Color.Black.copy(alpha = 0.5f),
