@@ -26,6 +26,8 @@ class MainActivity : ComponentActivity() {
             gameStorage = storage,
         )
 
+        val urlOpener = AndroidUrlOpener(applicationContext)
+
         setContent {
             val lyricist = rememberStrings(
                 translations = mapOf(
@@ -38,7 +40,7 @@ class MainActivity : ComponentActivity() {
             )
             ScrabbleStrings.setLanguage(lyricist.languageTag)
             ProvideStrings(lyricist, LocalLyricist) {
-                App(root, lyricist)
+                App(root, lyricist, urlOpener)
             }
         }
     }

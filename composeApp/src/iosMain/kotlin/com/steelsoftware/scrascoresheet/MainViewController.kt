@@ -8,8 +8,8 @@ import com.arkivanov.essenty.lifecycle.ApplicationLifecycle
 import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
-import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.i18n.RussianStrings
+import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.ui.root.RootComponent
 
 fun MainViewController() = ComposeUIViewController {
@@ -29,7 +29,9 @@ fun MainViewController() = ComposeUIViewController {
         defaultLanguageTag = Locales.ENGLISH,
         currentLanguageTag = Locales.ENGLISH,
     )
+    val urlOpener = IOSUrlOpener()
+
     ProvideStrings(lyricist, LocalLyricist) {
-        App(root, lyricist)
+        App(root, lyricist, urlOpener)
     }
 }

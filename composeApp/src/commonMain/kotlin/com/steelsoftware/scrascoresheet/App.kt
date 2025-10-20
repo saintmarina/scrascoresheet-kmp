@@ -7,8 +7,8 @@ import com.steelsoftware.scrascoresheet.ui.root.RootComponent
 import com.steelsoftware.scrascoresheet.ui.root.RootContent
 
 @Composable
-fun App(root: RootComponent, lyricist: Lyricist<Strings>) {
+fun App(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) {
     ScrabbleTheme {
-        RootContent(root, lyricist)
+        RootContent(root, lyricist, urlOpener)
     }
 }

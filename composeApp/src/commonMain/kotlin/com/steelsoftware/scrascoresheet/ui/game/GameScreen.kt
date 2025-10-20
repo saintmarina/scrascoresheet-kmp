@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
+import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.ui.root.GLOBAL_SIDE_PADDING
@@ -35,7 +36,7 @@ import scrascoresheet.composeapp.generated.resources.Res
 import scrascoresheet.composeapp.generated.resources.logo
 
 @Composable
-fun GameScreen(component: GameComponent) {
+fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
     val state by component.state.subscribeAsState()
 
     var popoverAnchor by remember { mutableStateOf<Rect?>(null) }
@@ -94,22 +95,23 @@ fun GameScreen(component: GameComponent) {
                             inLeftoversMode = currentState.game.leftOversTurnNumber != null
                         )
                     } else {
-                        // Calculate the turn before leftovers to show pre-penalty scores in tie case
                         val turnBeforeLeftOvers = (currentState.game.leftOversTurnNumber ?: 0)
                         val winners = currentState.game.getWinners()
-                        println("XXX winners: $winners")
+                        val points = strings.points
                         if (winners.size > 1) {
-                            Text(text = "This is a tie between:")
+                            Text(text = strings.thisIsATieBetween)
                             winners.forEach {
                                 val score = currentState.game.getTotalScore(
                                     it,
                                     turnBeforeLeftOvers
                                 )
-                                Text(text = "${currentState.game.playerNames[it]} - ${score} points")
+                                val points = strings.points
+                                Text(text = "${currentState.game.playerNames[it]} - $score $points")
                             }
                         } else {
                             val finalScore = currentState.game.getTotalScore(winners[0])
-                            Text(text = "${currentState.game.playerNames[winners[0]]} won with $finalScore points!")
+                            val wonWith = strings.wonWith
+                            Text(text = "${currentState.game.playerNames[winners[0]]} $wonWith $finalScore $points!")
                         }
                     }
                     if (!currentState.game.isGameOver) {
@@ -144,6 +146,7 @@ fun GameScreen(component: GameComponent) {
                                 resetCurrentWord()
                             },
                             onNewGame = { component.startNewGame() },
+                            urlOpener = urlOpener,
                         )
                     }
 

@@ -62,4 +62,7 @@ val SpanishStrings = Strings(
     rateUsOnAppStore = "Califícanos en App Store",
     submitYourLeftovers = "Entrega tus fichas restantes",
     noLeftovers = "Sin fichas restantes",
+    thisIsATieBetween = "Es un empate entre:",
+    points = "puntos",
+    wonWith = "ganó con",
 )

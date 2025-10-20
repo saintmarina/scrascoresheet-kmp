@@ -43,4 +43,7 @@ data class Strings(
     val rateUsOnAppStore: String,
     val submitYourLeftovers: String,
     val noLeftovers: String,
+    val thisIsATieBetween: String,
+    val points: String,
+    val wonWith: String,
 )

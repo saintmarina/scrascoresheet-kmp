@@ -62,4 +62,7 @@ val RussianStrings = Strings(
     rateUsOnAppStore = "Оцените нас в App Store",
     submitYourLeftovers = "Введите ваши остатки",
     noLeftovers = "Нет остатков",
+    thisIsATieBetween = "Это ничья между:",
+    points = "очка",
+    wonWith = "выиграл с",
 )

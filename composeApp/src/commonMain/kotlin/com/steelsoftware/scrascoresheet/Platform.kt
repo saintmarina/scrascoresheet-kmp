@@ -5,3 +5,7 @@ interface Platform {
 }
 
 expect fun getPlatform(): Platform
+
+interface UrlOpener {
+    fun openAppStoreUrl()
+}

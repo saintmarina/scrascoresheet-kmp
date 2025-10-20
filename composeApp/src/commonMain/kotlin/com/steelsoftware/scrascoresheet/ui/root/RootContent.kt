@@ -8,6 +8,7 @@ import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.i18n.Strings
 import com.steelsoftware.scrascoresheet.ui.finished.FinishedScreen
 import com.steelsoftware.scrascoresheet.ui.game.GameScreen
@@ -18,7 +19,7 @@ const val GLOBAL_TOP_PADDING = 64
 const val GLOBAL_SIDE_PADDING = 16
 
 @Composable
-fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>) {
+fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) {
     Children(
         stack = root.childStack,
         animation = stackAnimation(fade()),
@@ -28,7 +29,7 @@ fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>) {
         when (val child = it.instance) {
             is RootComponent.Child.Splash -> SplashScreen(child.component)
             is RootComponent.Child.Welcome -> WelcomeScreen(child.component, lyricist)
-            is RootComponent.Child.Game -> GameScreen(child.component)
+            is RootComponent.Child.Game -> GameScreen(child.component, urlOpener)
             is RootComponent.Child.Finished -> FinishedScreen(child.component)
         }
     }

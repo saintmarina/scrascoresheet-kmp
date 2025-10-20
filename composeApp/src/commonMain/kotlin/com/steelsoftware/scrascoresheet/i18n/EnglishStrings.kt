@@ -54,4 +54,7 @@ val EnglishStrings = Strings(
     rateUsOnAppStore = "Rate us on App Store",
     submitYourLeftovers = "Submit your leftovers",
     noLeftovers = "No leftovers",
+    thisIsATieBetween = "This is a tie between:",
+    points = "points",
+    wonWith = "won with",
 )
