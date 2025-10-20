@@ -34,6 +34,7 @@ val RussianStrings = Strings(
     blankTile = "Пустая фишка",
     tileBackgroundDescription = "Фон фишки",
     logoDescription = "Логотип Scrabble Score Sheet",
+    select = "Выбрать",
     pass = "Пропустить",
     endTurn = "Закончить ход",
     addWord = "+ Добавить слово",

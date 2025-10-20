@@ -85,7 +85,6 @@ private val ScrabbleTypography = Typography(
     ),
     titleLarge = TextStyle(
         fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 26.sp,
         color = Color.White,
@@ -127,16 +126,18 @@ private val ScrabbleShapes = Shapes(
 
 data class ExtendedColors(
     val deepRed: Color,
+    val brightRed: Color,
     val deepRed30: Color,
     val deepRed40: Color,
     val offWhite: Color,
-    val textShadow: Color
+    val textShadow: Color,
 )
 
 // default/fallback values
 val LocalExtendedColors = staticCompositionLocalOf {
     ExtendedColors(
         deepRed = Color(0xFF622528),
+        brightRed = RedCenter,
         deepRed30 = Color(0x4D622528), // rgba(98,37,40,0.3)
         deepRed40 = Color(0x66622528), // rgba(98,37,40,0.4)
         offWhite = Color(0xFFEEEEEE),
@@ -175,6 +176,7 @@ fun ScrabbleTheme(
 ) {
     val extendedColors = ExtendedColors(
         deepRed = Color(0xFF622528),
+        brightRed = RedCenter,
         deepRed30 = Color(0x4D622528), // 30% alpha
         deepRed40 = Color(0x66622528), // 40% alpha
         offWhite = Color(0xFFEEEEEE).copy(alpha = 0.85f),

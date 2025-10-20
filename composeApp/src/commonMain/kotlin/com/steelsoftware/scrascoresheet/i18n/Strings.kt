@@ -23,6 +23,7 @@ data class Strings(
     val blankTile: String,
     val tileBackgroundDescription: String,
     val logoDescription: String,
+    val select: String,
     val pass: String,
     val endTurn: String,
     val addWord: String,

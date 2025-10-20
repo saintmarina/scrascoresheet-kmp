@@ -34,6 +34,7 @@ val SpanishStrings = Strings(
     blankTile = "Ficha en blanco",
     tileBackgroundDescription = "Fondo de la ficha",
     logoDescription = "Logotipo de Scrabble Score Sheet",
+    select = "Seleccionar",
     pass = "Pasar",
     endTurn = "Terminar turno",
     addWord = "+ Añadir palabra",

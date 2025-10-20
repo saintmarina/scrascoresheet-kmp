@@ -6,17 +6,20 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -32,15 +35,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
+import com.steelsoftware.scrascoresheet.ScrabbleTheme
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.Strings
 import com.steelsoftware.scrascoresheet.ui.components.GradientButton
@@ -186,14 +195,15 @@ private fun StartNewGameWidget(
         )
     }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(strings.appInstructionsForWelcomeScreen, style = MaterialTheme.typography.bodyMedium)
-        Spacer(Modifier.height(24.dp))
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(strings.appInstructionsForWelcomeScreen, style = MaterialTheme.typography.bodyLarge)
         Text(
             strings.appSelectScoringLanguageWelcomeScreen,
             style = MaterialTheme.typography.titleLarge
         )
-        Spacer(Modifier.height(8.dp))
         LanguageDropdown(lyricist)
     }
 
@@ -243,17 +253,76 @@ private fun LanguageDropdown(
     val languages = Locales.languageNames
     var expanded by remember { mutableStateOf(false) }
 
-    Box {
-        OutlinedButton(onClick = { expanded = true }) {
-            languages[ScrabbleStrings.language]?.let { Text(it) }
+
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(
+            ScrabbleTheme.colors.brightRed.copy(alpha = 0.95f),
+            ScrabbleTheme.colors.deepRed.copy(alpha = 0.95f),
+        )
+    )
+
+    Box(
+        modifier = Modifier
+            .padding(19.dp)
+            .width(160.dp)
+            .height(47.dp)
+            .border(1.dp, Color.White, RoundedCornerShape(4.dp))
+            .background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
+            .clip(RoundedCornerShape(4.dp))
+    ) {
+        OutlinedButton(
+            onClick = { expanded = true },
+            modifier = Modifier
+                .matchParentSize(),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = Color.White
+            ),
+            border = null,
+            shape = RoundedCornerShape(4.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = languages[ScrabbleStrings.language] ?: strings.select,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = if (expanded) "▲" else "▼",
+                    fontSize = 18.sp,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
         }
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .background(
+                    brush = gradientBrush,
+                    shape = RoundedCornerShape(6.dp)
+                )
+                .border(1.dp, ScrabbleTheme.colors.offWhite, RoundedCornerShape(6.dp))
         ) {
             languages.forEach { (code, label) ->
                 DropdownMenuItem(
-                    text = { Text(label) },
+                    text = {
+                        Text(
+                            text = label,
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontFamily = FontFamily.Serif
+                        )
+                    },
                     onClick = {
                         lyricist.languageTag = code
                         ScrabbleStrings.setLanguage(code)
