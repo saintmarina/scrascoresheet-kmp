@@ -22,7 +22,7 @@ import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 
 class RootComponent(
     componentContext: ComponentContext,
-    private val gameStorage: GameStorage,
+    gameStorage: GameStorage,
 ) : ComponentContext by componentContext {
     private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
     private val gameRepository = GameRepository(gameStorage)

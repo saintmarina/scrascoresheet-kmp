@@ -101,8 +101,8 @@ class GameComponent(
      * Also used to PASS turn.
      *
      * If the provided [currentWord] is not empty, it is first added to the
-     * current turn using [Game.addWord]. The game state is then advanced
-     * by calling [Game.endTurn].
+     * current turn using [GameObj.addWord]. The game state is then advanced
+     * by calling [GameObj.endTurn].
      *
      * The previous [Game] instance is preserved in [GameState.Game.gameHistory]
      * to enable undo functionality.
@@ -133,7 +133,7 @@ class GameComponent(
     }
 
     /**
-     * Calls [Game.addWord] and saves the new GameState
+     * Calls [GameObj.addWord] and saves the new GameState
      */
     fun addWord(currentWord: Word) {
         val currentState = _state.value
@@ -177,7 +177,7 @@ class GameComponent(
     /**
      * Reverts the game state to the previous turn.
      *
-     * If a previous state exists in [gameHistory], it restores the most recent
+     * If a previous state exists in [Game.gameHistory], it restores the most recent
      * game snapshot and removes it from history. Has no effect if there is no
      * previous game recorded.
      */

@@ -5,9 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import platform.Foundation.NSUserDefaults
 
-const val GAME_KEY = "game"
-const val GAME_HISTORY_KEY = "game_history"
-
 class IOSGameStorage : GameStorage {
 
     private val defaults = NSUserDefaults.standardUserDefaults
@@ -34,5 +31,10 @@ class IOSGameStorage : GameStorage {
 
     override suspend fun clearGameHistory() {
         defaults.removeObjectForKey(GAME_HISTORY_KEY)
+    }
+
+    companion object {
+        private const val GAME_KEY = "game"
+        private const val GAME_HISTORY_KEY = "game_history"
     }
 }

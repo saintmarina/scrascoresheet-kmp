@@ -6,10 +6,7 @@ import com.steelsoftware.scrascoresheet.storage.GameStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-const val GAME_KEY = "game"
-const val GAME_HISTORY_KEY = "game_history"
-
-class AndroidGameStorage(private val context: Context) : GameStorage {
+class AndroidGameStorage(context: Context) : GameStorage {
 
     private val prefs = context.getSharedPreferences("game_state", Context.MODE_PRIVATE)
 
@@ -35,5 +32,10 @@ class AndroidGameStorage(private val context: Context) : GameStorage {
 
     override suspend fun clearGameHistory() {
         prefs.edit { remove(GAME_HISTORY_KEY) }
+    }
+
+    companion object {
+        private const val GAME_KEY = "game"
+        private const val GAME_HISTORY_KEY = "game_history"
     }
 }
