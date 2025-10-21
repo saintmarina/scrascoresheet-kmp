@@ -24,7 +24,6 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
@@ -54,6 +53,8 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
 
     var shouldShowPopoverInstruction by remember { mutableStateOf(false) }
 
+    var isInLeftoverMode by remember { mutableStateOf(false) }
+
     Box(Modifier.fillMaxSize()) {
         Column(
             Modifier
@@ -76,6 +77,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
             )
             when (val currentState = state) {
                 is GameState.Game -> {
+                    isInLeftoverMode = currentState.game.leftOversTurnNumber != null
                     shouldShowPopoverInstruction =
                         currentState.game.getCurrentTurnNumber() == 0 && currentState.game.currentPlayerIndex == 0
                     ScoreGrid(game = currentState.game)
@@ -99,7 +101,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                         if (winners.size > 1) {
                             Text(
                                 text = strings.thisIsATieBetween,
-                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 32.sp),
+                                style = MaterialTheme.typography.displayLarge,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center,
                             )
@@ -111,7 +113,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                                 val points = strings.points
                                 Text(
                                     text = "${currentState.game.playerNames[it]} - $score $points",
-                                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 32.sp),
+                                    style = MaterialTheme.typography.displayLarge,
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center,
                                 )
@@ -121,7 +123,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                             val wonWith = strings.wonWith
                             Text(
                                 text = "${currentState.game.playerNames[winners[0]]} $wonWith $finalScore $points!",
-                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 32.sp),
+                                style = MaterialTheme.typography.displayLarge,
                                 modifier = Modifier.fillMaxWidth(0.65f),
                                 textAlign = TextAlign.Center,
                             )
@@ -168,7 +170,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
             Instructions()
             Spacer(Modifier.height(16.dp))
         }
-        if (popoverAnchor != null && inputBoxBounds != null) { // TODO: And not in the leftover mode
+        if (popoverAnchor != null && inputBoxBounds != null && !isInLeftoverMode) {
             Box(
                 Modifier
                     .clickable(

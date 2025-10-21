@@ -70,6 +70,8 @@ fun InGameOverButtonControls(
                     modifier = Modifier.fillMaxWidth()
                 )
 
+                // TODO: show "RATE US" buttons
+                /*
                 if (isAndroid()) {
                     GradientButton(
                         onClick = { urlOpener.openAppStoreUrl() },
@@ -85,6 +87,7 @@ fun InGameOverButtonControls(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+                 */
                 GradientButton(
                     onClick = onUndo,
                     text = strings.undo.uppercase(),

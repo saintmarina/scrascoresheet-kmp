@@ -115,7 +115,18 @@ private val ScrabbleTypography = Typography(
             offset = Offset(1f, 1f),
             blurRadius = 0f
         )
-    )
+    ),
+    displayLarge = TextStyle(
+        fontFamily = FontFamily.Serif,
+        fontSize = 38.sp,
+        lineHeight = 46.sp,
+        color = Color.White,
+        shadow = Shadow(
+            color = Color.Black.copy(alpha = 0.5f),
+            offset = Offset(1f, 1f),
+            blurRadius = 0f
+        )
+    ),
 )
 
 private val ScrabbleShapes = Shapes(

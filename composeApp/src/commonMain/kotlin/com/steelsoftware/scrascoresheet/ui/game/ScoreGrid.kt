@@ -95,10 +95,9 @@ fun ScoreGrid(
             TableCell(
                 topText = strings.gridHeaderPlayerTurn,
                 modifier = Modifier.weight(1f),
-                bold = true
+                bold = true,
             )
         }
-
 
         // Moves and player turns
         repeat(numRows) { moveIndex ->
@@ -142,18 +141,19 @@ fun ScoreGrid(
                         TableCell(
                             topText = playerNames[playerIndex],
                             bottomText = playerTotal,
-                            modifier = Modifier.width(headerWidth + 16.dp)
+                            modifier = Modifier.width(headerWidth + 16.dp),
+                            isBottomTransparent = true,
                         )
                         TableDivider()
                         if (turn.words.isEmpty()) {
                             var emptyCellText = strings.gridSubmitAWordOrPass
-                            if (turn.isPassed(game)) emptyCellText = strings.pass
+                            if (turn.isPassed(game)) emptyCellText = strings.pass.uppercase()
 
                             if (game.leftOversTurnNumber != null) emptyCellText =
                                 strings.submitYourLeftovers
                             TableCell(
                                 topText = emptyCellText,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             )
                         } else {
                             TurnRow(
@@ -175,7 +175,6 @@ fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxSize()
-            .background(ScrabbleTheme.colors.deepRed30)
             .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -188,12 +187,13 @@ fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
             if (turn.words[0].value == REAPED_LEFTOVERS_WORD) {
                 TableCell(
                     topText = strings.noLeftovers.uppercase(),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
             } else {
                 turn.words.forEach { word ->
                     WordTileRow(word = word)
                 }
+                if (turn.bingo) TableCell(topText = "${strings.bingo.uppercase()}!")
             }
         }
 
@@ -212,8 +212,7 @@ fun TurnRow(turn: Turn, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-
-                    )
+                )
             )
         }
     }
@@ -284,6 +283,7 @@ fun MoveNumberCell(
 fun TableCell(
     topText: String,
     bottomText: String? = null,
+    isBottomTransparent: Boolean = false,
     modifier: Modifier = Modifier,
     bold: Boolean = false
 ) {
@@ -305,6 +305,7 @@ fun TableCell(
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,
+                modifier = if (bottomText == null && isBottomTransparent) Modifier.padding(vertical = 16.dp) else Modifier
             )
             bottomText?.let {
                 Text(
