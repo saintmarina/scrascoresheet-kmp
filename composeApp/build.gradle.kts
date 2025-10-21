@@ -1,3 +1,4 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,6 +7,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
+    kotlin("native.cocoapods")
+    id("com.codingfeline.buildkonfig") version "0.17.1"
 }
 
 kotlin {
@@ -14,7 +17,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -24,11 +27,21 @@ kotlin {
             isStatic = true
         }
     }
-    
+
+    cocoapods {
+        version = "2.0"
+
+        // 👇 Add Amplitude iOS SDK dependency
+        pod("AmplitudeUnified") {
+            version = "~> 0.0.0"
+        }
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.amplitude.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -53,12 +66,14 @@ kotlin {
     }
 }
 
+val appPackageName = "com.steelsoftware.scrascoresheet"
+
 android {
-    namespace = "com.steelsoftware.scrascoresheet"
+    namespace = appPackageName
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.steelsoftware.scrascoresheet"
+        applicationId = appPackageName
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -84,3 +99,15 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+buildkonfig {
+    packageName = appPackageName
+    objectName = "AppConfig"
+
+    defaultConfigs {
+        buildConfigField(
+            Type.STRING,
+            "AMPLITUDE_API_KEY",
+            "\"${project.findProperty("AMPLITUDE_API_KEY") ?: ""}\""
+        )
+    }
+}

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.11.2"
+amplitude = "1.22.4"
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
@@ -36,6 +37,7 @@ essenty-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-corou
 # i18n
 lyricist-core = { group = "cafe.adriel.lyricist", name = "lyricist-core", version.ref = "lyricist" }
 lyricist-full = { group = "cafe.adriel.lyricist", name = "lyricist", version.ref = "lyricist" }
+amplitude-android = { group = "com.amplitude", name = "analytics-android", version.ref = "amplitude" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

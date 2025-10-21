@@ -5,6 +5,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnResume
+import com.steelsoftware.scrascoresheet.AnalyticsManager
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.logic.scoreListsMap
@@ -20,7 +21,8 @@ class GameComponent(
     componentContext: ComponentContext,
     private val gameRepository: GameRepository,
     private val game: GameObj,
-    private val onStartNewGame: () -> Unit
+    private val onStartNewGame: () -> Unit,
+    private val analytics: AnalyticsManager,
 ) : ComponentContext by componentContext {
     private val _state = MutableValue<GameState>(GameState.Loading)
     val state: Value<GameState> = _state

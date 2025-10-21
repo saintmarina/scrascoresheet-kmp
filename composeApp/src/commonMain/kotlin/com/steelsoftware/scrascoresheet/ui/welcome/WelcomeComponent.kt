@@ -6,6 +6,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnResume
+import com.steelsoftware.scrascoresheet.AnalyticsManager
 import com.steelsoftware.scrascoresheet.logic.Game
 import com.steelsoftware.scrascoresheet.repository.GameRepository
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ class WelcomeComponent(
     componentContext: ComponentContext,
     private val gameRepository: GameRepository,
     private val onStartGame: (Game) -> Unit,
+    private val analytics: AnalyticsManager,
 ) : ComponentContext by componentContext {
     private val _state = MutableValue<WelcomeState>(WelcomeState.Loading)
     val state: Value<WelcomeState> = _state

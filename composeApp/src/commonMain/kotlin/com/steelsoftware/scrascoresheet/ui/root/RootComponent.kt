@@ -10,6 +10,7 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.steelsoftware.scrascoresheet.AnalyticsManager
 import com.steelsoftware.scrascoresheet.repository.GameRepository
 import com.steelsoftware.scrascoresheet.storage.GameStorage
 import com.steelsoftware.scrascoresheet.ui.game.GameComponent
@@ -23,6 +24,7 @@ import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 class RootComponent(
     componentContext: ComponentContext,
     gameStorage: GameStorage,
+    private val analytics: AnalyticsManager,
 ) : ComponentContext by componentContext {
     private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
     private val gameRepository = GameRepository(gameStorage)
@@ -54,7 +56,8 @@ class RootComponent(
                     gameRepository = gameRepository,
                     onStartGame = { gameObj ->
                         navigation.push(Config.Game(gameObj))
-                    }
+                    },
+                    analytics = analytics,
                 )
             )
 
@@ -63,7 +66,8 @@ class RootComponent(
                     componentContext = ctx,
                     gameRepository = gameRepository,
                     game = config.game,
-                    onStartNewGame = { navigation.replaceAll(Config.Welcome) }
+                    onStartNewGame = { navigation.replaceAll(Config.Welcome) },
+                    analytics = analytics,
                 )
             )
         }

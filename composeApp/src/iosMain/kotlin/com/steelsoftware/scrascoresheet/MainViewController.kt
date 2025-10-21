@@ -15,9 +15,11 @@ import com.steelsoftware.scrascoresheet.ui.root.RootComponent
 fun MainViewController() = ComposeUIViewController {
     val lifecycle = ApplicationLifecycle()
     val storage = IOSGameStorage()
+    val analytics = AnalyticsManager(apiKey = AppConfig.AMPLITUDE_API_KEY)
     val root = RootComponent(
         componentContext = DefaultComponentContext(lifecycle),
         gameStorage = storage,
+        analytics = analytics,
     )
 
     val lyricist = rememberStrings(

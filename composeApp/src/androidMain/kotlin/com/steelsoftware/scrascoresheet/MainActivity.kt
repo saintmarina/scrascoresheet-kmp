@@ -21,9 +21,14 @@ class MainActivity : ComponentActivity() {
 
         // Create RootComponent instance with AndroidGameStorage
         val storage = AndroidGameStorage(this)
+        val analytics = AnalyticsManager(
+            apiKey = AppConfig.AMPLITUDE_API_KEY,
+            context = this,
+        )
         val root = RootComponent(
             componentContext = defaultComponentContext(),
             gameStorage = storage,
+            analytics = analytics,
         )
 
         val urlOpener = AndroidUrlOpener(applicationContext)
