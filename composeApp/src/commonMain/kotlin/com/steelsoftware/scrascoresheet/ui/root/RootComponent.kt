@@ -14,11 +14,9 @@ import com.steelsoftware.scrascoresheet.AnalyticsManager
 import com.steelsoftware.scrascoresheet.repository.GameRepository
 import com.steelsoftware.scrascoresheet.storage.GameStorage
 import com.steelsoftware.scrascoresheet.ui.game.GameComponent
-import com.steelsoftware.scrascoresheet.ui.splash.SplashComponent
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 
 class RootComponent(
@@ -32,24 +30,15 @@ class RootComponent(
 
     val childStack: Value<ChildStack<*, Child>> = childStack(
         source = navigation,
-        initialConfiguration = Config.Splash,
+        initialConfiguration = Config.Welcome,
         handleBackButton = true,
         childFactory = ::createChild,
         serializer = null,
     )
 
-    init {
-        // Wait 2 seconds and then set the next screen to Welcome
-        scope.launch {
-            //delay(2000)
-            navigation.replaceAll(Config.Welcome)
-        }
-    }
-
     @OptIn(DelicateDecomposeApi::class)
     private fun createChild(config: Config, ctx: ComponentContext): Child =
         when (config) {
-            Config.Splash -> Child.Splash(SplashComponent(ctx))
             Config.Welcome -> Child.Welcome(
                 WelcomeComponent(
                     componentContext = ctx,
@@ -73,13 +62,11 @@ class RootComponent(
         }
 
     private sealed class Config {
-        data object Splash : Config()
         data object Welcome : Config()
         data class Game(val game: GameObj) : Config()
     }
 
     sealed class Child {
-        data class Splash(val component: SplashComponent) : Child()
         data class Welcome(val component: WelcomeComponent) : Child()
         data class Game(val component: GameComponent) : Child()
     }
