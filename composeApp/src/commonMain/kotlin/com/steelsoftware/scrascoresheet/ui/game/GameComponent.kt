@@ -3,23 +3,37 @@ package com.steelsoftware.scrascoresheet.ui.game
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.logic.scoreListsMap
+import com.steelsoftware.scrascoresheet.repository.GameRepository
 import com.steelsoftware.scrascoresheet.ui.game.GameState.Game
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 
 
 class GameComponent(
     componentContext: ComponentContext,
+    private val gameRepository: GameRepository,
     private val game: GameObj,
     private val onStartNewGame: () -> Unit
 ) : ComponentContext by componentContext {
-    private val _state = MutableValue<GameState>(Game(game, emptyList()))
+    private val _state = MutableValue<GameState>(GameState.Loading)
     val state: Value<GameState> = _state
+    private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
 
-    fun saveGame() {
-        // TODO: Implement game saving logic here
+    init {
+        doOnResume {
+            scope.launch {
+                val game = gameRepository.loadGame() ?: this@GameComponent.game
+                val history = gameRepository.loadGameHistory().orEmpty()
+                _state.value = Game(game, history)
+            }
+        }
     }
 
     fun endGame() {
@@ -27,16 +41,23 @@ class GameComponent(
         if (currentState !is Game) return
 
         val newGame = currentState.game.startLeftOvers()
+        val newGameHistory = currentState.gameHistory + newGame
 
-        _state.value = Game(
-            game = newGame,
-            gameHistory = currentState.gameHistory + currentState.game
-        )
+        scope.launch {
+            gameRepository.saveGame(newGame)
+            gameRepository.saveGameHistory(newGameHistory)
+            _state.value = Game(
+                game = newGame,
+                gameHistory = newGameHistory
+            )
+        }
     }
 
     fun startNewGame() {
-        // TODO: clear game from memory
-        onStartNewGame()
+        scope.launch {
+            gameRepository.clear()
+            onStartNewGame()
+        }
     }
 
     fun calculateScrabbleScore(
@@ -99,11 +120,16 @@ class GameComponent(
         }
 
         val newGame = game.endTurn()
+        val newGameHistory = currentState.gameHistory + currentState.game
 
-        _state.value = Game(
-            game = newGame,
-            gameHistory = currentState.gameHistory + currentState.game
-        )
+        scope.launch {
+            gameRepository.saveGame(newGame)
+            gameRepository.saveGameHistory(newGameHistory)
+            _state.value = Game(
+                game = newGame,
+                gameHistory = newGameHistory,
+            )
+        }
     }
 
     /**
@@ -116,7 +142,13 @@ class GameComponent(
 
         // Add a new word to current turn
         val newGame = game.addWord(currentWord)
-        _state.value = Game(newGame, currentState.gameHistory + game)
+        val newGameHistory = currentState.gameHistory + game
+
+        scope.launch {
+            gameRepository.saveGame(newGame)
+            gameRepository.saveGameHistory(newGameHistory)
+            _state.value = Game(newGame, newGameHistory)
+        }
     }
 
     /**
@@ -133,7 +165,13 @@ class GameComponent(
 
         val isBingo = !game.getCurrentTurn().bingo
         val newGame = game.setBingo(isBingo)
-        _state.value = Game(newGame, currentState.gameHistory + game)
+        val newGameHistory = currentState.gameHistory + game
+
+        scope.launch {
+            gameRepository.saveGame(newGame)
+            gameRepository.saveGameHistory(newGameHistory)
+            _state.value = Game(newGame, newGameHistory)
+        }
     }
 
     /**
@@ -150,7 +188,11 @@ class GameComponent(
         if (currentState.gameHistory.isNotEmpty()) {
             val previousHistory = currentState.gameHistory.dropLast(1)
             val previousGame = currentState.gameHistory.last()
-            _state.value = Game(previousGame, previousHistory)
+            scope.launch {
+                gameRepository.saveGame(previousGame)
+                gameRepository.saveGameHistory(previousHistory)
+                _state.value = Game(previousGame, previousHistory)
+            }
         }
     }
 
@@ -172,9 +214,15 @@ class GameComponent(
             )
         }
 
-        _state.value = Game(
-            game = game,
-            gameHistory = currentState.gameHistory + currentState.game
-        )
+        val newGameHistory = currentState.gameHistory + currentState.game
+
+        scope.launch {
+            gameRepository.saveGame(game)
+            gameRepository.saveGameHistory(newGameHistory)
+            _state.value = Game(
+                game = game,
+                gameHistory = newGameHistory
+            )
+        }
     }
 }

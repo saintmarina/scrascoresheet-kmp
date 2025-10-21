@@ -146,11 +146,16 @@ fun ScoreGrid(
                         )
                         TableDivider()
                         if (turn.words.isEmpty()) {
-                            var emptyCellText = strings.gridSubmitAWordOrPass
-                            if (turn.isPassed(game)) emptyCellText = strings.pass.uppercase()
+                            val isLeftoversRow: Boolean =
+                                game.leftOversTurnNumber?.let { moveIndex >= it } ?: false
 
-                            if (game.leftOversTurnNumber != null) emptyCellText =
-                                strings.submitYourLeftovers
+                            val emptyCellText = when {
+                                isLeftoversRow && turn.isPassed(game) -> strings.noLeftovers.uppercase()
+                                isLeftoversRow -> strings.submitYourLeftovers
+                                turn.isPassed(game) -> strings.pass.uppercase()
+                                else -> strings.gridSubmitAWordOrPass
+                            }
+
                             TableCell(
                                 topText = emptyCellText,
                                 modifier = Modifier.weight(1f),
