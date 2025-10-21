@@ -7,7 +7,6 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.i18n.Strings
-import com.steelsoftware.scrascoresheet.ui.finished.FinishedScreen
 import com.steelsoftware.scrascoresheet.ui.game.GameScreen
 import com.steelsoftware.scrascoresheet.ui.splash.SplashScreen
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeScreen
@@ -22,7 +21,6 @@ fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: Url
             is RootComponent.Child.Splash -> SplashScreen(child.component)
             is RootComponent.Child.Welcome -> WelcomeScreen(child.component, lyricist)
             is RootComponent.Child.Game -> GameScreen(child.component, urlOpener)
-            is RootComponent.Child.Finished -> FinishedScreen(child.component)
         }
     }
 }

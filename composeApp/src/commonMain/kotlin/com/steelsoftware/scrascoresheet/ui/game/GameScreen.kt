@@ -71,7 +71,10 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
             Image(
                 painter = painterResource(Res.drawable.logo),
                 contentDescription = strings.logoDescription,
-                modifier = Modifier.fillMaxWidth(0.75f).padding(bottom = GLOBAL_SIDE_PADDING.dp),
+                modifier = Modifier
+                    .fillMaxWidth(0.75f)
+                    .padding(bottom = GLOBAL_SIDE_PADDING.dp)
+                    .clickable { component.startNewGame() },
                 alignment = Alignment.Center,
                 contentScale = ContentScale.FillWidth,
             )
@@ -164,7 +167,6 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                             urlOpener = urlOpener,
                         )
                     }
-
                 }
             }
             Instructions()

@@ -12,7 +12,6 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.steelsoftware.scrascoresheet.repository.GameRepository
 import com.steelsoftware.scrascoresheet.storage.GameStorage
-import com.steelsoftware.scrascoresheet.ui.finished.FinishedComponent
 import com.steelsoftware.scrascoresheet.ui.game.GameComponent
 import com.steelsoftware.scrascoresheet.ui.splash.SplashComponent
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeComponent
@@ -63,14 +62,7 @@ class RootComponent(
                 GameComponent(
                     componentContext = ctx,
                     game = config.game,
-                    onStartNewGame = { navigation.push(Config.Finished) }
-                )
-            )
-
-            Config.Finished -> Child.Finished(
-                FinishedComponent(
-                    componentContext = ctx,
-                    onRestart = { navigation.replaceAll(Config.Welcome) }
+                    onStartNewGame = { navigation.replaceAll(Config.Welcome) }
                 )
             )
         }
@@ -79,13 +71,11 @@ class RootComponent(
         data object Splash : Config()
         data object Welcome : Config()
         data class Game(val game: GameObj) : Config()
-        data object Finished : Config()
     }
 
     sealed class Child {
         data class Splash(val component: SplashComponent) : Child()
         data class Welcome(val component: WelcomeComponent) : Child()
         data class Game(val component: GameComponent) : Child()
-        data class Finished(val component: FinishedComponent) : Child()
     }
 }

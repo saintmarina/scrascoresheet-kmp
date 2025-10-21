@@ -35,6 +35,7 @@ class GameComponent(
     }
 
     fun startNewGame() {
+        // TODO: clear game from memory
         onStartNewGame()
     }
 
