@@ -20,14 +20,13 @@ class WelcomeComponent(
     private val _state = MutableValue<WelcomeState>(WelcomeState.Loading)
     val state: Value<WelcomeState> = _state
 
-    private var savedGame: Game? = null
 
     private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
 
     init {
         doOnResume {
             scope.launch {
-                savedGame = gameRepository.loadGame()
+                val savedGame = gameRepository.loadGame()
                 _state.update {
                     if (savedGame != null) WelcomeState.ResumeGame else WelcomeState.NewGame(
                         playerNames = emptyList(),
@@ -47,17 +46,25 @@ class WelcomeComponent(
 
     fun restartGame() {
         val currentState = _state.value
-        if (currentState is WelcomeState.ResumeGame && savedGame != null) {
-            _state.update {
-                WelcomeState.NewGame(
-                    playerNames = savedGame!!.playerNames
-                )
+        scope.launch {
+            val savedGame = gameRepository.loadGame()
+            if (currentState is WelcomeState.ResumeGame && savedGame != null) {
+
+                gameRepository.clear()
+                _state.update {
+                    WelcomeState.NewGame(
+                        playerNames = savedGame.playerNames
+                    )
+                }
             }
         }
     }
 
     fun resumeGame() {
-        val game = savedGame ?: return
-        onStartGame(game)
+        scope.launch {
+            gameRepository.loadGame()?.let { game ->
+                onStartGame(game)
+            }
+        }
     }
 }
