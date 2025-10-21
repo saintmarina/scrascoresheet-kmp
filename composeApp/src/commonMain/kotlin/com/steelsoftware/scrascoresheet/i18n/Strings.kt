@@ -48,4 +48,6 @@ data class Strings(
     val thisIsATieBetween: String,
     val points: String,
     val wonWith: String,
+    val areYouSureYouWantToStartANewGame: String,
+    val currentProgressWillBeLost: String,
 )

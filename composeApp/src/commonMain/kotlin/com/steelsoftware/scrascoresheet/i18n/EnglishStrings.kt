@@ -59,4 +59,6 @@ val EnglishStrings = Strings(
     thisIsATieBetween = "This is a tie between:",
     points = "points",
     wonWith = "won with",
+    areYouSureYouWantToStartANewGame = "Are you sure you want to start a new game?",
+    currentProgressWillBeLost = "Current progress will be lost.",
 )

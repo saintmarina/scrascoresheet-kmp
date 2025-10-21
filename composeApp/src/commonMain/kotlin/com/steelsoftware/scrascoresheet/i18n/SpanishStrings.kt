@@ -67,4 +67,6 @@ val SpanishStrings = Strings(
     thisIsATieBetween = "Es un empate entre:",
     points = "puntos",
     wonWith = "ganó con",
+    areYouSureYouWantToStartANewGame = "¿Estás seguro de que quieres empezar una nueva partida?",
+    currentProgressWillBeLost = "El progreso actual se perderá.",
 )

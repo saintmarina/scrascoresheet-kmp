@@ -67,4 +67,6 @@ val RussianStrings = Strings(
     thisIsATieBetween = "Это ничья между:",
     points = "очка",
     wonWith = "выиграл с",
+    areYouSureYouWantToStartANewGame = "Вы уверены, что хотите начать новую игру?",
+    currentProgressWillBeLost = "Текущий прогресс будет потерян.",
 )

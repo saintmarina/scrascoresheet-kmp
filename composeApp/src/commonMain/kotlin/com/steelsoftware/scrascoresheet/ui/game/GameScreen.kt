@@ -1,16 +1,20 @@
 package com.steelsoftware.scrascoresheet.ui.game
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,17 +24,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
+import com.steelsoftware.scrascoresheet.ScrabbleTheme
 import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
+import com.steelsoftware.scrascoresheet.ui.components.GradientButton
 import org.jetbrains.compose.resources.painterResource
 import scrascoresheet.composeapp.generated.resources.Res
 import scrascoresheet.composeapp.generated.resources.logo
@@ -54,8 +67,16 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
     var shouldShowPopoverInstruction by remember { mutableStateOf(false) }
 
     var isInLeftoverMode by remember { mutableStateOf(false) }
+    var shouldShowStartNewGameDialog by remember { mutableStateOf(false) }
 
     Box(Modifier.fillMaxSize()) {
+        if (shouldShowStartNewGameDialog) {
+            ConfirmNewGamePopup(
+                show = true,
+                onConfirm = { component.startNewGame() },
+                onDismiss = { shouldShowStartNewGameDialog = false }
+            )
+        }
         Column(
             Modifier
                 .fillMaxSize()
@@ -74,7 +95,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                 modifier = Modifier
                     .fillMaxWidth(0.75f)
                     .padding(bottom = GLOBAL_SIDE_PADDING.dp)
-                    .clickable { component.startNewGame() },
+                    .clickable { shouldShowStartNewGameDialog = true },
                 alignment = Alignment.Center,
                 contentScale = ContentScale.FillWidth,
             )
@@ -230,4 +251,91 @@ fun Instructions() {
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Justify,
     )
+}
+
+
+@Composable
+fun ConfirmNewGamePopup(
+    show: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (!show) return
+
+    Popup(
+        alignment = Alignment.Center,
+        onDismissRequest = onDismiss,
+        properties = PopupProperties(
+            focusable = true,
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .drawWithCache {
+                    val brush = Brush.radialGradient(
+                        colors = listOf(Color.Black, Color.Transparent),
+                        center = Offset(size.width / 2f, size.height / 2f),
+                        radius = 1000f
+                    )
+                    onDrawBehind {
+                        drawRect(brush)
+                    }
+                }
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = onDismiss
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            val gradientBrush = Brush.verticalGradient(
+                colors = listOf(
+                    ScrabbleTheme.colors.brightRed.copy(alpha = 0.95f),
+                    ScrabbleTheme.colors.deepRed.copy(alpha = 0.95f)
+                )
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .background(brush = gradientBrush, shape = RoundedCornerShape(8.dp))
+                    .border(2.dp, Color.White, RoundedCornerShape(8.dp))
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = strings.areYouSureYouWantToStartANewGame,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = strings.currentProgressWillBeLost,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        GradientButton(
+                            onClick = onDismiss,
+                            text = strings.noButton.uppercase(),
+                            modifier = Modifier.alpha(0.7f)
+                        )
+                        GradientButton(
+                            onClick = {
+                                onConfirm()
+                                onDismiss()
+                            },
+                            text = strings.yesButton.uppercase()
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
