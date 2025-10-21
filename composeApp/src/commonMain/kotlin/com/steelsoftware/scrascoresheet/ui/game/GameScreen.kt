@@ -79,6 +79,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                 contentScale = ContentScale.FillWidth,
             )
             when (val currentState = state) {
+                is GameState.Loading -> {}
                 is GameState.Game -> {
                     isInLeftoverMode = currentState.game.leftOversTurnNumber != null
                     shouldShowPopoverInstruction =

@@ -61,6 +61,7 @@ class RootComponent(
             is Config.Game -> Child.Game(
                 GameComponent(
                     componentContext = ctx,
+                    gameRepository = gameRepository,
                     game = config.game,
                     onStartNewGame = { navigation.replaceAll(Config.Welcome) }
                 )

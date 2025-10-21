@@ -23,10 +23,11 @@ class WelcomeComponent(
     private var savedGame: Game? = null
 
     private val scope = coroutineScope(Dispatchers.Main + SupervisorJob())
+
     init {
         doOnResume {
             scope.launch {
-                savedGame = gameRepository.load()
+                savedGame = gameRepository.loadGame()
                 _state.update {
                     if (savedGame != null) WelcomeState.ResumeGame else WelcomeState.NewGame(
                         playerNames = emptyList(),
@@ -39,7 +40,7 @@ class WelcomeComponent(
     fun startGame(playerNames: List<String>) {
         scope.launch {
             val newGame = Game.createNewGame(playerNames)
-            gameRepository.save(newGame)
+            gameRepository.saveGame(newGame)
             onStartGame(newGame)
         }
     }
