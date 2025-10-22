@@ -45,7 +45,6 @@ fun InGameOverButtonControls(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            println("XXX")
             if (!currentGameState.game.areLeftOversSubmitted()) {
                 // SUBMIT LEFTOVERS / NO LEFTOVERS
                 GradientButton(

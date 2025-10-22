@@ -7,6 +7,7 @@ import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steelsoftware.scrascoresheet.AnalyticsManager
 import com.steelsoftware.scrascoresheet.logic.ModifierType
+import com.steelsoftware.scrascoresheet.logic.Turn
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.logic.scoreListsMap
 import com.steelsoftware.scrascoresheet.repository.GameRepository
@@ -14,9 +15,12 @@ import com.steelsoftware.scrascoresheet.ui.game.GameState.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import com.steelsoftware.scrascoresheet.logic.Game as GameObj
 
 
+@OptIn(ExperimentalTime::class)
 class GameComponent(
     componentContext: ComponentContext,
     private val gameRepository: GameRepository,
@@ -45,6 +49,8 @@ class GameComponent(
         val newGame = currentState.game.startLeftOvers()
         val newGameHistory = currentState.gameHistory + newGame
 
+        analytics.logEvent("end_game", loggableGame(newGame))
+
         scope.launch {
             gameRepository.saveGame(newGame)
             gameRepository.saveGameHistory(newGameHistory)
@@ -56,6 +62,7 @@ class GameComponent(
     }
 
     fun startNewGame() {
+        analytics.logEvent("start_new_game")
         scope.launch {
             gameRepository.clear()
             onStartNewGame()
@@ -124,6 +131,13 @@ class GameComponent(
         val newGame = game.endTurn()
         val newGameHistory = currentState.gameHistory + currentState.game
 
+        val eventData = if (currentWord.value.isNotBlank()) {
+            mapOf("word" to loggableWord(currentWord))
+        } else {
+            mapOf("passed" to true)
+        }
+        analytics.logEvent("end_turn", eventData)
+
         scope.launch {
             gameRepository.saveGame(newGame)
             gameRepository.saveGameHistory(newGameHistory)
@@ -145,6 +159,8 @@ class GameComponent(
         // Add a new word to current turn
         val newGame = game.addWord(currentWord)
         val newGameHistory = currentState.gameHistory + game
+
+        analytics.logEvent("add_word", mapOf("word" to loggableWord(currentWord)))
 
         scope.launch {
             gameRepository.saveGame(newGame)
@@ -169,6 +185,8 @@ class GameComponent(
         val newGame = game.setBingo(isBingo)
         val newGameHistory = currentState.gameHistory + game
 
+        analytics.logEvent("toggle_bingo")
+
         scope.launch {
             gameRepository.saveGame(newGame)
             gameRepository.saveGameHistory(newGameHistory)
@@ -190,6 +208,9 @@ class GameComponent(
         if (currentState.gameHistory.isNotEmpty()) {
             val previousHistory = currentState.gameHistory.dropLast(1)
             val previousGame = currentState.gameHistory.last()
+
+            analytics.logEvent("undo")
+
             scope.launch {
                 gameRepository.saveGame(previousGame)
                 gameRepository.saveGameHistory(previousHistory)
@@ -218,6 +239,9 @@ class GameComponent(
 
         val newGameHistory = currentState.gameHistory + currentState.game
 
+        val eventData = currentWord.value.ifBlank { "No leftovers submitted" }
+        analytics.logEvent("submit_leftovers", mapOf("leftovers" to eventData))
+
         scope.launch {
             gameRepository.saveGame(game)
             gameRepository.saveGameHistory(newGameHistory)
@@ -225,6 +249,53 @@ class GameComponent(
                 game = game,
                 gameHistory = newGameHistory
             )
+        }
+    }
+
+    private fun loggableWord(word: Word): String {
+        val modifiers = word.modifiers.mapIndexedNotNull { i, mod ->
+            val modName = when (mod) {
+                ModifierType.NONE -> null
+                else -> "$i:${mod.name}"
+            }
+            modName
+        }.joinToString(", ")
+
+        return if (modifiers.isEmpty()) {
+            word.value
+        } else {
+            "${word.value} ($modifiers)"
+        }
+    }
+
+    private fun loggableTurn(turn: Turn): String =
+        when {
+            turn.isPassed(game) -> "PASS"
+            turn.words.isNotEmpty() -> {
+                val turnWords = turn.words.joinToString("+") { loggableWord(it) }
+                if (turn.bingo) "$turnWords BINGO" else turnWords
+            }
+
+            else -> ""
+        }
+
+    @OptIn(ExperimentalTime::class)
+    private fun loggableGame(game: GameObj): Map<String, Any> {
+        val turns = game.playersTurns.map { playerTurns ->
+            playerTurns.joinToString(",") { loggableTurn(it) }
+        }
+
+        val scores = game.playersTurns.mapIndexed { i, _ -> game.getTotalScore(i) }
+        val numTurns = game.playersTurns.firstOrNull()?.size?.minus(1) ?: 0
+
+        val endTimeMillis = Clock.System.now().toEpochMilliseconds()
+        val durationMins = (endTimeMillis - game.startTime).toDouble() / 1000.0 / 60.0
+
+        return buildMap {
+            put("turns", turns)
+            put("scores", scores)
+            put("numTurns", numTurns)
+            put("durationMins", durationMins)
         }
     }
 }

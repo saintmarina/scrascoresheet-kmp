@@ -16,6 +16,15 @@ actual class AnalyticsManager actual constructor(apiKey: String, context: Any?) 
 
 
     actual override fun logEvent(name: String, properties: Map<String, Any>?) {
-        amplitude.track(name, properties)
+        val platformInfo = mapOf("platform" to getPlatform().name)
+        val mergedProps = if (properties != null) {
+            properties + platformInfo
+        } else {
+            platformInfo
+        }
+
+        val finalProps = mergedProps.toMutableMap<String, Any?>()
+
+        amplitude.track(name, finalProps)
     }
 }

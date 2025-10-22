@@ -1,5 +1,6 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -99,6 +100,15 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+val localProps = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(localFile.inputStream())
+    }
+}
+
+val amplitudeKey: String? = localProps.getProperty("AMPLITUDE_API_KEY")
+
 buildkonfig {
     packageName = appPackageName
     objectName = "AppConfig"
@@ -107,7 +117,7 @@ buildkonfig {
         buildConfigField(
             Type.STRING,
             "AMPLITUDE_API_KEY",
-            "\"${project.findProperty("AMPLITUDE_API_KEY") ?: ""}\""
+            amplitudeKey
         )
     }
 }

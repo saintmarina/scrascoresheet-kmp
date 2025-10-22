@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         val storage = AndroidGameStorage(this)
         val analytics = AnalyticsManager(
             apiKey = AppConfig.AMPLITUDE_API_KEY,
-            context = this,
+            context = this.applicationContext,
         )
         val root = RootComponent(
             componentContext = defaultComponentContext(),

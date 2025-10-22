@@ -39,6 +39,7 @@ class WelcomeComponent(
     }
 
     fun startGame(playerNames: List<String>) {
+        analytics.logEvent("start_game")
         scope.launch {
             val newGame = Game.createNewGame(playerNames)
             gameRepository.saveGame(newGame)
@@ -51,7 +52,7 @@ class WelcomeComponent(
         scope.launch {
             val savedGame = gameRepository.loadGame()
             if (currentState is WelcomeState.ResumeGame && savedGame != null) {
-
+                analytics.logEvent("resume_game_no")
                 gameRepository.clear()
                 _state.update {
                     WelcomeState.NewGame(
@@ -65,6 +66,7 @@ class WelcomeComponent(
     fun resumeGame() {
         scope.launch {
             gameRepository.loadGame()?.let { game ->
+                analytics.logEvent("resume_game_yes")
                 onStartGame(game)
             }
         }

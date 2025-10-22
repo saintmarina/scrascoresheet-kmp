@@ -2,6 +2,8 @@ package com.steelsoftware.scrascoresheet.logic
 
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 const val REAPED_LEFTOVERS_WORD = "__reaped_leftovers__"
 
@@ -10,10 +12,12 @@ data class Game(
     val playerNames: List<String>,
     val playersTurns: List<List<Turn>>,
     val currentPlayerIndex: Int,
-    val leftOversTurnNumber: Int? = null
+    val leftOversTurnNumber: Int? = null,
+    val startTime: Long,
 ) {
 
     companion object {
+        @OptIn(ExperimentalTime::class)
         fun createNewGame(playerNames: List<String>): Game {
             val numberOfPlayers = when {
                 playerNames.size < 2 -> 2
@@ -25,15 +29,8 @@ data class Game(
             }
 
             val names = playerNames.take(numberOfPlayers)
-            return Game(names, players, 0)
+            return Game(names, players, 0, null, Clock.System.now().toEpochMilliseconds())
         }
-
-        fun fromPlain(obj: Game) = Game(
-            playerNames = obj.playerNames,
-            playersTurns = obj.playersTurns,
-            currentPlayerIndex = obj.currentPlayerIndex,
-            leftOversTurnNumber = obj.leftOversTurnNumber,
-        )
     }
 
     fun addWord(word: Word): Game {
@@ -59,7 +56,8 @@ data class Game(
             playerNames = playerNames,
             playersTurns = updatedPlayersTurns,
             currentPlayerIndex = nextPlayerIndex,
-            leftOversTurnNumber = leftOversTurnNumber
+            leftOversTurnNumber = leftOversTurnNumber,
+            startTime = startTime,
         )
     }
 

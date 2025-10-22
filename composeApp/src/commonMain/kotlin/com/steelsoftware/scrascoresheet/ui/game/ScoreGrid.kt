@@ -43,6 +43,8 @@ import com.steelsoftware.scrascoresheet.logic.REAPED_LEFTOVERS_WORD
 import com.steelsoftware.scrascoresheet.logic.Turn
 import com.steelsoftware.scrascoresheet.logic.Word
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 @Composable
 fun ScoreGrid(
@@ -335,6 +337,7 @@ fun TableDivider() {
     )
 }
 
+@OptIn(ExperimentalTime::class)
 @Preview(showBackground = true)
 @Composable
 fun ScoreGridLazyPreview() {
@@ -355,7 +358,8 @@ fun ScoreGridLazyPreview() {
             )
         ),
         currentPlayerIndex = 0,
-        leftOversTurnNumber = null
+        leftOversTurnNumber = null,
+        startTime = Clock.System.now().toEpochMilliseconds()
     )
 
 
