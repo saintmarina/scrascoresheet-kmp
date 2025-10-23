@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
-    kotlin("native.cocoapods")
     id("com.codingfeline.buildkonfig") version "0.17.1"
 }
 
@@ -27,16 +26,31 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
-    }
 
-    cocoapods {
-        version = "2.0"
+        iosTarget.compilations.getByName("main") {
+            val analyticsBridge by cinterops.creating {
+                // Path to your .def file
+                definitionFile.set(project.file("src/nativeInterop/cinterop/AnalyticsBridge.def"))
 
-        // 👇 Add Amplitude iOS SDK dependency
-        pod("AmplitudeUnified") {
-            version = "~> 0.0.0"
+                // Framework compiler search path
+                compilerOpts(
+                    "-framework", "AnalyticsManagerBridge",
+                    "-F", "${projectDir}/iosFrameworks"
+                )
+                extraOpts += listOf("-compiler-option", "-fmodules")
+            }
+        }
+
+        // ✅ NEW: Link the framework to final binaries
+        iosTarget.binaries.all {
+            linkerOpts(
+                "-framework", "AnalyticsManagerBridge",
+                "-F", "${projectDir}/iosFrameworks"
+            )
         }
     }
+
+
 
     sourceSets {
         androidMain.dependencies {
