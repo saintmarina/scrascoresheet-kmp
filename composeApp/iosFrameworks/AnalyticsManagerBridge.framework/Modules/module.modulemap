@@ -1,0 +1,4 @@
+framework module AnalyticsManagerBridge {
+  header "AnalyticsManagerBridge-Swift.h"
+  requires objc
+}
