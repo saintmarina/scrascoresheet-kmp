@@ -1,0 +1,4 @@
+framework module AmplitudeSwift {
+  header "AmplitudeSwift-Swift.h"
+  requires objc
+}

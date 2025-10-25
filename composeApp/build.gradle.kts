@@ -29,28 +29,30 @@ kotlin {
 
         iosTarget.compilations.getByName("main") {
             val analyticsBridge by cinterops.creating {
-                // Path to your .def file
                 definitionFile.set(project.file("src/nativeInterop/cinterop/AnalyticsBridge.def"))
 
                 // Framework compiler search path
                 compilerOpts(
                     "-framework", "AnalyticsManagerBridge",
+                    "-framework", "AmplitudeSwift",
+                    "-framework", "AmplitudeCore",
+                    "-framework", "AnalyticsConnector",
                     "-F", "${projectDir}/iosFrameworks"
                 )
                 extraOpts += listOf("-compiler-option", "-fmodules")
             }
         }
 
-        // ✅ NEW: Link the framework to final binaries
         iosTarget.binaries.all {
             linkerOpts(
                 "-framework", "AnalyticsManagerBridge",
+                "-framework", "AmplitudeSwift",
+                "-framework", "AmplitudeCore",
+                "-framework", "AnalyticsConnector",
                 "-F", "${projectDir}/iosFrameworks"
             )
         }
     }
-
-
 
     sourceSets {
         androidMain.dependencies {

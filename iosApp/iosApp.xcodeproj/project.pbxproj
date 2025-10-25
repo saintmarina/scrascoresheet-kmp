@@ -7,10 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C10213882EAA59C70056807E /* AmplitudeUnified in Frameworks */ = {isa = PBXBuildFile; productRef = C10213872EAA59C70056807E /* AmplitudeUnified */; };
 		C10213942EAA628F0056807E /* AnalyticsManagerBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C102138E2EAA628F0056807E /* AnalyticsManagerBridge.framework */; };
 		C10213952EAA628F0056807E /* AnalyticsManagerBridge.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C102138E2EAA628F0056807E /* AnalyticsManagerBridge.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C102139B2EAA62B00056807E /* AmplitudeUnified in Frameworks */ = {isa = PBXBuildFile; productRef = C102139A2EAA62B00056807E /* AmplitudeUnified */; };
+		C10214B62EAD5E280056807E /* AmplitudeSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10214B52EAD5E280056807E /* AmplitudeSwift.xcframework */; };
+		C10214BA2EAD5F7E0056807E /* AmplitudeCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10214B92EAD5F7E0056807E /* AmplitudeCore.xcframework */; };
+		C10214BD2EAD61520056807E /* AnalyticsConnector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10214BC2EAD61520056807E /* AnalyticsConnector.xcframework */; };
+		C10214BF2EAD654F0056807E /* AmplitudeCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10214B92EAD5F7E0056807E /* AmplitudeCore.xcframework */; };
+		C10214C02EAD654F0056807E /* AmplitudeCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C10214B92EAD5F7E0056807E /* AmplitudeCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C10214C12EAD65530056807E /* AmplitudeSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10214B52EAD5E280056807E /* AmplitudeSwift.xcframework */; };
+		C10214C22EAD65530056807E /* AmplitudeSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C10214B52EAD5E280056807E /* AmplitudeSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C10214C32EAD65580056807E /* AnalyticsConnector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10214BC2EAD61520056807E /* AnalyticsConnector.xcframework */; };
+		C10214C42EAD65580056807E /* AnalyticsConnector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C10214BC2EAD61520056807E /* AnalyticsConnector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +37,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C10214C42EAD65580056807E /* AnalyticsConnector.xcframework in Embed Frameworks */,
+				C10214C02EAD654F0056807E /* AmplitudeCore.xcframework in Embed Frameworks */,
 				C10213952EAA628F0056807E /* AnalyticsManagerBridge.framework in Embed Frameworks */,
+				C10214C22EAD65530056807E /* AmplitudeSwift.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -40,6 +50,9 @@
 /* Begin PBXFileReference section */
 		C10213732EAA504B0056807E /* AnalyticsBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AnalyticsBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C102138E2EAA628F0056807E /* AnalyticsManagerBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AnalyticsManagerBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C10214B52EAD5E280056807E /* AmplitudeSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmplitudeSwift.xcframework; path = ../composeApp/iosFrameworks/AmplitudeSwift.xcframework; sourceTree = "<group>"; };
+		C10214B92EAD5F7E0056807E /* AmplitudeCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmplitudeCore.xcframework; path = ../composeApp/iosFrameworks/AmplitudeCore.xcframework; sourceTree = "<group>"; };
+		C10214BC2EAD61520056807E /* AnalyticsConnector.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AnalyticsConnector.xcframework; path = ../composeApp/iosFrameworks/AnalyticsConnector.xcframework; sourceTree = "<group>"; };
 		DF61FD60E4E4EE0BCEE47B93 /* ScraScoreSheet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScraScoreSheet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -79,7 +92,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C10214C32EAD65580056807E /* AnalyticsConnector.xcframework in Frameworks */,
+				C10214BF2EAD654F0056807E /* AmplitudeCore.xcframework in Frameworks */,
 				C10213942EAA628F0056807E /* AnalyticsManagerBridge.framework in Frameworks */,
+				C10214C12EAD65530056807E /* AmplitudeSwift.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,7 +103,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C10213882EAA59C70056807E /* AmplitudeUnified in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +110,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C102139B2EAA62B00056807E /* AmplitudeUnified in Frameworks */,
+				C10214BD2EAD61520056807E /* AnalyticsConnector.xcframework in Frameworks */,
+				C10214BA2EAD5F7E0056807E /* AmplitudeCore.xcframework in Frameworks */,
+				C10214B62EAD5E280056807E /* AmplitudeSwift.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +143,9 @@
 		C10213812EAA519C0056807E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C10214BC2EAD61520056807E /* AnalyticsConnector.xcframework */,
+				C10214B92EAD5F7E0056807E /* AmplitudeCore.xcframework */,
+				C10214B52EAD5E280056807E /* AmplitudeSwift.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -190,7 +210,6 @@
 			);
 			name = AnalyticsBridge;
 			packageProductDependencies = (
-				C10213872EAA59C70056807E /* AmplitudeUnified */,
 			);
 			productName = AnalyticsBridge;
 			productReference = C10213732EAA504B0056807E /* AnalyticsBridge.framework */;
@@ -214,7 +233,6 @@
 			);
 			name = AnalyticsManagerBridge;
 			packageProductDependencies = (
-				C102139A2EAA62B00056807E /* AmplitudeUnified */,
 			);
 			productName = AnalyticsManagerBridge;
 			productReference = C102138E2EAA628F0056807E /* AnalyticsManagerBridge.framework */;
@@ -252,7 +270,7 @@
 			mainGroup = 91F7AFFCFDD471EE5EC34153;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C174F9292EA986380014BB0E /* XCRemoteSwiftPackageReference "AmplitudeUnified-Swift" */,
+				C10214B42EAD595E0056807E /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 743294E91BD94CE81F47AF87 /* Products */;
@@ -765,28 +783,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C174F9292EA986380014BB0E /* XCRemoteSwiftPackageReference "AmplitudeUnified-Swift" */ = {
+		C10214B42EAD595E0056807E /* XCRemoteSwiftPackageReference "Amplitude-Swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/amplitude/AmplitudeUnified-Swift";
+			repositoryURL = "https://github.com/amplitude/Amplitude-Swift";
 			requirement = {
 				branch = main;
 				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		C10213872EAA59C70056807E /* AmplitudeUnified */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C174F9292EA986380014BB0E /* XCRemoteSwiftPackageReference "AmplitudeUnified-Swift" */;
-			productName = AmplitudeUnified;
-		};
-		C102139A2EAA62B00056807E /* AmplitudeUnified */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C174F9292EA986380014BB0E /* XCRemoteSwiftPackageReference "AmplitudeUnified-Swift" */;
-			productName = AmplitudeUnified;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4BE3A8619B32ED5F17231EF0 /* Project object */;
 }
