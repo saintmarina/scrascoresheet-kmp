@@ -49,6 +49,7 @@ import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
 import com.steelsoftware.scrascoresheet.i18n.Locales
 import com.steelsoftware.scrascoresheet.i18n.Strings
+import com.steelsoftware.scrascoresheet.ui.components.Footer
 import com.steelsoftware.scrascoresheet.ui.components.GradientButton
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.Loading
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeState.NewGame
@@ -122,6 +123,7 @@ fun WelcomeScreen(component: WelcomeComponent, lyricist: Lyricist<Strings>) {
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Justify,
         )
+        Footer()
     }
 }
 

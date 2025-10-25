@@ -69,4 +69,10 @@ val RussianStrings = Strings(
     wonWith = "выиграл с",
     areYouSureYouWantToStartANewGame = "Вы уверены, что хотите начать новую игру?",
     currentProgressWillBeLost = "Текущий прогресс будет потерян.",
+    contactTitle = "Контакты",
+    contactText = "По любым вопросам, предложениям или отзывам вы можете связаться с разработчиком ",
+    onFacebook = "на Facebook",
+    orViaEmail = " или по электронной почте ",
+    faceBookDescription = "Страница Scrabble Score Sheet на Facebook",
+    gitHubDescription = "Страница Scrabble Score Sheet на GitHub",
 )

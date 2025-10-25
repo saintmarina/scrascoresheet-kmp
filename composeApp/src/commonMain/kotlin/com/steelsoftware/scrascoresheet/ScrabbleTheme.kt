@@ -71,6 +71,14 @@ private val ScrabbleTypography = Typography(
             blurRadius = 0f
         )
     ),
+    bodySmall = TextStyle(
+        fontFamily = FontFamily.Serif,
+        fontWeight = FontWeight.Normal,
+        fontSize = 13.sp,
+        lineHeight = 18.sp,
+        color = Color.White.copy(alpha = 0.7f),
+        shadow = null,
+    ),
     labelLarge = TextStyle(
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.Bold,

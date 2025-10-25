@@ -45,6 +45,7 @@ import com.steelsoftware.scrascoresheet.ScrabbleTheme
 import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
+import com.steelsoftware.scrascoresheet.ui.components.Footer
 import com.steelsoftware.scrascoresheet.ui.components.GradientButton
 import org.jetbrains.compose.resources.painterResource
 import scrascoresheet.composeapp.generated.resources.Res
@@ -196,6 +197,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
             }
             Instructions()
             Spacer(Modifier.height(16.dp))
+            Footer()
         }
         if (popoverAnchor != null && inputBoxBounds != null && !isInLeftoverMode) {
             Box(

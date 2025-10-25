@@ -69,4 +69,10 @@ val SpanishStrings = Strings(
     wonWith = "ganó con",
     areYouSureYouWantToStartANewGame = "¿Estás seguro de que quieres empezar una nueva partida?",
     currentProgressWillBeLost = "El progreso actual se perderá.",
+    contactTitle = "Contacto",
+    contactText = "Para cualquier problema, sugerencia o comentario, puede ponerse en contacto con el desarrollador ",
+    onFacebook = "en Facebook",
+    orViaEmail = " o por correo electrónico ",
+    faceBookDescription = "Página de Facebook de Scrabble Score Sheet",
+    gitHubDescription = "Página de GitHub de Scrabble Score Sheet",
 )

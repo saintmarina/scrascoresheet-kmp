@@ -50,4 +50,10 @@ data class Strings(
     val wonWith: String,
     val areYouSureYouWantToStartANewGame: String,
     val currentProgressWillBeLost: String,
+    val contactTitle: String,
+    val contactText: String,
+    val onFacebook: String,
+    val orViaEmail: String,
+    val faceBookDescription: String,
+    val gitHubDescription: String,
 )
