@@ -3,6 +3,5 @@
 
     <style name="Theme.ScrabbleScoreSheet" parent="@android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/scrabble_red</item>
-        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

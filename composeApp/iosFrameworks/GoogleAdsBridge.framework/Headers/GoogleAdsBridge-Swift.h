@@ -306,15 +306,12 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if defined(__OBJC__)
 @class NSString;
 @class NSCoder;
-@class GADBannerView;
 
 SWIFT_CLASS("_TtC15GoogleAdsBridge12BannerAdView")
 @interface BannerAdView : UIView <GADBannerViewDelegate>
 - (nonnull instancetype)initWithAdUnitId:(NSString * _Nonnull)adUnitId OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
-- (void)didMoveToWindow;
-- (void)bannerViewDidReceiveAd:(GADBannerView * _Nonnull)bannerView;
-- (void)bannerView:(GADBannerView * _Nonnull)bannerView didFailToReceiveAdWithError:(NSError * _Nonnull)error;
+- (void)layoutSubviews;
 - (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 @end
 

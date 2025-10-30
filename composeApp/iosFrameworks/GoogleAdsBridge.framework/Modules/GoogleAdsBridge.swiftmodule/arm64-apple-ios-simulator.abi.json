@@ -65,9 +65,50 @@
             "init_kind": "Designated"
           },
           {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(coder:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "GoogleAdsBridge.BannerAdView?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "BannerAdView",
+                    "printedName": "GoogleAdsBridge.BannerAdView",
+                    "usr": "c:@M@GoogleAdsBridge@objc(cs)BannerAdView"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSCoder",
+                "printedName": "Foundation.NSCoder",
+                "usr": "c:objc(cs)NSCoder"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@GoogleAdsBridge@objc(cs)BannerAdView(im)initWithCoder:",
+            "mangledName": "$s15GoogleAdsBridge12BannerAdViewC5coderACSgSo7NSCoderC_tcfc",
+            "moduleName": "GoogleAdsBridge",
+            "overriding": true,
+            "objc_name": "initWithCoder:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Preconcurrency",
+              "Custom",
+              "Required"
+            ],
+            "init_kind": "Designated"
+          },
+          {
             "kind": "Function",
-            "name": "didMoveToWindow",
-            "printedName": "didMoveToWindow()",
+            "name": "layoutSubviews",
+            "printedName": "layoutSubviews()",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -76,88 +117,18 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@GoogleAdsBridge@objc(cs)BannerAdView(im)didMoveToWindow",
-            "mangledName": "$s15GoogleAdsBridge12BannerAdViewC15didMoveToWindowyyF",
+            "usr": "c:@M@GoogleAdsBridge@objc(cs)BannerAdView(im)layoutSubviews",
+            "mangledName": "$s15GoogleAdsBridge12BannerAdViewC14layoutSubviewsyyF",
             "moduleName": "GoogleAdsBridge",
             "overriding": true,
             "isOpen": true,
-            "objc_name": "didMoveToWindow",
+            "objc_name": "layoutSubviews",
             "declAttributes": [
               "Dynamic",
               "ObjC",
               "Preconcurrency",
               "Custom",
               "Override",
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "bannerViewDidReceiveAd",
-            "printedName": "bannerViewDidReceiveAd(_:)",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Void",
-                "printedName": "()"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "BannerView",
-                "printedName": "GoogleMobileAds.BannerView",
-                "usr": "c:objc(cs)GADBannerView"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "c:@M@GoogleAdsBridge@objc(cs)BannerAdView(im)bannerViewDidReceiveAd:",
-            "mangledName": "$s15GoogleAdsBridge12BannerAdViewC06bannerf10DidReceiveE0yySo09GADBannerF0CF",
-            "moduleName": "GoogleAdsBridge",
-            "isOpen": true,
-            "objc_name": "bannerViewDidReceiveAd:",
-            "declAttributes": [
-              "ObjC",
-              "Preconcurrency",
-              "Custom",
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "bannerView",
-            "printedName": "bannerView(_:didFailToReceiveAdWithError:)",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Void",
-                "printedName": "()"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "BannerView",
-                "printedName": "GoogleMobileAds.BannerView",
-                "usr": "c:objc(cs)GADBannerView"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "Error",
-                "printedName": "any Swift.Error",
-                "usr": "s:s5ErrorP"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "c:@M@GoogleAdsBridge@objc(cs)BannerAdView(im)bannerView:didFailToReceiveAdWithError:",
-            "mangledName": "$s15GoogleAdsBridge12BannerAdViewC06bannerF0_016didFailToReceiveE9WithErrorySo09GADBannerF0C_s0M0_ptF",
-            "moduleName": "GoogleAdsBridge",
-            "isOpen": true,
-            "objc_name": "bannerView:didFailToReceiveAdWithError:",
-            "declAttributes": [
-              "ObjC",
-              "Preconcurrency",
-              "Custom",
               "AccessControl"
             ],
             "funcSelfKind": "NonMutating"

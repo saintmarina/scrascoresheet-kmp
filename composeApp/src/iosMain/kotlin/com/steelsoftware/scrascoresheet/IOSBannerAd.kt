@@ -4,18 +4,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.viewinterop.UIKitView
 import googleadsbridge.BannerAdView
 import kotlinx.cinterop.ExperimentalForeignApi
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun BannerAd(adUnitId: String) {
+actual fun BannerAd(
+    adUnitId: String,
+    height: Dp,
+) {
     UIKitView<BannerAdView>(
         factory = { BannerAdView(adUnitId = adUnitId) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
+        modifier = Modifier.fillMaxWidth().height(height)
     )
 }

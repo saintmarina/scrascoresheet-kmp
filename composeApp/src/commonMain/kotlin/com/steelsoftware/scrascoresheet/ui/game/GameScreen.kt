@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,8 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.steelsoftware.scrascoresheet.AppConfig
-import com.steelsoftware.scrascoresheet.BannerAd
 import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
@@ -74,8 +73,13 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
     var isInLeftoverMode by remember { mutableStateOf(false) }
     var shouldShowStartNewGameDialog by remember { mutableStateOf(false) }
 
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(scrollState.value) {
+        popoverAnchor = null
+    }
+
     Box(Modifier.fillMaxSize()) {
-        BannerAd(adUnitId = AppConfig.TEST_BANNER_ID) // TODO: replace with production ID
         if (shouldShowStartNewGameDialog) {
             ConfirmNewGamePopup(
                 show = true,
@@ -86,7 +90,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
         Column(
             Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }

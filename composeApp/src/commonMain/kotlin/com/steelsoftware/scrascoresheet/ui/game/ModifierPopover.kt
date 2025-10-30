@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.lyricist.rememberStrings
 import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
-import com.steelsoftware.scrascoresheet.GLOBAL_TOP_PADDING
+import com.steelsoftware.scrascoresheet.bannerHeight
+import com.steelsoftware.scrascoresheet.globalTopPadding
 import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
@@ -39,7 +40,6 @@ import com.steelsoftware.scrascoresheet.i18n.RussianStrings
 import com.steelsoftware.scrascoresheet.i18n.SpanishStrings
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
 
 @Composable
 fun ModifierPopover(
@@ -63,7 +63,8 @@ fun ModifierPopover(
     var popoverWidth by remember { mutableStateOf(0f) }
     var popoverGlobalLeft by remember { mutableStateOf(0f) }
 
-    val y = with(density) { (tileBounds.bottom - GLOBAL_TOP_PADDING.dp.toPx()).toInt() }
+    val y =
+        with(density) { (tileBounds.bottom - globalTopPadding.dp.toPx() - bannerHeight.dp.toPx()).toInt() }
     Column(
         modifier = Modifier.offset {
             IntOffset(

@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/GoogleAdsBridge-Swift.h</key>
 		<data>
-		bEjfmEtL7ULtkwgDI12+kFGzv6I=
+		p+OmF/Av/mUtKoWzqczyUDgeFTQ=
 		</data>
 		<key>Headers/GoogleAdsBridge.h</key>
 		<data>
@@ -18,15 +18,15 @@
 		</data>
 		<key>Modules/GoogleAdsBridge.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		BVVB6p77TGa/drsi2YCfbxgtWTo=
+		COEOKw/2LE8GnBcnX9fxpPXQPTU=
 		</data>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		/wZ9jf50ERqT0tvHZiZYKrkcdqQ=
+		EWsPo1w0UkQ3BqIQJo08EJP4FmQ=
 		</data>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		+MNno92w+XD4WHdOjtyzfZ2bW7k=
+		molWpslj+Tr1NsXx/V5gVIXK650=
 		</data>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -34,11 +34,11 @@
 		</data>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		+MNno92w+XD4WHdOjtyzfZ2bW7k=
+		molWpslj+Tr1NsXx/V5gVIXK650=
 		</data>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		4twA2pT4fh4s0g/rfcwW8PETkkg=
+		0cmp6eaYLKnAyGM8xyNqGTXktGY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -51,7 +51,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			fxK/+65NBNfZZa6eTBrxlocYj6ZGtMrYK/6UqFtBulM=
+			ZZz1Qj7S/EdCuJwGHm0hJ0fIdexobHyd68uFOmaKIjE=
 			</data>
 		</dict>
 		<key>Headers/GoogleAdsBridge.h</key>
@@ -65,21 +65,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			1BQoR/XZtQfToAEihZND58eaK8QzNI10LQEZNgzKUFc=
+			hcW/cldJABqH3zUnSAnvdrbTuoHiDHxGM3CdFTumepE=
 			</data>
 		</dict>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			YHvQeJmOSwsvA6fhuPy9d+39xknw6upkbqmdNoVKLdY=
+			xGv1l8idKG4iseAKJ+uyCBrfALbQXtDEZM9hDUz7SY4=
 			</data>
 		</dict>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			WfyR1VaQBLiU3Rk1tFwauSWMab/3jJqskMbRKfbMGIc=
+			b2DLwsm5/vTVNIgEOBnJZYBj6MnjDhetMfWc4N0xcCs=
 			</data>
 		</dict>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
@@ -93,14 +93,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WfyR1VaQBLiU3Rk1tFwauSWMab/3jJqskMbRKfbMGIc=
+			b2DLwsm5/vTVNIgEOBnJZYBj6MnjDhetMfWc4N0xcCs=
 			</data>
 		</dict>
 		<key>Modules/GoogleAdsBridge.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			g1kHhkJRy1svxJvXmghWb3Des2KYG1qTEb2p9xqfedI=
+			vV15cdfehC8MrPsYjg08uWFVcEAjjghDRNWhx8f1JVg=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

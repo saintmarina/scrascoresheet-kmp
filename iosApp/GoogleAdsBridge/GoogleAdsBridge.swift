@@ -12,13 +12,13 @@ import GoogleMobileAds
 @objcMembers
 public class BannerAdView: UIView, BannerViewDelegate {
     private var bannerView: BannerView!
+    private var heightConstraint: NSLayoutConstraint?
 
     @objc public init(adUnitId: String) {
         super.init(frame: .zero)
         setupBanner(adUnitId: adUnitId)
     }
 
-    @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     private func setupBanner(adUnitId: String) {
@@ -30,30 +30,29 @@ public class BannerAdView: UIView, BannerViewDelegate {
 
         NSLayoutConstraint.activate([
             bannerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            bannerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+            bannerView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
-    // 💡 Called after UIKit attaches the view to the window
-    public override func didMoveToWindow() {
-        super.didMoveToWindow()
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+
+        let width = bounds.width
+        guard width > 0 else { return }
+
         if bannerView.rootViewController == nil,
-           let windowScene = window?.windowScene,
-           let rootVC = windowScene.windows.first(where: \.isKeyWindow)?.rootViewController {
+           let rootVC = window?.windowScene?.windows.first(where: \.isKeyWindow)?.rootViewController {
             bannerView.rootViewController = rootVC
-            let width = UIScreen.main.bounds.width
-            bannerView.adSize = currentOrientationAnchoredAdaptiveBanner(width: width)
-            bannerView.load(Request())
-            print("✅ BannerAdView attached and ad requested.")
         }
-    }
 
-    // Optional debugging
-    public func bannerViewDidReceiveAd(_ bannerView: BannerView) {
-        print("✅ Ad loaded successfully!")
-    }
+        let adSize = currentOrientationAnchoredAdaptiveBanner(width: width)
+        bannerView.adSize = adSize
 
-    public func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: any Error) {
-        print("❌ Failed to load ad:", error)
+        heightConstraint?.isActive = false
+        heightConstraint = heightAnchor.constraint(equalToConstant: adSize.size.height)
+        heightConstraint?.isActive = true
+
+        bannerView.load(Request())
     }
 }
