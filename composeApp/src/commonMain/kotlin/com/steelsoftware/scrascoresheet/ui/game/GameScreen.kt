@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steelsoftware.scrascoresheet.AppConfig
+import com.steelsoftware.scrascoresheet.BannerAd
 import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
@@ -73,6 +75,7 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
     var shouldShowStartNewGameDialog by remember { mutableStateOf(false) }
 
     Box(Modifier.fillMaxSize()) {
+        BannerAd(adUnitId = AppConfig.TEST_BANNER_ID) // TODO: replace with production ID
         if (shouldShowStartNewGameDialog) {
             ConfirmNewGamePopup(
                 show = true,

@@ -17,6 +17,7 @@ junit = "4.13.2"
 kotlin = "2.2.20"
 kotlinx-serialization = "1.9.0"
 lyricist = "1.7.0"
+playServicesAds = "24.7.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -38,6 +39,7 @@ essenty-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-corou
 lyricist-core = { group = "cafe.adriel.lyricist", name = "lyricist-core", version.ref = "lyricist" }
 lyricist-full = { group = "cafe.adriel.lyricist", name = "lyricist", version.ref = "lyricist" }
 amplitude-android = { group = "com.amplitude", name = "analytics-android", version.ref = "amplitude" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

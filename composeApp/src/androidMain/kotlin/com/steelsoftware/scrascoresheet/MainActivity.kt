@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.lyricist.rememberStrings
 import com.arkivanov.decompose.defaultComponentContext
+import com.google.android.gms.ads.MobileAds
 import com.steelsoftware.scrascoresheet.i18n.EnglishStrings
 import com.steelsoftware.scrascoresheet.i18n.LocalLyricist
 import com.steelsoftware.scrascoresheet.i18n.Locales
@@ -32,6 +33,8 @@ class MainActivity : ComponentActivity() {
         )
 
         val urlOpener = AndroidUrlOpener(applicationContext)
+
+        MobileAds.initialize(this)
 
         setContent {
             val lyricist = rememberStrings(

@@ -41,15 +41,39 @@ kotlin {
                 )
                 extraOpts += listOf("-compiler-option", "-fmodules")
             }
+
+            val googleAdsBridge by cinterops.creating {
+                definitionFile.set(project.file("src/nativeInterop/cinterop/GoogleAdsBridge.def"))
+                compilerOpts(
+                    "-framework", "GoogleAdsBridge",
+                    "-framework", "GoogleMobileAds",
+                    "-F", "${projectDir}/iosFrameworks",
+                    "-F",
+                    "${projectDir}/iosFrameworks/GoogleMobileAds.xcframework/ios-arm64",
+                    "-F",
+                    "${projectDir}/iosFrameworks/GoogleMobileAds.xcframework/ios-arm64_x86_64-simulator"
+                )
+                extraOpts += listOf("-compiler-option", "-fmodules")
+            }
         }
 
         iosTarget.binaries.all {
             linkerOpts(
-                "-framework", "AnalyticsManagerBridge",
-                "-framework", "AmplitudeSwift",
-                "-framework", "AmplitudeCore",
-                "-framework", "AnalyticsConnector",
-                "-F", "${projectDir}/iosFrameworks"
+                "-framework",
+                "AnalyticsManagerBridge",
+                "-framework",
+                "AmplitudeSwift",
+                "-framework",
+                "AmplitudeCore",
+                "-framework",
+                "AnalyticsConnector",
+                "-framework",
+                "GoogleAdsBridge",
+                "-F", "${projectDir}/iosFrameworks",
+                "-F",
+                "${projectDir}/iosFrameworks/GoogleMobileAds.xcframework/ios-arm64",
+                "-F",
+                "${projectDir}/iosFrameworks/GoogleMobileAds.xcframework/ios-arm64_x86_64-simulator"
             )
         }
     }
@@ -59,6 +83,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.amplitude.android)
+            implementation(libs.play.services.ads)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -124,6 +149,7 @@ val localProps = Properties().apply {
 }
 
 val amplitudeKey: String? = localProps.getProperty("AMPLITUDE_API_KEY")
+val testBannerId: String? = localProps.getProperty("TEST_BANNER_ID")
 
 buildkonfig {
     packageName = appPackageName
@@ -134,6 +160,11 @@ buildkonfig {
             Type.STRING,
             "AMPLITUDE_API_KEY",
             amplitudeKey
+        )
+        buildConfigField(
+            Type.STRING,
+            "TEST_BANNER_ID",
+            testBannerId
         )
     }
 }

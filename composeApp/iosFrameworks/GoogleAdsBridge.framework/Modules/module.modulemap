@@ -1,0 +1,11 @@
+framework module GoogleAdsBridge {
+  umbrella header "GoogleAdsBridge.h"
+  export *
+
+  module * { export * }
+}
+
+module GoogleAdsBridge.Swift {
+  header "GoogleAdsBridge-Swift.h"
+  requires objc
+}
