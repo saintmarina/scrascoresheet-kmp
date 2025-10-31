@@ -43,6 +43,9 @@ fun App(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) 
         bannerHeight = 68
     }
 
+    val bannerId =
+        if (getPlatform().isAndroid) AppConfig.ANDROID_BANNER_ID else AppConfig.IOS_BANNER_ID
+
     ScrabbleTheme {
 
         Column(
@@ -51,7 +54,7 @@ fun App(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) 
         ) {
             if (shouldShowBanner) {
                 BannerAd(
-                    adUnitId = AppConfig.TEST_BANNER_ID,  // TODO: replace with production ID
+                    adUnitId = bannerId,  //IMPORTANT:  Set this to AppConfig.TEST_BANNER_ID during testing
                     height = bannerHeight.dp,
                 )
             }

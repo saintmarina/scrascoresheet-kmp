@@ -150,6 +150,8 @@ val localProps = Properties().apply {
 
 val amplitudeKey: String? = localProps.getProperty("AMPLITUDE_API_KEY")
 val testBannerId: String? = localProps.getProperty("TEST_BANNER_ID")
+val iosBannerId: String? = localProps.getProperty("IOS_BANNER_ID")
+val androidBannerId: String? = localProps.getProperty("ANDROID_BANNER_ID")
 
 buildkonfig {
     packageName = appPackageName
@@ -165,6 +167,16 @@ buildkonfig {
             Type.STRING,
             "TEST_BANNER_ID",
             testBannerId
+        )
+        buildConfigField(
+            Type.STRING,
+            "IOS_BANNER_ID",
+            iosBannerId
+        )
+        buildConfigField(
+            Type.STRING,
+            "ANDROID_BANNER_ID",
+            androidBannerId
         )
     }
 }

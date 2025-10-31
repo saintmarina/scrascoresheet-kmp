@@ -16,6 +16,7 @@ public class BannerAdView: UIView, BannerViewDelegate {
 
     @objc public init(adUnitId: String) {
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         setupBanner(adUnitId: adUnitId)
     }
 
