@@ -32,8 +32,6 @@ class MainActivity : ComponentActivity() {
             analytics = analytics,
         )
 
-        val urlOpener = AndroidUrlOpener(applicationContext)
-
         MobileAds.initialize(this)
 
         setContent {
@@ -48,7 +46,7 @@ class MainActivity : ComponentActivity() {
             )
             ScrabbleStrings.setLanguage(lyricist.languageTag)
             ProvideStrings(lyricist, LocalLyricist) {
-                App(root, lyricist, urlOpener)
+                App(root, lyricist)
             }
         }
     }

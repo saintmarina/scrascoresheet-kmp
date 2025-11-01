@@ -5,20 +5,19 @@ import cafe.adriel.lyricist.Lyricist
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
-import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.i18n.Strings
 import com.steelsoftware.scrascoresheet.ui.game.GameScreen
 import com.steelsoftware.scrascoresheet.ui.welcome.WelcomeScreen
 
 @Composable
-fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) {
+fun RootContent(root: RootComponent, lyricist: Lyricist<Strings>) {
     Children(
         stack = root.childStack,
         animation = stackAnimation(fade()),
     ) {
         when (val child = it.instance) {
             is RootComponent.Child.Welcome -> WelcomeScreen(child.component, lyricist)
-            is RootComponent.Child.Game -> GameScreen(child.component, urlOpener)
+            is RootComponent.Child.Game -> GameScreen(child.component)
         }
     }
 }

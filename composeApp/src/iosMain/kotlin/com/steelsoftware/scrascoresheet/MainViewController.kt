@@ -31,9 +31,8 @@ fun MainViewController() = ComposeUIViewController {
         defaultLanguageTag = Locales.ENGLISH,
         currentLanguageTag = Locales.ENGLISH,
     )
-    val urlOpener = IOSUrlOpener()
 
     ProvideStrings(lyricist, LocalLyricist) {
-        App(root, lyricist, urlOpener)
+        App(root, lyricist)
     }
 }

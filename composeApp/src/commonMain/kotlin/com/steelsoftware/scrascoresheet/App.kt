@@ -23,7 +23,7 @@ const val GLOBAL_SIDE_PADDING = 16
 var bannerHeight = 0
 
 @Composable
-fun App(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) {
+fun App(root: RootComponent, lyricist: Lyricist<Strings>) {
     var shouldShowBanner by remember { mutableStateOf(false) }
     root.childStack.subscribe { stack ->
         shouldShowBanner = stack.active.instance is RootComponent.Child.Game
@@ -65,7 +65,7 @@ fun App(root: RootComponent, lyricist: Lyricist<Strings>, urlOpener: UrlOpener) 
                     .padding(bottom = GLOBAL_SIDE_PADDING.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                RootContent(root, lyricist, urlOpener)
+                RootContent(root, lyricist)
             }
         }
     }

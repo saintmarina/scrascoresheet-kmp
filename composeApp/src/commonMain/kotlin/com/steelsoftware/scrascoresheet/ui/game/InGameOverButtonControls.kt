@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
-import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.getPlatform
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.ui.components.GradientButton
@@ -22,16 +22,14 @@ fun InGameOverButtonControls(
     onSubmitLeftovers: (Word) -> Unit,
     onUndo: () -> Unit,
     onNewGame: () -> Unit,
-    urlOpener: UrlOpener,
 ) {
+    val uriHandler = LocalUriHandler.current
+    val androidUrl = "https://play.google.com/store/apps/details?id=com.saintmarina.scrabblescore"
+    val iosUrl = "https://apps.apple.com/us/app/scrabble-score-calculator/id1497216063"
     val submitButtonText = if (currentWord.value.isNotEmpty())
         strings.submitLeftovers.uppercase()
     else
         strings.submitNoLeftovers.uppercase()
-
-    fun isAndroid(): Boolean = getPlatform().name.startsWith("Android")
-    fun isIOS(): Boolean = getPlatform().name.startsWith("iOS")
-
 
     BoxWithConstraints(
         modifier = Modifier
@@ -69,24 +67,22 @@ fun InGameOverButtonControls(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // TODO: show "RATE US" buttons
-                /*
-                if (isAndroid()) {
+                if (getPlatform().isAndroid) {
                     GradientButton(
-                        onClick = { urlOpener.openAppStoreUrl() },
+                        onClick = { uriHandler.openUri(androidUrl) },//urlOpener.openAppStoreUrl() },
                         text = "⭐ ${strings.rateUsOnPlayStore.uppercase()} ⭐",
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
 
-                if (isIOS()) {
+                if (getPlatform().isIOS) {
                     GradientButton(
-                        onClick = { urlOpener.openAppStoreUrl() },
+                        onClick = { uriHandler.openUri(iosUrl) },
                         text = "⭐ ${strings.rateUsOnAppStore.uppercase()} ⭐",
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                 */
+
                 GradientButton(
                     onClick = onUndo,
                     text = strings.undo.uppercase(),

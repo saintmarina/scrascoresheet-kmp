@@ -43,7 +43,6 @@ import com.steelsoftware.scrascoresheet.GLOBAL_SIDE_PADDING
 import com.steelsoftware.scrascoresheet.ScrabbleStrings
 import com.steelsoftware.scrascoresheet.ScrabbleStrings.strings
 import com.steelsoftware.scrascoresheet.ScrabbleTheme
-import com.steelsoftware.scrascoresheet.UrlOpener
 import com.steelsoftware.scrascoresheet.logic.ModifierType
 import com.steelsoftware.scrascoresheet.logic.Word
 import com.steelsoftware.scrascoresheet.ui.components.Footer
@@ -53,7 +52,7 @@ import scrascoresheet.composeapp.generated.resources.Res
 import scrascoresheet.composeapp.generated.resources.logo
 
 @Composable
-fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
+fun GameScreen(component: GameComponent) {
     val state by component.state.subscribeAsState()
 
     var popoverAnchor by remember { mutableStateOf<Rect?>(null) }
@@ -197,7 +196,6 @@ fun GameScreen(component: GameComponent, urlOpener: UrlOpener) {
                                 resetCurrentWord()
                             },
                             onNewGame = { component.startNewGame() },
-                            urlOpener = urlOpener,
                         )
                     }
                 }
